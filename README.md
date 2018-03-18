@@ -44,3 +44,10 @@ Fortify is a step-by-step configuration tool to help secure MacOS Sierra and Hig
 
 + https://github.com/drduh/macOS-Security-and-Privacy-Guide
 + http://newosxbook.com/files/moxii3/AppendixA.pdf
+
+**How to Contribute**
+---
+
+1. Clone repo and create a new branch: `$ git checkout https://github.com/alichtman/fortify -b [name_for_new_branch]`.
+2. Make changes and test
+3. Submit Pull Request with comprehensive description of changes
