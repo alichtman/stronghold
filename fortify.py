@@ -35,7 +35,7 @@ def print_section_header(title):
 def splash_intro():
 	print(
 		"\n88888888888                                       ad88 \n" +
-		"88                                  ,d     **    d8/ \n" +
+		"88                                  ,d     **    d8` \n" +
 		"88                                  88           88 \n" +
 		"88aaaaa   ,adPPYba,   8b,dPPYba,  MM88MMM  88  MM88MMM  8b       d8 \n" +
 		"88`````  a8       8a  88P`   `Y8    88     88    88      8b     d8 \n" +
@@ -64,21 +64,21 @@ def splash_intro():
 # I prayed to the sudo gods many times that these commands would work.
 # Proceed at your own risk.
 
-def connectivity_config():
+def firewall_config():
 	if prompt_yes_no("Turn on firewall?"):
 
 		print("Enabling firewall...")
 		sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setglobalstate', 'on'], stdout=sp.PIPE)
 
-		if prompt_yes_no("\n\tTurn on logging?"):
+		if prompt_yes_no("\n-> Turn on logging?"):
 			print("Enabling logging...")
 			sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setloggingmode', 'on'], stdout=sp.PIPE)
 
-		if prompt_yes_no("\n\tTurn on stealth mode?"):
+		if prompt_yes_no("\n-> Turn on stealth mode?"):
 			print("Enabling stealth mode...")
 			sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setstealthmode', 'on'], stdout=sp.PIPE)
 
-		if prompt_yes_no("\n\tPrevent software from being whitelisted automatically?"):
+		if prompt_yes_no("\n-> Prevent software from being whitelisted automatically?"):
 			print("Preventing automatic whitelisting...")
 			sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsigned', 'off'], stdout=sp.PIPE)
 			sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsignedapp', 'off'], stdout=sp.PIPE)
@@ -86,13 +86,15 @@ def connectivity_config():
 		print("Resetting firewall to finalize changes...")
 		sp.run(['sudo', 'pkill', '-HUP', 'socketfilterfw'], stdout=sp.PIPE)
 
-	if prompt_yes_no("\nDisable Captive Portal Assistant and force login through browser?"):
+def captive_portal_config():
+	if prompt_yes_no("Disable Captive Portal Assistant and force login through browser?"):
 		print("Disabling Captive Portal Assistant...")
 		sp.run(['sudo', 'defaults', 'write', '/Library/Preferences/SystemConfiguration/com.apple.captive.control', 'Active', '-bool', 'false'], stdout=sp.PIPE)
 
 
 # TODO: Fix all the file not found errors
 def metadata_storage_config():
+	dead_beef = 3
 	# if prompt_yes_no("Clear language modeling, spelling and suggestion data and disable data collection?"):
 	# 	if prompt_yes_no("\tAre you sure?"):
 	# 		print("Removing language modeling, spelling and suggestion data and disabling data collection...")
@@ -141,13 +143,16 @@ def general_safety_config():
 if __name__ == '__main__':
 	splash_intro()
 
-	print_section_header("CONNECTIVITY CONFIGURATION")
-	connectivity_config()
+	print_section_header("FIREWALL")
+	firewall_config()
 
-	print_section_header("USER DATA COLLECTION")
-	metadata_storage_config()
+	print_section_header("CAPTIVE PORTAL")
+	captive_portal_config()
+
+	# print_section_header("USER DATA COLLECTION")
+	# metadata_storage_config()
 
 	print_section_header("GENERAL SAFETY")
 	general_safety_config()
 
-	print("Configuration complete!")
+	print("\nConfiguration complete!")
