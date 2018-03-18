@@ -11,10 +11,33 @@ Fortify is a step-by-step configuration tool to help secure MacOS Sierra and Hig
 
 + Ensure you have up-to-date backups. This script modifies system settings and there is a possibility that it damages your system.
 
-**Details**
+**Configuration Options**
 ---
 
-[ TODO ]
+1. Firewall Configuration Options
+
+    + Enable Firewall?
+        - Enable Logging?
+        - Enable Stealth Mode?
+        - Prevent Automatic Whitelisting?
+
+    + Disable Captive Portal Assistant?
+
+2. User Metadata Storage and Collection Configuration Options
+
+    + Clear language modeling, spelling and suggestion data and disable data collection?
+    + Clear QuickLook metadata and disable logging?
+    + Clear and disable SiriAnalytics database?
+        - WARNING: This kills Siri.
+    + Clear Quarantine Data and disable data collection from downloaded files?
+
+3. General Safety Configuration Options
+
+    + Lock Mac as soon as screen saver starts?
+    + Display all file extensions?
+    + Disable saving to the cloud by default?
+    + Show hidden files in Finder?
+
 
 **Sources**
 -----

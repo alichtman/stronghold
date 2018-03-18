@@ -92,28 +92,28 @@ def firewall_config():
 
 
 def metadata_storage_config():
-	if prompt_yes_no("Remove language modeling, spelling, and suggestion data and disable data collection?"):
+	if prompt_yes_no("Clear language modeling, spelling and suggestion data and disable data collection?"):
 		if prompt_yes_no("Are you sure?"):
-			print("Removing language modeling, spelling, and suggestion data and disabling data collection...")
+			print("Removing language modeling, spelling and suggestion data and disabling data collection...")
 			sp.run(['rm', '-rfv', '"~/Library/LanguageModeling/*"', '"~/Library/Spelling/*"', '"~/Library/Suggestions/*"'], stdout=sp.PIPE)
 			sp.run(['chmod', '-R', '000', '~/Library/LanguageModeling', '~/Library/Spelling', '~/Library/Suggestions'], stdout=sp.PIPE)
 			sp.run(['chflags', '-R', 'uchg', '~/Library/LanguageModeling', '~/Library/Spelling', '~/Library/Suggestions'], stdout=sp.PIPE)
 
-	if prompt_yes_no("Remove QuickLook metadata and disable logging?"):
+	if prompt_yes_no("Clear QuickLook metadata and disable data collection?"):
 		print("Removing QuickLook metadata and disabling logging...")
 		sp.run(['rm', '-rfv', '"~/Library/Application Support/Quick Look/*"'], stdout=sp.PIPE)
 		sp.run(['chmod', '-R', '000', '"~/Library/Application Support/Quick Look"'], stdout=sp.PIPE)
 		sp.run(['chflags', '-R', 'uchg', '"~/Library/Application Support/Quick Look"'], stdout=sp.PIPE)
 
-	if prompt_yes_no("Clear and lock SiriAnalytics database? This will break Siri."):
+	if prompt_yes_no("Clear SiriAnalytics database and disable data collection? This will break Siri."):
 		if prompt_yes_no("This WILL break Siri. Are you sure you want to continue?"):
 			if prompt_yes_no("Like really sure?"):
-				print("Respectable. Removing Siri's complimentary monitoring services...")
+				print("Respectable choice. Removing Siri's complimentary monitoring services...")
 				sp.run(['rm', '-rfv', '~/Library/Assistant/SiriAnalytics.db'], stdout=sp.PIPE)
 				sp.run(['chmod', '-R', '000', '~/Library/Assistant/SiriAnalytics.db'], stdout=sp.PIPE)
 				sp.run(['chflags', '-R', 'uchg', '~/Library/Assistant/SiriAnalytics.db'], stdout=sp.PIPE)
 
-	if prompt_yes_no("Clear Quarantine Data and disable logging of downloaded files?"):
+	if prompt_yes_no("Clear Quarantine Data and disable data collection from downloaded files?"):
 		print("Clearing metadata and disabling logging...")
 		sp.run([':>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2'], stdout=sp.PIPE)
 		sp.run(['sudo', 'chflags', 'schg', '~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2'], stdout=sp.PIPE)
@@ -128,7 +128,7 @@ def general_safety_config():
 	if prompt_yes_no("Display all file extensions?"):
 		print("Configuring...")
 		sp.run(['defaults', 'write', 'NSGlobalDomain', 'AppleShowAllExtensions', '-bool', 'true'], stdout=sp.PIPE)
-	if prompt_yes_no("Disable saving to the cloud?"):
+	if prompt_yes_no("Disable saving to the cloud by default?"):
 		print("Configuring...")
 		sp.run(['defaults', 'write', 'NSGlobalDomain', 'NSDocumentSaveNewDocumentsToCloud', '-bool', 'false'], stdout=sp.PIPE)
 	if prompt_yes_no("Show hidden files in Finder?"):
