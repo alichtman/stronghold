@@ -6,10 +6,7 @@
 # install homebrew + brew securing steps (?)
 #
 # (When/where does this break? Valid version #s needed)
-# Test to make sure this works different versions?
-#
-# ask for sudo password? I think the system will handle that.
-#      --> Pray that I didn't fuck anything up.
+# Test to make sure this works with different versions
 #
 # Maybe turn this into a wrapper for: https://github.com/kristovatlas/osx-config-check/blob/master/app.py
 
@@ -101,11 +98,13 @@ def metadata_storage_config():
 			sp.run(['rm', '-rfv', '"~/Library/LanguageModeling/*"', '"~/Library/Spelling/*"', '"~/Library/Suggestions/*"'], stdout=sp.PIPE)
 			sp.run(['chmod', '-R', '000', '~/Library/LanguageModeling', '~/Library/Spelling', '~/Library/Suggestions'], stdout=sp.PIPE)
 			sp.run(['chflags', '-R', 'uchg', '~/Library/LanguageModeling', '~/Library/Spelling', '~/Library/Suggestions'], stdout=sp.PIPE)
+
 	if prompt_yes_no("Remove QuickLook metadata and disable logging?"):
 		print("Removing QuickLook metadata and disabling logging...")
 		sp.run(['rm', '-rfv', '"~/Library/Application Support/Quick Look/*"'], stdout=sp.PIPE)
 		sp.run(['chmod', '-R', '000', '"~/Library/Application Support/Quick Look"'], stdout=sp.PIPE)
 		sp.run(['chflags', '-R', 'uchg', '"~/Library/Application Support/Quick Look"'], stdout=sp.PIPE)
+
 	if prompt_yes_no("Clear and lock SiriAnalytics database? This will break Siri."):
 		if prompt_yes_no("This WILL break Siri. Are you sure you want to continue?"):
 			if prompt_yes_no("Like really sure?"):
@@ -113,6 +112,7 @@ def metadata_storage_config():
 				sp.run(['rm', '-rfv', '~/Library/Assistant/SiriAnalytics.db'], stdout=sp.PIPE)
 				sp.run(['chmod', '-R', '000', '~/Library/Assistant/SiriAnalytics.db'], stdout=sp.PIPE)
 				sp.run(['chflags', '-R', 'uchg', '~/Library/Assistant/SiriAnalytics.db'], stdout=sp.PIPE)
+
 	if prompt_yes_no("Clear Quarantine Data and disable logging of downloaded files?"):
 		print("Clearing metadata and disabling logging...")
 		sp.run([':>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2'], stdout=sp.PIPE)
@@ -124,13 +124,13 @@ def general_safety_config():
 		print("Configuring...")
 		sp.run(['defaults', 'write', 'com.apple.screensaver', 'askForPassword', '-int', '1'], stdout=sp.PIPE)
 		sp.run(['defaults', 'write', 'com.apple.screensaver', 'askForPasswordDelay', '-int', '0'], stdout=sp.PIPE)
+
 	if prompt_yes_no("Display all file extensions?"):
 		print("Configuring...")
 		sp.run(['defaults', 'write', 'NSGlobalDomain', 'AppleShowAllExtensions', '-bool', 'true'], stdout=sp.PIPE)
 	if prompt_yes_no("Disable saving to the cloud?"):
 		print("Configuring...")
-		sp.run(['defaults', 'write', 'NSGlobalDomain', 'NSDocumentSaveNewDocumentsToCloud', '-bool', 'false'],
-		       stdout=sp.PIPE)
+		sp.run(['defaults', 'write', 'NSGlobalDomain', 'NSDocumentSaveNewDocumentsToCloud', '-bool', 'false'], stdout=sp.PIPE)
 	if prompt_yes_no("Show hidden files in Finder?"):
 		print("Configuring...")
 		sp.run(['defaults', 'write', 'com.apple.finder', 'AppleShowAllFiles', '-boolean', 'true'], stdout=sp.PIPE)
