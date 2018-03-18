@@ -93,26 +93,26 @@ def connectivity_config():
 
 # TODO: Fix all the file not found errors
 def metadata_storage_config():
-	if prompt_yes_no("Clear language modeling, spelling and suggestion data and disable data collection?"):
-		if prompt_yes_no("\tAre you sure?"):
-			print("Removing language modeling, spelling and suggestion data and disabling data collection...")
-			sp.run(['rm', '-rfv', '"~/Library/LanguageModeling/*"', '"~/Library/Spelling/*"', '"~/Library/Suggestions/*"'], stdout=sp.PIPE)
-			sp.run(['chmod', '-R', '000', '~/Library/LanguageModeling', '~/Library/Spelling', '~/Library/Suggestions'], stdout=sp.PIPE)
-			sp.run(['chflags', '-R', 'uchg', '~/Library/LanguageModeling', '~/Library/Spelling', '~/Library/Suggestions'], stdout=sp.PIPE)
+	# if prompt_yes_no("Clear language modeling, spelling and suggestion data and disable data collection?"):
+	# 	if prompt_yes_no("\tAre you sure?"):
+	# 		print("Removing language modeling, spelling and suggestion data and disabling data collection...")
+	# 		sp.run(['rm', '-rfv', '"~/Library/LanguageModeling/*"', '"~/Library/Spelling/*"', '"~/Library/Suggestions/*"'], stdout=sp.PIPE)
+	# 		sp.run(['chmod', '-R', '000', '~/Library/LanguageModeling', '~/Library/Spelling', '~/Library/Suggestions'], stdout=sp.PIPE)
+	# 		sp.run(['chflags', '-R', 'uchg', '~/Library/LanguageModeling', '~/Library/Spelling', '~/Library/Suggestions'], stdout=sp.PIPE)
 
-	if prompt_yes_no("\nClear QuickLook metadata and disable data collection?"):
-		print("Removing QuickLook metadata and disabling logging...")
-		sp.run(['rm', '-rfv', '"~/Library/Application Support/Quick Look/*"'], stdout=sp.PIPE)
-		sp.run(['chmod', '-R', '000', '"~/Library/Application Support/Quick Look"'], stdout=sp.PIPE)
-		sp.run(['chflags', '-R', 'uchg', '"~/Library/Application Support/Quick Look"'], stdout=sp.PIPE)
+	# if prompt_yes_no("\nClear QuickLook metadata and disable data collection?"):
+	# 	print("Removing QuickLook metadata and disabling logging...")
+	# 	sp.run(['rm', '-rfv', '"~/Library/Application Support/Quick Look/*"'], stdout=sp.PIPE)
+	# 	sp.run(['chmod', '-R', '000', '"~/Library/Application Support/Quick Look"'], stdout=sp.PIPE)
+	# 	sp.run(['chflags', '-R', 'uchg', '"~/Library/Application Support/Quick Look"'], stdout=sp.PIPE)
 
-	if prompt_yes_no("\nClear SiriAnalytics database and disable data collection? This will break Siri."):
-		if prompt_yes_no("\tThis WILL break Siri. Are you sure you want to continue?"):
-			if prompt_yes_no("\tLike really sure?"):
-				print("Respectable choice. Removing Siri's complimentary monitoring services...")
-				sp.run(['rm', '-rfv', '~/Library/Assistant/SiriAnalytics.db'], stdout=sp.PIPE)
-				sp.run(['chmod', '-R', '000', '~/Library/Assistant/SiriAnalytics.db'], stdout=sp.PIPE)
-				sp.run(['chflags', '-R', 'uchg', '~/Library/Assistant/SiriAnalytics.db'], stdout=sp.PIPE)
+	# if prompt_yes_no("\nClear SiriAnalytics database and disable data collection? This will break Siri."):
+	# 	if prompt_yes_no("\tThis WILL break Siri. Are you sure you want to continue?"):
+	# 		if prompt_yes_no("\tLike really sure?"):
+	# 			print("Respectable choice. Removing Siri's complimentary monitoring services...")
+	# 			sp.run(['rm', '-rfv', '~/Library/Assistant/SiriAnalytics.db'], stdout=sp.PIPE)
+	# 			sp.run(['chmod', '-R', '000', '~/Library/Assistant/SiriAnalytics.db'], stdout=sp.PIPE)
+	# 			sp.run(['chflags', '-R', 'uchg', '~/Library/Assistant/SiriAnalytics.db'], stdout=sp.PIPE)
 
 	# TODO: Fix this... File Not Found Error
 	# if prompt_yes_no("Clear Quarantine Data and disable data collection from downloaded files?"):
