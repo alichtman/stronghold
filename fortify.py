@@ -64,7 +64,7 @@ def splash_intro():
 # I prayed to the sudo gods many times that these commands would work.
 # Proceed at your own risk.
 
-def firewall_config():
+def connectivity_config():
 	if prompt_yes_no("Turn on firewall?"):
 
 		print("Enabling firewall...")
@@ -139,8 +139,8 @@ def general_safety_config():
 if __name__ == '__main__':
 	splash_intro()
 
-	print_section_header("FIREWALL CONFIGURATION")
-	firewall_config()
+	print_section_header("CONNECTIVITY CONFIGURATION")
+	connectivity_config()
 
 	print_section_header("USER DATA COLLECTION")
 	metadata_storage_config()

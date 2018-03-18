@@ -14,7 +14,7 @@ Fortify is a step-by-step configuration tool to help secure MacOS Sierra and Hig
 **Configuration Options**
 ---
 
-1. Firewall Configuration Options
+1. Connectivity
 
     + Enable Firewall?
         - Enable Logging?
@@ -23,7 +23,7 @@ Fortify is a step-by-step configuration tool to help secure MacOS Sierra and Hig
 
     + Disable Captive Portal Assistant?
 
-2. User Metadata Storage and Collection Configuration Options
+2. User Metadata Storage and Collection
 
     + Clear language modeling, spelling and suggestion data and disable data collection?
     + Clear QuickLook metadata and disable logging?
@@ -31,7 +31,7 @@ Fortify is a step-by-step configuration tool to help secure MacOS Sierra and Hig
         - WARNING: This kills Siri.
     + Clear Quarantine Data and disable data collection from downloaded files?
 
-3. General Safety Configuration Options
+3. General Safety
 
     + Lock Mac as soon as screen saver starts?
     + Display all file extensions?
