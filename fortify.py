@@ -47,13 +47,13 @@ def splash_intro():
 
 
 	print("This script walks through a process to correct insecure default settings in MacOS Sierra and High Sierra.")
-	print("Ensure you have up-to-date backups. This script modifies system settings and may damage your system.")
-	print("...although I really hope it doesn't.")
+	print("Ensure you have up-to-date backups. This script modifies system settings and there is always the possibility it damages your system.")
+	print("WARNING: Do not key-mash through this script. Things you do not want to happen will probably happen.")
 
 	if not prompt_yes_no("Do you want to continue?"):
 		sys.exit(0)
 
-	print("You may be asked for the sudo password during the execution of this program.")
+	print("You may be asked for the sudo password during the execution of this program. That's expected.")
 
 
 def print_section_header(title):
@@ -76,35 +76,33 @@ splash_intro()
 
 print_section_header("FIREWALL CONFIGURATION")
 
-if prompt_yes_no("Enable firewall?"):
-	# sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
+if prompt_yes_no("Turn on firewall?"):
+
+	print("Enabling firewall...")
 	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setglobalstate', 'on'], stdout=sp.PIPE)
 
 	if prompt_yes_no("\tTurn on logging?"):
-		# sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on
+
+		print("Enabling logging...")
 		sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setloggingmode', 'on'], stdout=sp.PIPE)
 
 	if prompt_yes_no("\tTurn on stealth mode?"):
-		# sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on
+
+		print("Enabling stealth mode...")
 		sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setstealthmode', 'on'], stdout=sp.PIPE)
 
 	if prompt_yes_no("\tPrevent software from being whitelisted automatically?"):
-		# Prevent built-in software and also code-signed, downloaded software from being whitelisted automatically
 
-		# sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsigned off
+		print("Preventing automatic whitelisting...")
 		sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsigned', 'off'], stdout=sp.PIPE)
-
-		# sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsignedapp off
 		sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsignedapp', 'off'], stdout=sp.PIPE)
 
-
+	print("Resetting firewall to finalize changes...")
 	# Reset socketfilterfw after messing with it
-	# sudo pkill -HUP socketfilterfw
 	sp.run(['sudo', 'pkill', '-HUP', 'socketfilterfw'], stdout=sp.PIPE)
 
 if prompt_yes_no("\tDisable Captive Portal Assistant and force login through browser?"):
-	# Disable Captive Portal Assistant and force Captive Portal login through browser
-	# sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.captive.control Active -bool false
+	print("Disabling Captive Portal Assistant...")
 	sp.run(['sudo', 'defaults', 'write', '/Library/Preferences/SystemConfiguration/com.apple.captive.control', 'Active', '-bool', 'false'], stdout=sp.PIPE)
 
 
@@ -114,18 +112,17 @@ if prompt_yes_no("\tDisable Captive Portal Assistant and force login through bro
 
 print_section_header("USER DATA COLLECTION")
 
-if prompt_yes_no("Remove user typing language modeling, spelling, and suggestion data and disable logging?"):
-	# Remove user typing language modeling, spelling, and suggestion data and disable logging.
+if prompt_yes_no("Remove language modeling, spelling, and suggestion data and disable data collection?"):
+	if prompt_yes_no("Are you sure?"):
 
-	# rm -rfv "~/Library/LanguageModeling/*" "~/Library/Spelling/*" "~/Library/Suggestions/*"
-	sp.run(['rm', '-rfv', 'write', '"~/Library/LanguageModeling/*"', '"~/Library/Spelling/*"', '"~/Library/Suggestions/*"'], stdout=sp.PIPE)
-	# chmod -R 000 ~/Library/LanguageModeling ~/Library/Spelling ~/Library/Suggestions
-	sp.run(['chmod', '-R', '000', '~/Library/LanguageModeling', '~/Library/Spelling', '~/Library/Suggestions'], stdout=sp.PIPE)
-	# chflags -R uchg ~/Library/LanguageModeling ~/Library/Spelling ~/Library/Suggestions
-	sp.run(['chflags', '-R', 'uchg', '~/Library/LanguageModeling', '~/Library/Spelling', '~/Library/Suggestions'], stdout=sp.PIPE)
+		print("Removing language modeling, spelling, and suggestion data and disabling data collection...")
+
+		sp.run(['rm', '-rfv', '"~/Library/LanguageModeling/*"', '"~/Library/Spelling/*"', '"~/Library/Suggestions/*"'], stdout=sp.PIPE)
+		sp.run(['chmod', '-R', '000', '~/Library/LanguageModeling', '~/Library/Spelling', '~/Library/Suggestions'], stdout=sp.PIPE)
+		sp.run(['chflags', '-R', 'uchg', '~/Library/LanguageModeling', '~/Library/Spelling', '~/Library/Suggestions'], stdout=sp.PIPE)
 
 if prompt_yes_no("Remove QuickLook metadata and disable logging?"):
-	# Remove QuickLook metadata and disable logging.
+	print("Removing QuickLook metadata and disabling logging...")
 
 	# rm -rfv "~/Library/Application Support/Quick Look/*"
 	sp.run(['rm', '-rfv', '"~/Library/Application Support/Quick Look/*"'], stdout=sp.PIPE)
@@ -134,24 +131,19 @@ if prompt_yes_no("Remove QuickLook metadata and disable logging?"):
 	# chflags -R uchg "~/Library/Application Support/Quick Look"
 	sp.run(['chflags', '-R', 'uchg', '"~/Library/Application Support/Quick Look"'], stdout=sp.PIPE)
 
-if prompt_yes_no("Clear and lock SiriAnalytics database?"):
-	# Clear and lock SiriAnalytics db
+if prompt_yes_no("Clear and lock SiriAnalytics database? This will break Siri."):
+	if prompt_yes_no("This WILL break Siri. Are you sure you want to continue?"):
+		if prompt_yes_no("Like really sure?"):
+			print("Respectable. Removing Siri's complimentary monitoring services...")
 
-	if prompt_yes_no("This will cripple Siri. Are you sure you want to continue?"):
+			sp.run(['rm', '-rfv', '~/Library/Assistant/SiriAnalytics.db'], stdout=sp.PIPE)
+			sp.run(['chmod', '-R', '000', '~/Library/Assistant/SiriAnalytics.db'], stdout=sp.PIPE)
+			sp.run(['chflags', '-R', 'uchg', '~/Library/Assistant/SiriAnalytics.db'], stdout=sp.PIPE)
 
-		# rm -rfv ~/Library/Assistant/SiriAnalytics.db
-		sp.run(['rm', '-rfv', '~/Library/Assistant/SiriAnalytics.db'], stdout=sp.PIPE)
-		# chmod -R 000 ~/Library/Assistant/SiriAnalytics.db
-		sp.run(['chmod', '-R', '000', '~/Library/Assistant/SiriAnalytics.db'], stdout=sp.PIPE)
-		# chflags -R uchg ~/Library/Assistant/SiriAnalytics.db
-		sp.run(['chflags', '-R', 'uchg', '~/Library/Assistant/SiriAnalytics.db'], stdout=sp.PIPE)
+if prompt_yes_no("Clear Quarantine Data and disable logging of downloaded files?"):
+	print("Clearing metadata and disabling logging...")
 
-if prompt_yes_no("Clear Quarantine Data and disable logging for downloaded files?"):
-	# Clear Quarantine Data and disable logging
-
-	# :>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2
 	sp.run([':>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2'], stdout=sp.PIPE)
-	# sudo chflags schg ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2
 	sp.run(['sudo', 'chflags', 'schg', '~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2'], stdout=sp.PIPE)
 
 
@@ -162,22 +154,19 @@ if prompt_yes_no("Clear Quarantine Data and disable logging for downloaded files
 print_section_header("GENERAL SAFETY")
 
 if prompt_yes_no("Lock Mac as soon as screen saver starts?"):
-	# defaults write com.apple.screensaver askForPassword -int 1
+	print("Configuring...")
 	sp.run(['defaults', 'write', 'com.apple.screensaver', 'askForPassword', '-int', '1'], stdout=sp.PIPE)
-
-	# defaults write com.apple.screensaver askForPasswordDelay -int 0
 	sp.run(['defaults', 'write', 'com.apple.screensaver', 'askForPasswordDelay', '-int', '0'], stdout=sp.PIPE)
 
 if prompt_yes_no("Display all file extensions?"):
-	# defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+	print("Configuring...")
 	sp.run(['defaults', 'write', 'NSGlobalDomain', 'AppleShowAllExtensions', '-bool', 'true'], stdout=sp.PIPE)
 
 if prompt_yes_no("Disable saving to the cloud?"):
-	# defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
-	# TODO: double check FALSE v. false v. False
+	print("Configuring...")
 	sp.run(['defaults', 'write', 'NSGlobalDomain', 'NSDocumentSaveNewDocumentsToCloud', '-bool', 'false'], stdout=sp.PIPE)
 
 if prompt_yes_no("Show hidden files in Finder?"):
-	# defaults write com.apple.finder AppleShowAllFiles -boolean true
+	print("Configuring...")
 	sp.run(['defaults', 'write', 'com.apple.finder', 'AppleShowAllFiles', '-boolean', 'true'], stdout=sp.PIPE)
 
