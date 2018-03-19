@@ -17,16 +17,15 @@ from colorama import init, Fore, Style
 def prompt_yes_no(question):
 	"""Print question and return True or False. Thanks, @shobrook"""
 	valid = {"yes": True, "y": True, "ye": True, "": True, "no": False, "n": False}
-	prompt = " [Y/n] "
 
 	while True:
-		print(Fore.GREEN + Style.BRIGHT + question + prompt)
+		print(Fore.GREEN + Style.BRIGHT + question + " [Y/n] ")
 		print(Style.RESET_ALL)
 		choice = input().lower()
 		if choice in valid:
 			return valid[choice]
 		else:
-			print(Fore.RED + Style.BRIGHT + "Please respond with 'yes' or 'no' (or 'y' or 'n').\n")
+			print(Fore.RED + Style.BRIGHT + "Please respond with 'yes' or 'no' ('y' or 'n').\n")
 
 
 def print_section_header(title, color):
