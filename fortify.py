@@ -169,7 +169,11 @@ def user_safety_config():
 
 	if prompt_yes_no("Show hidden files in Finder? (Recommended for advanced users only)"):
 		print_confirmation("Displaying hidden files in Finder...")
-		sp.run(['defaults', 'write', 'com.apple.finder', 'AppleShowAllFiles', '-boolean', 'true'], stdout=sp.PIPE)
+		sp.run(['defaults', 'write', 'com.apple.finder', 'AppleShowAllFiles', '-boolean', 'true'], shell=True, stdout=sp.PIPE)
+
+	# Reset finder after messing with it.
+	print_confirmation("Resetting Finder to finalize changes...")
+	sp.run(['killAll', 'Finder'], stdout=sp.PIPE)
 
 
 if __name__ == '__main__':
