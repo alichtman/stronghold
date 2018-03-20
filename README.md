@@ -6,6 +6,8 @@ This script makes that easy.
 
 Fortify is a step-by-step configuration tool to help secure MacOS Sierra and High Sierra.
 
+[![asciicast demo](https://asciinema.org/a/MGEPQNTustyLj8m9pXKdUbPlM.png)](https://asciinema.org/a/MGEPQNTustyLj8m9pXKdUbPlM?autoplay=1)
+
 **Warnings**
 ---
 
