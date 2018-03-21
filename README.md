@@ -4,7 +4,7 @@ People like their computers to be secure.
 
 This script makes that easy.
 
-Fortify is a step-by-step configuration tool to help secure MacOS Sierra and High Sierra.
+Fortify is a simple security configuration tool for MacOS Sierra and High Sierra.
 
 [![asciicast demo](https://asciinema.org/a/MGEPQNTustyLj8m9pXKdUbPlM.png)](https://asciinema.org/a/MGEPQNTustyLj8m9pXKdUbPlM?autoplay=1)
 
@@ -46,6 +46,7 @@ Fortify is a step-by-step configuration tool to help secure MacOS Sierra and Hig
 
 + https://github.com/drduh/macOS-Security-and-Privacy-Guide
 + http://newosxbook.com/files/moxii3/AppendixA.pdf
++ https://pleiades.ucsc.edu/hyades/PF_on_Mac_OS_X
 
 **How to Contribute**
 ---
