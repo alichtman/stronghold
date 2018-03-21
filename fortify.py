@@ -64,6 +64,9 @@ def firewall_config():
 	if prompt_yes_no("Turn on firewall? This helps protect your Mac from being attacked over the internet by viruses and worms."):
 
 		print_confirmation("Enabling firewall...")
+        # Loading default config
+        sp.run(['sudo', 'launchctl', 'load', '/System/Library/LaunchDaemons/com.apple.alf.agent.plist'], stdout=sp.PIPE)
+        sp.run(['sudo', 'launchctl', 'load', '/System/Library/LaunchAgents/com.apple.alf.useragent.plist'], stdout=sp.PIPE)
 		sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setglobalstate', 'on'], stdout=sp.PIPE)
 
 		if prompt_yes_no("-> Turn on logging? If there is an infection, logs are helpful for determining the source."):
