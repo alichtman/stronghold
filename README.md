@@ -13,6 +13,16 @@ Fortify is a simple security configuration tool for MacOS Sierra and High Sierra
 
 + Ensure you have up-to-date backups. This script modifies system settings and there is a possibility that it damages your system.
 
+**Installation Options**
+---
+
+1. Install with pip: `$ pip install fortify`
+
+2. Homebrew installation coming soon!
+
+3. Download this repo as a zip and run with `Python 3`.
+
+
 **Configuration Options**
 ---
 
