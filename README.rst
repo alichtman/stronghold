@@ -24,7 +24,6 @@ Click for an `asciicast <https://asciinema.org/a/MGEPQNTustyLj8m9pXKdUbPlM?theme
 **Configuration Options**
 
 1. Connectivity
-
     + Enable Firewall? This helps protect your Mac from being attacked over the internet by viruses and worms.
         - Enable Logging? If there is an infection, logs are helpful for determining the source.
         - Enable Stealth Mode? If enabled, your Mac will not respond to network discovery attempts with ICMP ping requests, and will not answer connection attempts made from closed TCP and UDP networks.
@@ -33,7 +32,6 @@ Click for an `asciicast <https://asciinema.org/a/MGEPQNTustyLj8m9pXKdUbPlM?theme
     + Disable Captive Portal Assistant and force login through browser? With default Mac settings on an untrusted network, an attacker could trigger Captive Portal and direct you to a site with malware WITHOUT user interaction.
 
 2. User Metadata Storage
-
     + Clear language modeling data? This includes user spelling and suggestion data.
     + Clear QuickLook metadata?
     + Clear SiriAnalytics database?
@@ -41,7 +39,6 @@ Click for an `asciicast <https://asciinema.org/a/MGEPQNTustyLj8m9pXKdUbPlM?theme
     + Clear Quarantine Data.
 
 3. General Safety
-
     + Lock Mac as soon as screen saver starts?
     + Display all file extensions? This prevents malware from disguising itself as another file type.
     + Disable saving documents to the cloud by default?
