@@ -16,7 +16,7 @@ This script makes that easy.
 **Installation Options**
 ---
 
-1. Install with pip: `$ pip install fortify`
+1. Install with [pip](https://pypi.org/project/fortify/): `$ pip install fortify`
 
 2. Download this repo as a zip and run with `Python 3`.
 
