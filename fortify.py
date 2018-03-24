@@ -105,7 +105,7 @@ def user_metadata_config():
 	if prompt_yes_no("Clear language modeling data? This includes user spelling and suggestion data."):
 		if prompt_yes_no("\tAre you sure?"):
 			print_confirmation("Removing language modeling data...")
-			sp.run(['rm', '-rfv', '"~/Library/LanguageModeling/*"', '"~/Library/Spelling/*"', '"~/Library/Suggestions/*"'], stdout=sp.PIPE)
+			sp.run(['rm', '-rfv', '"~/Library/LanguageModeling/*"', '"~/Library/Spelling/*"', '"~/Library/Suggestions/*"']) #, stdout=sp.PIPE)
 
 	# if prompt_yes_no("Disable language modeling data collection?"):
 	#       print_confirmation("Disabling language modeling data collection...")
@@ -116,7 +116,7 @@ def user_metadata_config():
 	# QuickLook Data
 	###
 
-	if prompt_yes_no("\nClear QuickLook metadata?"):
+	if prompt_yes_no("Clear QuickLook metadata?"):
 		print("Removing QuickLook metadata...")
 		sp.run(['rm', '-rfv', '"~/Library/Application Support/Quick Look/*"'], stdout=sp.PIPE)
 
