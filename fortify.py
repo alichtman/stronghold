@@ -64,16 +64,16 @@ def firewall_config():
 	if prompt_yes_no("Turn on firewall? This helps protect your Mac from being attacked over the internet by viruses and worms."):
 
 		print_confirmation("Enabling firewall...")
-        # Loading default config
-        sp.run(['sudo', 'launchctl', 'load', '/System/Library/LaunchDaemons/com.apple.alf.agent.plist'], stdout=sp.PIPE)
-        sp.run(['sudo', 'launchctl', 'load', '/System/Library/LaunchAgents/com.apple.alf.useragent.plist'], stdout=sp.PIPE)
+		# Loading default config
+		sp.run(['sudo', 'launchctl', 'load', '/System/Library/LaunchDaemons/com.apple.alf.agent.plist'], stdout=sp.PIPE)
+		sp.run(['sudo', 'launchctl', 'load', '/System/Library/LaunchAgents/com.apple.alf.useragent.plist'], stdout=sp.PIPE)
 		sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setglobalstate', 'on'], stdout=sp.PIPE)
 
 		if prompt_yes_no("-> Turn on logging? If there is an infection, logs are helpful for determining the source."):
 			print_confirmation("Enabling logging...")
 			sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setloggingmode', 'on'], stdout=sp.PIPE)
 
-		if prompt_yes_no("-> Turn on stealth mode? If enabled, your Mac will not respond to network discovery attempts with ICMP \n   ping requests, and will not answer connection attempts made from closed TCP and UDP networks."):
+		if prompt_yes_no("-> Turn on stealth mode? If enabled, your Mac will not respond to network discovery attempts with ICMP ping requests, and will not answer connection attempts made from closed TCP and UDP networks."):
 			print_confirmation("Enabling stealth mode...")
 			sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setstealthmode', 'on'], stdout=sp.PIPE)
 
@@ -89,7 +89,7 @@ def firewall_config():
 def captive_portal_config():
 	"""Captive Portal configuration options."""
 
-	if prompt_yes_no("Disable Captive Portal Assistant and force login through browser? With default Mac settings on an untrusted network,\n    an attacker could trigger Captive Portal and direct you to a site with malware WITHOUT user interaction."):
+	if prompt_yes_no("Disable Captive Portal Assistant and force login through browser? With default Mac settings on an untrusted network, an attacker could trigger Captive Portal and direct you to a site with malware WITHOUT user interaction."):
 		print_confirmation("Disabling Captive Portal Assistant...")
 		sp.run(['sudo', 'defaults', 'write', '/Library/Preferences/SystemConfiguration/com.apple.captive.control', 'Active', '-bool', 'false'], stdout=sp.PIPE)
 
@@ -179,7 +179,7 @@ def user_safety_config():
 	sp.run(['killAll', 'Finder'], stdout=sp.PIPE)
 
 
-if __name__ == '__main__':
+def main():
 	splash_intro()
 
 	print_section_header("FIREWALL", Fore.BLUE)
@@ -195,3 +195,7 @@ if __name__ == '__main__':
 	user_safety_config()
 
 	print(Fore.BLUE + Style.BRIGHT + "\nConfiguration complete!", )
+
+
+if __name__ == '__main__':
+	main()
