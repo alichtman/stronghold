@@ -166,11 +166,11 @@ def user_safety_config():
 		print_confirmation("Configuring display of all file extensions...")
 		sp.run(['defaults', 'write', 'NSGlobalDomain', 'AppleShowAllExtensions', '-bool', 'true'], stdout=sp.PIPE)
 
-	if prompt_yes_no("Disable saving to the cloud by default? This helps prevent sensitive documents from being unintentionally stored to the cloud."):
+	if prompt_yes_no("Disable saving to the cloud by default? This prevents sensitive documents from being unintentionally stored to the cloud."):
 		print_confirmation("Disabling cloud saving by default...")
 		sp.run(['defaults', 'write', 'NSGlobalDomain', 'NSDocumentSaveNewDocumentsToCloud', '-bool', 'false'], stdout=sp.PIPE)
 
-	if prompt_yes_no("Show hidden files in Finder? (Recommended for advanced users only)"):
+	if prompt_yes_no("Show hidden files in Finder? This lets you see all files on the system without having to use the terminal. (Recommended for advanced users only)"):
 		print_confirmation("Displaying hidden files in Finder...")
 		sp.run(['defaults', 'write', 'com.apple.finder', 'AppleShowAllFiles', '-boolean', 'true'], shell=True, stdout=sp.PIPE)
 
