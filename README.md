@@ -1,10 +1,14 @@
 # fortify
 
-People like their computers to be secure.
+[![PyPI](https://img.shields.io/pypi/v/nine.svg)](https://pypi.org/project/fortify/)
+[![PyPI - Status](https://img.shields.io/pypi/status/Django.svg)](https://pypi.org/project/fortify/)
+[![Scrutinizer Build](https://img.shields.io/scrutinizer/build/g/filp/whoops.svg)](https://github.com/alichtman/fortify)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/alichtman/fortify/blob/master/LICENSE)
 
-This script makes that easy.
 
-`fortify` is a simple security configuration tool for MacOS Sierra and High Sierra.
+`fortify` is the easiest way to securely configure your Mac.
+
+Designed for MacOS Sierra and High Sierra.
 
 [![asciicast demo](https://asciinema.org/a/MGEPQNTustyLj8m9pXKdUbPlM.png)](https://asciinema.org/a/MGEPQNTustyLj8m9pXKdUbPlM?theme=tango&speed=1.15)
 
@@ -16,9 +20,14 @@ This script makes that easy.
 **Installation Options**
 ---
 
-1. Install with [pip](https://pypi.org/project/fortify/): `$ pip install fortify`
+1. Install with [`pip`](https://pypi.org/project/fortify/)
+    + `$ pip install fortify`
+    + `$ fortify`
 
-2. Download this repo as a zip and run with `Python 3`.
+2. Download `fortify` as a zip
+    + Unzip
+    + `cd` into directory
+    + `$ python3 fortify.py`
 
 
 **Configuration Options**

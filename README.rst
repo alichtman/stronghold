@@ -2,11 +2,9 @@
 fortify
 ========
 
-People like their computers to be secure.
+``fortify`` is the easiest way to securely configure your Mac.
 
-This script makes that easy.
-
-``fortify`` is a simple security configuration tool for ``MacOS Sierra`` and ``High Sierra``.
+Designed for ``MacOS Sierra`` and ``High Sierra``.
 
 Click for an `asciicast <https://asciinema.org/a/MGEPQNTustyLj8m9pXKdUbPlM?theme=tango&speed=1.15>`_ demo!
 
@@ -14,11 +12,9 @@ Click for an `asciicast <https://asciinema.org/a/MGEPQNTustyLj8m9pXKdUbPlM?theme
 
 + Ensure you have up-to-date backups. This script modifies system settings and there is always a possibility that it will damage your system.
 
-**Installation Options**
+**Installation**
 
-1. Install with pip: ``$ pip install fortify``
-
-2. Download this repo as a zip and run with ``Python 3``.
+``$ pip install fortify``
 
 
 **Configuration Options**

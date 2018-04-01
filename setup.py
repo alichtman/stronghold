@@ -29,12 +29,12 @@ setup(
     #
     # For a discussion on single-sourcing the version across setup.py and the
     # project code, see https://packaging.python.org/en/latest/single_source_version.html
-    version='0.1.4.3',  # Required
+    version='1.0.0',  # Required
 
     # This is a one-line description or tagline of what your project does.
     # Corresponds to the "Summary" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#summary
-    description='A simple security configuration tool for MacOS Sierra and High Sierra',  # Required
+    description='fortify is the easiest way to securely configure your Mac.',  # Required
 
     # Optional longer description of your project that represents
     # the body of text which users will see when they visit PyPI.
@@ -44,15 +44,10 @@ setup(
     #
     # This field corresponds to the "Description" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#description-optional
-    long_description=long_description,  # Optional
-
-    # Link to your project's main homepage.
-    # Corresponds to "Home-Page" metadata field:
-    # https://packaging.python.org/specifications/core-metadata/#home-page-optional
-    url='https://github.com/alichtman/fortify',  # Optional
-
-    author='alichtman',  # Optional
-    author_email='alichtman@gmail.com',  # Optional
+    long_description=long_description,
+    url='https://github.com/alichtman/fortify',
+    author='alichtman',
+    author_email='alichtman@gmail.com',
 
     # Classifiers help users find your project by categorizing it.
     #
@@ -129,9 +124,8 @@ setup(
     # issues, where the source is hosted, where to say thanks to the package
     # maintainers, and where to support the project financially. The key is
     # what's used to render the link text on PyPI.
-    project_urls={  # Optional
+    project_urls={
         'Bug Reports': 'https://github.com/alichtman/fortify/issues',
         'Donations': 'https://www.patreon.com/alichtman',
-        # Same as 'Home Page' field: 'Source Code': 'https://github.com/alichtman/fortify/',
     },
 )
