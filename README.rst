@@ -1,6 +1,6 @@
-========
+==========
 stronghold
-========
+==========
 
 ``stronghold`` is the easiest way to securely configure your Mac.
 
