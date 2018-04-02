@@ -1,14 +1,16 @@
-# fortify
+# stronghold
 
-[![PyPI](https://img.shields.io/pypi/v/nine.svg)](https://pypi.org/project/fortify/)
-[![PyPI - Status](https://img.shields.io/pypi/status/Django.svg)](https://pypi.org/project/fortify/)
-[![Scrutinizer Build](https://img.shields.io/scrutinizer/build/g/filp/whoops.svg)](https://github.com/alichtman/fortify)
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/alichtman/fortify/blob/master/LICENSE)
+[![PyPI](https://img.shields.io/pypi/v/nine.svg)](https://pypi.org/project/stronghold/)
+[![PyPI - Status](https://img.shields.io/pypi/status/Django.svg)](https://pypi.org/project/stronghold/)
+[![Scrutinizer Build](https://img.shields.io/scrutinizer/build/g/filp/whoops.svg)](https://github.com/alichtman/stronghold)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/alichtman/stronghold/blob/master/LICENSE)
 
 
-`fortify` is the easiest way to securely configure your Mac.
+`stronghold` is the easiest way to securely configure your Mac.
 
 Designed for MacOS Sierra and High Sierra.
+
+Previously `fortify`.
 
 [![asciicast demo](https://asciinema.org/a/MGEPQNTustyLj8m9pXKdUbPlM.png)](https://asciinema.org/a/MGEPQNTustyLj8m9pXKdUbPlM?theme=tango&speed=1.15)
 
@@ -20,14 +22,14 @@ Designed for MacOS Sierra and High Sierra.
 **Installation Options**
 ---
 
-1. Install with [`pip`](https://pypi.org/project/fortify/)
-    + `$ pip install fortify`
-    + `$ fortify`
+1. Install with [`pip`](https://pypi.org/project/stronghold/)
+    + `$ pip install stronghold`
+    + `$ stronghold`
 
-2. Download `fortify` as a zip
+2. Download `stronghold` as a zip
     + Unzip
     + `cd` into directory
-    + `$ python3 fortify.py`
+    + `$ python3 stronghold.py`
 
 
 **Configuration Options**
@@ -68,6 +70,6 @@ Designed for MacOS Sierra and High Sierra.
 **How to Contribute**
 ---
 
-1. Clone repo and create a new branch: `$ git checkout https://github.com/alichtman/fortify -b [name_for_new_branch]`.
+1. Clone repo and create a new branch: `$ git checkout https://github.com/alichtman/stronghold -b [name_for_new_branch]`.
 2. Make changes and test
 3. Submit Pull Request with comprehensive description of changes

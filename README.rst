@@ -1,10 +1,12 @@
 ========
-fortify
+stronghold
 ========
 
-``fortify`` is the easiest way to securely configure your Mac.
+``stronghold`` is the easiest way to securely configure your Mac.
 
 Designed for ``MacOS Sierra`` and ``High Sierra``.
+
+Previously ``fortify``
 
 Click for an `asciicast <https://asciinema.org/a/MGEPQNTustyLj8m9pXKdUbPlM?theme=tango&speed=1.15>`_ demo!
 
@@ -14,7 +16,7 @@ Click for an `asciicast <https://asciinema.org/a/MGEPQNTustyLj8m9pXKdUbPlM?theme
 
 **Installation**
 
-``$ pip install fortify``
+``$ pip install stronghold``
 
 
 **Configuration Options**
@@ -49,6 +51,6 @@ Click for an `asciicast <https://asciinema.org/a/MGEPQNTustyLj8m9pXKdUbPlM?theme
 
 **How to Contribute**
 
-1. Clone repo and create a new branch: `$ git checkout https://github.com/alichtman/fortify -b [name_for_new_branch]`.
+1. Clone repo and create a new branch: `$ git checkout https://github.com/alichtman/stronghold -b [name_for_new_branch]`.
 2. Make changes and test
 3. Submit Pull Request with comprehensive description of changes
