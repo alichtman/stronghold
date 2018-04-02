@@ -1,7 +1,7 @@
-# FORTIFY
+# STRONGHOLD
 # @author Aaron Lichtman
 
-# Compatible with all versions of MacOS Sierra and High Sierra (as far as I know)
+# Compatible with all versions of MacOS Sierra and High Sierra.
 
 import sys
 import subprocess as sp
@@ -30,19 +30,21 @@ def print_confirmation(title):
 
 
 def splash_intro():
-	print(Fore.GREEN +
-		"\n88888888888                                       ad88 \n" +
-		"88                                  ,d     **    d8` \n" +
-		"88                                  88           88 \n" +
-		"88aaaaa   ,adPPYba,   8b,dPPYba,  MM88MMM  88  MM88MMM  8b       d8 \n" +
-		"88`````  a8       8a  88P`   `Y8    88     88    88      8b     d8 \n" +
-		"88       8b       d8  88            88     88    88       8b   d8 \n" +
-		"88        8a,   ,a8   88            88,    88    88        8b,d8 \n" +
-		"88         `YbbdP`    88            \Y888  88    88         Y88 \n" +
-		"                                                            d8 \n" +
-		"                                                           d8 \n" + Style.RESET_ALL)
 
-	print(Fore.BLUE + Style.BRIGHT + "Fortify is a security configuration tool for MacOS Sierra and High Sierra.")
+	print(Fore.GREEN + Style.BRIGHT +
+	"\n .d8888b.  888                                      888               888      888 \n" +
+	"d88P  Y88b 888                                      888               888      888 \n" +
+	"Y88b.      888                                      888               888      888 \n" +
+	" \"Y888b.   888888 888d888 .d88b.  88888b.   .d88b.  88888b.   .d88b.  888  .d88888  \n" +
+	"    \"Y88b. 888    888P\"  d88\"\"88b 888 \"88b d88P\"88b 888 \"88b d88\"\"88b 888 d88\" 888  \n" +
+	"      \"888 888    888    888  888 888  888 888  888 888  888 888  888 888 888  888  \n" +
+	"Y88b  d88P Y88b.  888    Y88..88P 888  888 Y88b 888 888  888 Y88..88P 888 Y88b 888  \n" +
+	" \"Y8888P\"   \"Y888 888     \"Y88P\"  888  888  \"Y88888 888  888  \"Y88P\"  888  \"Y88888  \n" +
+	"                                                888 \n" +
+	"                                           Y8b d88P \n" +
+	"                                            \"Y88P\n" + Style.RESET_ALL)
+
+	print(Fore.BLUE + Style.BRIGHT + "Stronghold is a security configuration tool for MacOS Sierra and High Sierra.")
 	print("You may be asked for the sudo password." + Style.RESET_ALL)
 
 	print_section_header("WARNINGS", Fore.RED)
