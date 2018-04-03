@@ -8,3 +8,4 @@ stronghold.egg-info/PKG-INFO
 stronghold.egg-info/entry_points.txt
 stronghold.egg-info/dependency_links.txt
 build/lib/stronghold.py
+.DS_Store

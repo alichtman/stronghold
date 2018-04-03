@@ -1,10 +1,13 @@
 # stronghold
 
-[![PyPI](https://img.shields.io/pypi/v/nine.svg)](https://pypi.org/project/stronghold/)
-[![PyPI - Status](https://img.shields.io/pypi/status/Django.svg)](https://pypi.org/project/stronghold/)
-[![Scrutinizer Build](https://img.shields.io/scrutinizer/build/g/filp/whoops.svg)](https://github.com/alichtman/stronghold)
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/alichtman/stronghold/blob/master/LICENSE)
+![Made With Python](img/made-with-python.png)
+![python versions](img/python-versions.png)
+<!-- TODO: Get higher quality images -->
+<!-- ![license](img/mit-license.png) -->
+<!-- ![PRs Welcome](img/PRs-welcome.png) -->
 
+<!-- Add Travis CI -->
+<!-- [![Build Status](https://travis-ci.org/bevacqua/awesome-badges.svg?branch=master)](https://travis-ci.org/bevacqua/awesome-badges) -->
 
 `stronghold` is the easiest way to securely configure your Mac.
 
