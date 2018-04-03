@@ -1,19 +1,13 @@
 # stronghold
 
-[![PyPi](https://img.shields.io/pypi/v/nine.svg)](https://pypi.python.org/pypi/stronghold)
+![Made With Python](img/made-with-python.png)
+![python versions](img/python-versions.png)
+<!-- TODO: Get higher quality images -->
+<!-- ![license](img/mit-license.png) -->
+<!-- ![PRs Welcome](img/PRs-welcome.png) -->
 
-[![PyPi - Status](https://img.shields.io/pypi/status/Django.svg)](https://pypi.python.org/pypi/stronghold)
-
-[![python versions](https://img.shields.io/pypi/pyversions/Django.svg)](https://github.com/alichtman/stronghold)
-
-[![search counter](https://img.shields.io/github/search/torvalds/linux/goto.svg)](https://github.com/alichtman/stronghold)
-
-[![last commit](https://img.shields.io/github/last-commit/google/skia.svg)](https://github.com/alichtman/stronghold)
-
-[![code quality](https://img.shields.io/codacy/grade/e27821fb6289410b8f58338c7e0bc686.svg)](https://github.com/alichtman/stronghold)
-
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/alichtman/stronghold/blob/master/LICENSE)
-
+<!-- Add Travis CI -->
+<!-- [![Build Status](https://travis-ci.org/bevacqua/awesome-badges.svg?branch=master)](https://travis-ci.org/bevacqua/awesome-badges) -->
 
 `stronghold` is the easiest way to securely configure your Mac.
 
