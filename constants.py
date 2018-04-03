@@ -5,4 +5,4 @@ AUTHOR_FULL_NAME = 'Aaron Lichtman'
 PUBLISHED = "04/01/2018"
 DESCRIPTION = "Securely configure your Mac from the terminal."
 URL='https://github.com/alichtman/stronghold',
-AUTHOR_EMAIL='alichtman@gmail.com',
+AUTHOR_EMAIL='aaronlichtman@gmail.com',
