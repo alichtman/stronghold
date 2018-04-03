@@ -14,11 +14,17 @@ from colorama import Fore, Style
 # Local modules
 from constants import Constants
 
-def prompt_yes_no(question):
-	"""Print question and return True or False. Deprecated comment: Thanks, @shobrook"""
+def prompt_yes_no(top_line="", bottom_line="",):
+	"""Print question and return True or False depending on user selection from list.
+	bottom_line should be used for one liners. Otherwise, it's the second line you want printed.
+
+	Deprecated comment: Thanks, @shobrook"""
+
+	if top_line is not "":
+		print(Fore.GREEN + Style.BRIGHT + " " + top_line)
 
 	questions = [ inquirer.List('choice',
-	                            message=str(Fore.GREEN + Style.BRIGHT + question + Fore.YELLOW),
+	                            message=Fore.GREEN + Style.BRIGHT + bottom_line + Fore.YELLOW,
 	                            choices=[' Yes', ' No'],
 	                            ),
 	]
@@ -68,9 +74,9 @@ def splash_intro():
 	print("\t2. Do not key-mash through this script. Things you do not want to happen might happen.\n" + Style.RESET_ALL)
 
 	print("Taking a quick nap so you have time to read carefully...")
-	sleep(5)
+	sleep(3)
 
-	if not prompt_yes_no("I have read the above and want to continue"):
+	if not prompt_yes_no(bottom_line = "I have read the above and want to continue"):
 		sys.exit(0)
 
 
@@ -80,7 +86,8 @@ def splash_intro():
 def firewall_config():
 	"""Firewall configuration options."""
 
-	if prompt_yes_no("Turn on firewall? This helps protect your Mac from being attacked over the internet by viruses and worms."):
+	if prompt_yes_no(top_line = "-> Turn on firewall?",
+	                 bottom_line = "This helps protect your Mac from being attacked over the internet."):
 
 		print_confirmation("Enabling firewall...")
 		# Loading default config
@@ -88,15 +95,17 @@ def firewall_config():
 		sp.run(['sudo', 'launchctl', 'load', '/System/Library/LaunchAgents/com.apple.alf.useragent.plist'], stdout=sp.PIPE)
 		sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setglobalstate', 'on'], stdout=sp.PIPE)
 
-		if prompt_yes_no("-> Turn on logging? If there is an infection, logs are helpful for determining the source."):
+		if prompt_yes_no(top_line = "-> Turn on logging?",
+		                 bottom_line = "If there IS an infection, logs are useful for determining the source."):
 			print_confirmation("Enabling logging...")
 			sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setloggingmode', 'on'], stdout=sp.PIPE)
 
-		if prompt_yes_no("-> Turn on stealth mode? If enabled, your Mac will not respond to network discovery attempts with ICMP ping requests, and will not answer connection attempts made from closed TCP and UDP networks."):
+		if prompt_yes_no(top_line = "-> Turn on stealth mode?",
+		                 bottom_line = "Your Mac will not respond to ICMP ping requests or connection attempts from closed TCP and UDP networks."):
 			print_confirmation("Enabling stealth mode...")
 			sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setstealthmode', 'on'], stdout=sp.PIPE)
 
-		if prompt_yes_no("-> Prevent both built-in and downloaded software from being whitelisted automatically?"):
+		if prompt_yes_no(top_line = "-> Prevent automatic software whitelisting?", bottom_line = "Both Built-in and downloaded software will require user approval for whitelisting."):
 			print_confirmation("Preventing automatic whitelisting...")
 			sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsigned', 'off'], stdout=sp.PIPE)
 			sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsignedapp', 'off'], stdout=sp.PIPE)
@@ -108,7 +117,8 @@ def firewall_config():
 def captive_portal_config():
 	"""Captive Portal configuration options."""
 
-	if prompt_yes_no("Disable Captive Portal Assistant and force login through browser? With default Mac settings on an untrusted network, an attacker could trigger Captive Portal and direct you to a site with malware WITHOUT user interaction."):
+	if prompt_yes_no(top_line = "-> Disable Captive Portal Assistant and force login through browser on untrusted networks?",
+	                 bottom_line = "Captive Portal could be triggered and direct you to a malicious site WITHOUT any user interaction."):
 		print_confirmation("Disabling Captive Portal Assistant...")
 		sp.run(['sudo', 'defaults', 'write', '/Library/Preferences/SystemConfiguration/com.apple.captive.control', 'Active', '-bool', 'false'], stdout=sp.PIPE)
 
@@ -121,8 +131,8 @@ def user_metadata_config():
 	# Language Modeling Data
 	###
 
-	if prompt_yes_no("Clear language modeling data? This includes user spelling and suggestion data."):
-		if prompt_yes_no("\tAre you sure?"):
+	if prompt_yes_no(top_line = "-> Clear language modeling data?",
+	                 bottom_line = "This includes user spelling, typing and suggestion data."):
 			print_confirmation("Removing language modeling data...")
 			sp.run(['rm', '-rfv', '"~/Library/LanguageModeling/*"', '"~/Library/Spelling/*"', '"~/Library/Suggestions/*"']) #, stdout=sp.PIPE)
 
@@ -132,12 +142,15 @@ def user_metadata_config():
 	# 		sp.run(['chflags', '-R', 'uchg', '~/Library/LanguageModeling', '~/Library/Spelling', '~/Library/Suggestions'], stdout=sp.PIPE)
 
 	###
-	# QuickLook Data
+	# QuickLook and Quarantine Data
 	###
 
-	if prompt_yes_no("Clear QuickLook metadata?"):
+	if prompt_yes_no(top_line = "-> Clear QuickLook and Quarantine metadata?",
+	                 bottom_line = "This will erase your spotlight user data."):
 		print("Removing QuickLook metadata...")
 		sp.run(['rm', '-rfv', '"~/Library/Application Support/Quick Look/*"'], stdout=sp.PIPE)
+		print("Removing Quarantine metadata...")
+		sp.run([':>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2'], shell=True, stdout=sp.PIPE)
 
 	# if prompt_yes_no("\nDisable QuickLook data logging?"):
 	# 	print_confirmation("Disabling QuickLook data logging...")
@@ -160,13 +173,6 @@ def user_metadata_config():
 	# 			sp.run(['chmod', '-R', '000', '~/Library/Assistant/SiriAnalytics.db'], shell=True, stdout=sp.PIPE)
 	# 			sp.run(['chflags', '-R', 'uchg', '~/Library/Assistant/SiriAnalytics.db'], shell=True, stdout=sp.PIPE)
 
-	###
-	# Quarantine Data
-	###
-
-	if prompt_yes_no("Clear Quarantine Data?"):
-		print_confirmation("Clearing metadata...")
-		sp.run([':>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2'], shell=True, stdout=sp.PIPE)
 
 	# if prompt_yes_no("Disable data collection from downloaded files?"):
 	# 	print_confirmation("Disabling Quarantine data collection from downloaded files...")
@@ -176,20 +182,24 @@ def user_metadata_config():
 def user_safety_config():
 	"""User Safety configuration options."""
 
-	if prompt_yes_no("Lock Mac as soon as screen saver starts? If your screen is black or on screensaver mode, you'll be prompted for a password to login every time."):
+	if prompt_yes_no(top_line = "-> Lock Mac as soon as screen saver starts?",
+	                 bottom_line = "If your screen is black or on screensaver mode, you'll be prompted for a password to login every time."):
 		print_confirmation("Configuring account lock on screensaver...")
 		sp.run(['defaults', 'write', 'com.apple.screensaver', 'askForPassword', '-int', '1'], stdout=sp.PIPE)
 		sp.run(['defaults', 'write', 'com.apple.screensaver', 'askForPasswordDelay', '-int', '0'], stdout=sp.PIPE)
 
-	if prompt_yes_no("Display all file extensions? This prevents malware from disguising itself as another file type."):
+	if prompt_yes_no(top_line = "-> Display all file extensions?",
+	                 bottom_line = "This prevents malware from disguising itself as another file type."):
 		print_confirmation("Configuring display of all file extensions...")
 		sp.run(['defaults', 'write', 'NSGlobalDomain', 'AppleShowAllExtensions', '-bool', 'true'], stdout=sp.PIPE)
 
-	if prompt_yes_no("Disable saving to the cloud by default? This prevents sensitive documents from being unintentionally stored to the cloud."):
+	if prompt_yes_no(top_line = "-> Disable saving to the cloud by default?",
+	                 bottom_line = "This prevents sensitive documents from being unintentionally stored to the cloud."):
 		print_confirmation("Disabling cloud saving by default...")
 		sp.run(['defaults', 'write', 'NSGlobalDomain', 'NSDocumentSaveNewDocumentsToCloud', '-bool', 'false'], stdout=sp.PIPE)
 
-	if prompt_yes_no("Show hidden files in Finder? This lets you see all files on the system without having to use the terminal. (Recommended for advanced users only)"):
+	if prompt_yes_no(top_line = "-> Show hidden files in Finder?",
+	                 bottom_line = "This lets you see all files on the system without having to use the terminal."):
 		print_confirmation("Displaying hidden files in Finder...")
 		sp.run(['defaults', 'write', 'com.apple.finder', 'AppleShowAllFiles', '-boolean', 'true'], shell=True, stdout=sp.PIPE)
 
@@ -219,8 +229,9 @@ def main():
 	print_section_header("USER SAFETY", Fore.BLUE)
 	user_safety_config()
 
+	print_section_header("FINAL CONFIGURATION STEPS", Fore.BLUE)
+	print(Fore.RED + Style.BRIGHT + "Restart your Mac for changes relating to screen locking to take effect.")
 	print(Fore.BLUE + Style.BRIGHT + "\nConfiguration complete!", )
-
 
 if __name__ == '__main__':
 	main()
