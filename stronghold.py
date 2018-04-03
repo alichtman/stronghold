@@ -1,6 +1,7 @@
 # STRONGHOLD
 # @author Aaron Lichtman
 
+
 # Built-in modules
 import sys
 import subprocess as sp
@@ -11,7 +12,6 @@ from colorama import Fore, Style
 
 # Local modules
 from constants import Constants
-
 
 def prompt_yes_no(question):
 	"""Print question and return True or False. Thanks, @shobrook"""
