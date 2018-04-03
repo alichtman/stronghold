@@ -1,0 +1,10 @@
+
+*.pyc
+*.whl
+stronghold.egg-info/top_level.txt
+stronghold.egg-info/SOURCES.txt
+stronghold.egg-info/requires.txt
+stronghold.egg-info/PKG-INFO
+stronghold.egg-info/entry_points.txt
+stronghold.egg-info/dependency_links.txt
+build/lib/stronghold.py

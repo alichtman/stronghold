@@ -1,12 +1,17 @@
 # STRONGHOLD
 # @author Aaron Lichtman
 
-# Compatible with all versions of MacOS Sierra and High Sierra.
 
+# Built-in modules
 import sys
 import subprocess as sp
+
+# 3rd party modules
+import argparse
 from colorama import Fore, Style
 
+# Local modules
+import constants
 
 def prompt_yes_no(question):
 	"""Print question and return True or False. Thanks, @shobrook"""
@@ -21,8 +26,12 @@ def prompt_yes_no(question):
 			print(Fore.RED + Style.BRIGHT + "Please respond with 'yes' or 'no' ('y' or 'n').\n")
 
 
-def print_section_header(title, color):
-	print(color + Style.BRIGHT + "\n########\n" + "# " + title + "\n########\n")
+def print_section_header(title, COLOR):
+	"""Prints variable sized section header"""
+	block = "#" * (len(title) + 2)
+	print(COLOR + Style.BRIGHT + block)
+	print("#", title)
+	print(block + "\n" + Style.RESET_ALL)
 
 
 def print_confirmation(title):
@@ -39,19 +48,19 @@ def splash_intro():
 	"    \"Y88b. 888    888P\"  d88\"\"88b 888 \"88b d88P\"88b 888 \"88b d88\"\"88b 888 d88\" 888  \n" +
 	"      \"888 888    888    888  888 888  888 888  888 888  888 888  888 888 888  888  \n" +
 	"Y88b  d88P Y88b.  888    Y88..88P 888  888 Y88b 888 888  888 Y88..88P 888 Y88b 888  \n" +
-	" \"Y8888P\"   \"Y888 888     \"Y88P\"  888  888  \"Y88888 888  888  \"Y88P\"  888  \"Y88888  \n" +
+	" \"Y8888P\"   \"Y888 888     `Y88P\'  888  888  `Y88888 888  888  `Y88P\'  888  `Y88888  \n" +
 	"                                                888 \n" +
 	"                                           Y8b d88P \n" +
 	"                                            \"Y88P\n" + Style.RESET_ALL)
 
 	print(Fore.BLUE + Style.BRIGHT + "Stronghold is a security configuration tool for MacOS Sierra and High Sierra.")
-	print("You may be asked for the sudo password." + Style.RESET_ALL)
+	print("You may be asked for a sudo password." + Style.RESET_ALL)
 
 	print_section_header("WARNINGS", Fore.RED)
 
-	print("\t0. Ensure you have up-to-date backups.")
+	print(Fore.RED + Style.BRIGHT + "\t0. Ensure you have up-to-date backups.")
 	print("\t1. This script modifies system settings. There is always the possibility it may damage your system.")
-	print("\t2. Do not key-mash through this script. Things you do not want to happen might happen.\n")
+	print("\t2. Do not key-mash through this script. Things you do not want to happen might happen.\n" + Style.RESET_ALL)
 
 	if not prompt_yes_no("I have read the above and want to continue."):
 		sys.exit(0)
@@ -182,6 +191,12 @@ def user_safety_config():
 
 
 def main():
+
+	# argument parsing
+	parser = argparse.ArgumentParser(prog=constants.PROJECT_NAME, description=constants.DESCRIPTION)
+	parser.add_argument('--version', '--info',  action='version', version='%(prog)s {} by {} -> (Github: {})'.format(constants.VERSION, constants.AUTHOR_FULL_NAME, constants.AUTHOR_GITHUB))
+	args = parser.parse_args()
+
 	splash_intro()
 
 	print_section_header("FIREWALL", Fore.BLUE)

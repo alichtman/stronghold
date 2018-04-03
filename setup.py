@@ -10,6 +10,8 @@ from setuptools import setup, find_packages
 from codecs import open
 from os import path
 
+import constants
+
 here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README file
@@ -22,19 +24,19 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 setup(
     # $ pip install stronghold
     # https://pypi.org/project/stronghold/
-    name='stronghold',  # Required
+    name=constants.PROJECT_NAME,  # Required
 
     # Versions should comply with PEP 440:
     # https://www.python.org/dev/peps/pep-0440/
     #
     # For a discussion on single-sourcing the version across setup.py and the
     # project code, see https://packaging.python.org/en/latest/single_source_version.html
-    version='1.0.1',  # Required
+    version=constants.VERSION,  # Required
 
     # This is a one-line description or tagline of what your project does.
     # Corresponds to the "Summary" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#summary
-    description='stronghold is the easiest way to securely configure your Mac.',  # Required
+    description=constants.DESCRIPTION,  # Required
 
     # Optional longer description of your project that represents
     # the body of text which users will see when they visit PyPI.
@@ -45,9 +47,9 @@ setup(
     # This field corresponds to the "Description" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#description-optional
     long_description=long_description,
-    url='https://github.com/alichtman/stronghold',
-    author='alichtman',
-    author_email='alichtman@gmail.com',
+    url=constants.URL,
+    author=constants.AUTHOR_GITHUB,
+    author_email=constants.AUTHOR_EMAIL,
 
     # Classifiers help users find your project by categorizing it.
     #
