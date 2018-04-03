@@ -9,8 +9,7 @@ from setuptools import setup, find_packages
 # To use a consistent encoding
 from codecs import open
 from os import path
-
-import constants
+from constants import Constants
 
 here = path.abspath(path.dirname(__file__))
 
@@ -24,19 +23,19 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 setup(
     # $ pip install stronghold
     # https://pypi.org/project/stronghold/
-    name=constants.PROJECT_NAME,  # Required
+    name=Constants.PROJECT_NAME,  # Required
 
     # Versions should comply with PEP 440:
     # https://www.python.org/dev/peps/pep-0440/
     #
     # For a discussion on single-sourcing the version across setup.py and the
     # project code, see https://packaging.python.org/en/latest/single_source_version.html
-    version=constants.VERSION,  # Required
+    version=Constants.VERSION,  # Required
 
     # This is a one-line description or tagline of what your project does.
     # Corresponds to the "Summary" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#summary
-    description=constants.DESCRIPTION,  # Required
+    description=Constants.DESCRIPTION,  # Required
 
     # Optional longer description of your project that represents
     # the body of text which users will see when they visit PyPI.
@@ -47,9 +46,9 @@ setup(
     # This field corresponds to the "Description" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#description-optional
     long_description=long_description,
-    url=constants.URL,
-    author=constants.AUTHOR_GITHUB,
-    author_email=constants.AUTHOR_EMAIL,
+    url=Constants.URL,
+    author=Constants.AUTHOR_GITHUB,
+    author_email=Constants.AUTHOR_EMAIL,
 
     # Classifiers help users find your project by categorizing it.
     #
@@ -93,7 +92,7 @@ setup(
     # argument as follows, which will expect a file called
     # `stronghold.py` to exist:
     #
-    py_modules=["stronghold"],
+    py_modules=["stronghold", "constants"],
     # packages=find_packages(exclude=['contrib', 'docs', 'tests']),  # Required
 
     # This field lists other packages that your project depends on to run.
