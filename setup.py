@@ -14,7 +14,7 @@ from constants import Constants
 here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README file
-with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 # Arguments marked as "Required" below must be included for upload to PyPI.
@@ -36,6 +36,7 @@ setup(
     # Corresponds to the "Summary" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#summary
     description=Constants.DESCRIPTION,  # Required
+    long_description_content_type="text/markdown",
 
     # Optional longer description of your project that represents
     # the body of text which users will see when they visit PyPI.
@@ -48,7 +49,8 @@ setup(
     long_description=long_description,
     url=Constants.URL,
     author=Constants.AUTHOR_GITHUB,
-    author_email=Constants.AUTHOR_EMAIL,
+    # author_email=Constants.AUTHOR_EMAIL,
+    author_email="aaronlichtman@gmail.com",
 
     # Classifiers help users find your project by categorizing it.
     #
@@ -93,7 +95,6 @@ setup(
     # `stronghold.py` to exist:
     #
     py_modules=["stronghold", "constants"],
-    # packages=find_packages(exclude=['contrib', 'docs', 'tests']),  # Required
 
     # This field lists other packages that your project depends on to run.
     # Any package you put here will be installed by pip when your project is
