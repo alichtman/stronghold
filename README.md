@@ -1,8 +1,17 @@
 # stronghold
 
-[![PyPI](https://img.shields.io/pypi/v/nine.svg)](https://pypi.org/project/stronghold/)
-[![PyPI - Status](https://img.shields.io/pypi/status/Django.svg)](https://pypi.org/project/stronghold/)
-[![Scrutinizer Build](https://img.shields.io/scrutinizer/build/g/filp/whoops.svg)](https://github.com/alichtman/stronghold)
+[![PyPi](https://img.shields.io/pypi/v/nine.svg)](https://pypi.python.org/pypi/stronghold)
+
+[![PyPi - Status](https://img.shields.io/pypi/status/Django.svg)](https://pypi.python.org/pypi/stronghold)
+
+[![python versions](https://img.shields.io/pypi/pyversions/Django.svg)](https://github.com/alichtman/stronghold)
+
+[![search counter](https://img.shields.io/github/search/torvalds/linux/goto.svg)](https://github.com/alichtman/stronghold)
+
+[![last commit](https://img.shields.io/github/last-commit/google/skia.svg)](https://github.com/alichtman/stronghold)
+
+[![code quality](https://img.shields.io/codacy/grade/e27821fb6289410b8f58338c7e0bc686.svg)](https://github.com/alichtman/stronghold)
+
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/alichtman/stronghold/blob/master/LICENSE)
 
 
