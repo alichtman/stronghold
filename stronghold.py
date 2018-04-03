@@ -10,7 +10,7 @@ import argparse
 from colorama import Fore, Style
 
 # Local modules
-import constants
+from constants import Constants
 
 
 def prompt_yes_no(question):
@@ -193,8 +193,8 @@ def user_safety_config():
 def main():
 
 	# argument parsing
-	parser = argparse.ArgumentParser(prog=constants.PROJECT_NAME, description=constants.DESCRIPTION)
-	parser.add_argument('--version', '--info',  action='version', version='%(prog)s {} by {} -> (Github: {})'.format(constants.VERSION, constants.AUTHOR_FULL_NAME, constants.AUTHOR_GITHUB))
+	parser = argparse.ArgumentParser(prog=Constants.PROJECT_NAME, description=Constants.DESCRIPTION)
+	parser.add_argument('--version', '--info',  action='version', version='%(prog)s {} by {} -> (Github: {})'.format(Constants.VERSION, Constants.AUTHOR_FULL_NAME, Constants.AUTHOR_GITHUB))
 	args = parser.parse_args()
 
 	splash_intro()
