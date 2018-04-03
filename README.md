@@ -2,6 +2,8 @@
 
 ![Made With Python](img/made-with-python.png)
 ![python versions](img/python-versions.png)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/shobrook/BitVision/blob/master/LICENSE)
+[![build](https://img.shields.io/wercker/ci/wercker/docs.svg)]()
 <!-- TODO: Get higher quality images -->
 <!-- ![license](img/mit-license.png) -->
 <!-- ![PRs Welcome](img/PRs-welcome.png) -->
