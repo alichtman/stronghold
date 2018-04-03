@@ -1,13 +1,16 @@
 # STRONGHOLD
 # @author Aaron Lichtman
 
-# Compatible with all versions of MacOS Sierra and High Sierra.
-
-import ast
+# Built-in modules
 import sys
 import subprocess as sp
+
+# 3rd party modules
 import argparse
 from colorama import Fore, Style
+
+# Local modules
+import constants
 
 
 def prompt_yes_no(question):
@@ -24,6 +27,7 @@ def prompt_yes_no(question):
 
 
 def print_section_header(title, color):
+	# TODO: make variable sized
 	print(color + Style.BRIGHT + "\n########\n" + "# " + title + "\n########\n")
 
 
@@ -185,20 +189,9 @@ def user_safety_config():
 
 def main():
 
-	# Get current version from setup.py
-
-	version = "unknown"
-	with open('_version.py') as f:
-		for line in f:
-			if "version=" in line:
-				version = line.split().strip().value.)
-				# version = ast.parse(line.strip()).body[0].value.s
-				print(version)
-
-	sys.exit()
-
-	parser = argparse.ArgumentParser(prog="stronghold", description='Easy MacOS security configuration from the terminal.')
-	parser.print_help()
+	# argument parsing
+	parser = argparse.ArgumentParser(prog=constants.PROJECT_NAME, description=constants.DESCRIPTION)
+	parser.add_argument('--version', '--info',  action='version', version='%(prog)s {} by {} -> (Github: {})'.format(constants.VERSION, constants.AUTHOR_FULL_NAME, constants.AUTHOR_GITHUB))
 	args = parser.parse_args()
 
 	splash_intro()
