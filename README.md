@@ -11,7 +11,7 @@
 <!-- Add Travis CI -->
 <!-- [![Build Status](https://travis-ci.org/bevacqua/awesome-badges.svg?branch=master)](https://travis-ci.org/bevacqua/awesome-badges) -->
 
-[![asciicast demo](https://asciinema.org/a/MGEPQNTustyLj8m9pXKdUbPlM.png)](https://asciinema.org/a/MGEPQNTustyLj8m9pXKdUbPlM?theme=tango&speed=1.15)
+[![asciicast demo](https://asciinema.org/a/xQu2INqyjy4mK4k5aPRCMy0rJ.png)](https://asciinema.org/a/xQu2INqyjy4mK4k5aPRCMy0rJ?speed=1.75)
 
 `stronghold` is the easiest way to securely configure your Mac.
 

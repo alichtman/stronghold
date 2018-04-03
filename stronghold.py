@@ -40,7 +40,7 @@ def prompt_yes_no(top_line="", bottom_line="",):
 def print_section_header(title, COLOR):
 	"""Prints variable sized section header"""
 	block = "#" * (len(title) + 2)
-	print(COLOR + Style.BRIGHT + block)
+	print("\n" + COLOR + Style.BRIGHT + block)
 	print("#", title)
 	print(block + "\n" + Style.RESET_ALL)
 
