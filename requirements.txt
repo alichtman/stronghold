@@ -1,2 +1,2 @@
-colorama
-inquirer
+colorama=0.3.9
+inquirer=2.2.0
