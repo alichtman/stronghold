@@ -1,9 +1,8 @@
 # stronghold
 
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/alichtman/stronghold/blob/master/LICENSE)
-[![build](https://img.shields.io/wercker/ci/wercker/docs.svg)]()
-
-<!-- TODO: Get higher quality images/static images -->
+<!-- TODO: Get high quality static images -->
+<!-- [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/alichtman/stronghold/blob/master/LICENSE)
+[![build](https://img.shields.io/wercker/ci/wercker/docs.svg)]() -->
 <!-- ![Made With Python](img/made-with-python.png) -->
 <!-- ![python versions](img/python-versions.png) -->
 <!-- ![license](img/mit-license.png) -->
@@ -12,13 +11,19 @@
 <!-- Add Travis CI -->
 <!-- [![Build Status](https://travis-ci.org/bevacqua/awesome-badges.svg?branch=master)](https://travis-ci.org/bevacqua/awesome-badges) -->
 
+[![asciicast demo](https://asciinema.org/a/xQu2INqyjy4mK4k5aPRCMy0rJ.png)](https://asciinema.org/a/xQu2INqyjy4mK4k5aPRCMy0rJ?speed=1.75)
+
 `stronghold` is the easiest way to securely configure your Mac.
 
 Designed for MacOS Sierra and High Sierra.
-
 Previously `fortify`.
 
-[![asciicast demo](https://asciinema.org/a/MGEPQNTustyLj8m9pXKdUbPlM.png)](https://asciinema.org/a/MGEPQNTustyLj8m9pXKdUbPlM?theme=tango&speed=1.15)
+**Check `stronghold` out on these lists!**
+
+* [awesome-mac](https://github.com/jaywcjlove/awesome-mac)
+* [open-source-mac-os-apps](https://github.com/serhii-londar/open-source-mac-os-apps)
+* [python-macadmin-tools](https://github.com/timsutton/python-macadmin-tools)
+* [osx-and-ios-security-awesome](https://github.com/ashishb/osx-and-ios-security-awesome)
 
 **Warnings**
 ---

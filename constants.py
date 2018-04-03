@@ -1,6 +1,6 @@
 class Constants:
 	PROJECT_NAME='stronghold'
-	VERSION='1.0.4'
+	VERSION='1.1.0'
 	AUTHOR_GITHUB='alichtman'
 	AUTHOR_FULL_NAME='Aaron Lichtman'
 	PUBLISHED="04/02/2018"
