@@ -1,29 +1,34 @@
 # STRONGHOLD
 # @author Aaron Lichtman
 
-
 # Built-in modules
 import sys
+import argparse
 import subprocess as sp
+from time import sleep
 
 # 3rd party modules
-import argparse
+import inquirer
 from colorama import Fore, Style
 
 # Local modules
 from constants import Constants
 
 def prompt_yes_no(question):
-	"""Print question and return True or False. Thanks, @shobrook"""
-	valid = {"yes": True, "y": True, "ye": True, "": True, "no": False, "n": False}
+	"""Print question and return True or False. Deprecated comment: Thanks, @shobrook"""
 
-	while True:
-		print(Fore.GREEN + Style.BRIGHT + question + " [Y/n] " + Style.RESET_ALL)
-		choice = input().lower()
-		if choice in valid:
-			return valid[choice]
-		else:
-			print(Fore.RED + Style.BRIGHT + "Please respond with 'yes' or 'no' ('y' or 'n').\n")
+	questions = [ inquirer.List('choice',
+	                            message=str(Fore.GREEN + Style.BRIGHT + question + Fore.YELLOW),
+	                            choices=[' Yes', ' No'],
+	                            ),
+	]
+
+	answers = inquirer.prompt(questions)
+
+	if answers.get('choice').strip() == 'Yes':
+		return True
+	else:
+		return False
 
 
 def print_section_header(title, COLOR):
@@ -62,7 +67,10 @@ def splash_intro():
 	print("\t1. This script modifies system settings. There is always the possibility it may damage your system.")
 	print("\t2. Do not key-mash through this script. Things you do not want to happen might happen.\n" + Style.RESET_ALL)
 
-	if not prompt_yes_no("I have read the above and want to continue."):
+	print("Taking a quick nap so you have time to read carefully...")
+	sleep(5)
+
+	if not prompt_yes_no("I have read the above and want to continue"):
 		sys.exit(0)
 
 

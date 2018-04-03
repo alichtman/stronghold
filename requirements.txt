@@ -1,1 +1,2 @@
-colorama==0.3.9
+colorama
+inquirer
