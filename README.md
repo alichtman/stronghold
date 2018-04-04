@@ -18,12 +18,13 @@
 Designed for MacOS Sierra and High Sierra.
 Previously `fortify`.
 
-**Check `stronghold` out on these lists!**
+**`stronghold` is featured on these lists!**
 
+* [awesome-cli-apps](https://github.com/agarrharr/awesome-cli-apps)
 * [awesome-mac](https://github.com/jaywcjlove/awesome-mac)
 * [open-source-mac-os-apps](https://github.com/serhii-londar/open-source-mac-os-apps)
-* [python-macadmin-tools](https://github.com/timsutton/python-macadmin-tools)
 * [osx-and-ios-security-awesome](https://github.com/ashishb/osx-and-ios-security-awesome)
+* [python-macadmin-tools](https://github.com/timsutton/python-macadmin-tools)
 * [tools-osx](https://github.com/morgant/tools-osx)
 
 **Warnings**
