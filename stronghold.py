@@ -20,16 +20,24 @@ def prompt_yes_no(top_line="", bottom_line="",):
 
 	Deprecated comment: Thanks, @shobrook"""
 
-	if top_line is not "":
-		print(Fore.GREEN + Style.BRIGHT + " " + top_line)
-
-	questions = [ inquirer.List('choice',
+	# One liner. Only bottom_line should be printed + stylized
+	if top_line is "":
+		questions = [ inquirer.List('choice',
 	                            message=Fore.GREEN + Style.BRIGHT + bottom_line + Fore.YELLOW,
 	                            choices=[' Yes', ' No'],
 	                            ),
-	]
+		]
+
+	if top_line is not "":
+		print(Fore.GREEN + Style.BRIGHT + " " + top_line)
+		questions = [ inquirer.List('choice',
+	                            message=Fore.GREEN + bottom_line + Fore.YELLOW,
+	                            choices=[' Yes', ' No'],
+	                            ),
+		]
 
 	answers = inquirer.prompt(questions)
+
 
 	if answers.get('choice').strip() == 'Yes':
 		return True
@@ -67,11 +75,11 @@ def splash_intro():
 	print(Fore.BLUE + Style.BRIGHT + "Stronghold is a security configuration tool for MacOS Sierra and High Sierra.")
 	print("You may be asked for a sudo password." + Style.RESET_ALL)
 
-	print_section_header("WARNINGS", Fore.RED)
+	print_section_header("BEFORE STARTING", Fore.RED)
 
-	print(Fore.RED + Style.BRIGHT + "\t0. Ensure you have up-to-date backups.")
-	print("\t1. This script modifies system settings. There is always the possibility it may damage your system.")
-	print("\t2. Do not key-mash through this script. Things you do not want to happen might happen.\n" + Style.RESET_ALL)
+	print(Fore.RED + Style.BRIGHT + "\t0. Make the terminal window as large as possible.")
+	print("\t1. Ensure you have up-to-date system backups.")
+	print("\t2. Do not key-mash through this script.\n" + Style.RESET_ALL)
 
 	if not prompt_yes_no(bottom_line = "I have read the above carefully and want to continue"):
 		sys.exit(0)
@@ -220,7 +228,7 @@ def main():
 
 	# argument parsing
 	parser = argparse.ArgumentParser(prog=Constants.PROJECT_NAME, description=Constants.DESCRIPTION)
-	parser.add_argument('--version', '--info',  action='version', version='%(prog)s {} by {} -> (Github: {})'.format(Constants.VERSION, Constants.AUTHOR_FULL_NAME, Constants.AUTHOR_GITHUB))
+	parser.add_argument('-version', '-v', '-info', action='version', version='%(prog)s {} by {} -> (Github: {})'.format(Constants.VERSION, Constants.AUTHOR_FULL_NAME, Constants.AUTHOR_GITHUB))
 	args = parser.parse_args()
 
 	splash_intro()
