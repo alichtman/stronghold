@@ -73,12 +73,8 @@ def splash_intro():
 	print("\t1. This script modifies system settings. There is always the possibility it may damage your system.")
 	print("\t2. Do not key-mash through this script. Things you do not want to happen might happen.\n" + Style.RESET_ALL)
 
-	print("Taking a quick nap so you have time to read carefully...")
-	sleep(3)
-
-	if not prompt_yes_no(bottom_line = "I have read the above and want to continue"):
+	if not prompt_yes_no(bottom_line = "I have read the above carefully and want to continue"):
 		sys.exit(0)
-
 
 # I prayed to the sudo gods many times that these commands would work.
 # Proceed at your own risk.
@@ -207,6 +203,18 @@ def user_safety_config():
 	print_confirmation("Resetting Finder to finalize changes...")
 	sp.run(['killAll', 'Finder'], stdout=sp.PIPE)
 
+def final_configuration():
+
+	if prompt_yes_no(top_line = "-> Restart your Mac right now?",
+	                 bottom_line = "This is necessary for some configuration changes to take effect."):
+		print_confirmation("Restarting in 5 seconds...")
+		print_confirmation("Configuration complete after restart!")
+		sleep(5)
+		sp.run(['sudo', 'shutdown', '-r', 'now'], shell=True, stdout=sp.PIPE)
+
+	else:
+		print(Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary.")
+
 
 def main():
 
@@ -230,8 +238,7 @@ def main():
 	user_safety_config()
 
 	print_section_header("FINAL CONFIGURATION STEPS", Fore.BLUE)
-	print(Fore.RED + Style.BRIGHT + "Restart your Mac for changes relating to screen locking to take effect.")
-	print(Fore.BLUE + Style.BRIGHT + "\nConfiguration complete!", )
+	final_configuration()
 
 if __name__ == '__main__':
 	main()
