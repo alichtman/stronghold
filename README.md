@@ -27,10 +27,19 @@ Previously `fortify`.
 * [python-macadmin-tools](https://github.com/timsutton/python-macadmin-tools)
 * [tools-osx](https://github.com/morgant/tools-osx)
 
-**Warnings**
+**Usage**
 ---
 
-+ Ensure you have up-to-date backups. This script modifies system settings and there is always a possibility that it will damage your system.
+```
+Usage: stronghold [-lockdown] [-v] [-h]
+
+  Securely configure your Mac from the terminal.
+
+Options:
+  -lockdown          Set secure configuration without user interaction.
+  -v                 Display version and author information and exit.
+  -help, -h  Show this message and exit.
+```
 
 **Installation Options**
 ---
