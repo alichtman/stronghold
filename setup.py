@@ -94,7 +94,10 @@ setup(
     # argument as follows, which will expect a file called
     # `stronghold.py` to exist:
     #
-    py_modules=["stronghold", "constants"],
+    py_modules=[
+        "stronghold",
+        "constants"
+    ],
 
     # This field lists other packages that your project depends on to run.
     # Any package you put here will be installed by pip when your project is
@@ -102,7 +105,11 @@ setup(
     #
     # For an analysis of "install_requires" vs pip's requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=['colorama == 0.3.9', 'inquirer == 2.2.0'],
+    install_requires=[
+        'colorama>=0.3.9',
+        'inquirer>=2.2.0',
+        'Click'
+    ],
 
     # To provide executable scripts, use entry points in preference to the
     # "scripts" keyword. Entry points provide cross-platform support and allow
@@ -111,11 +118,16 @@ setup(
     #
     # For example, the following would provide a command called `sample` which
     # executes the function `main` from this package when invoked:
-    entry_points={
-        'console_scripts': [
-            'stronghold=stronghold:main',
-        ],
-    },
+    entry_points='''
+        [console_scripts]
+        stronghold=stronghold:cli
+    ''',
+
+    # entry_points={
+    #     'console_scripts': [
+    #         'stronghold=stronghold:main',
+    #     ],
+    # },
 
     # List additional URLs that are relevant to your project as a dict.
     #

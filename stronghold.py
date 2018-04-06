@@ -3,16 +3,17 @@
 
 # Built-in modules
 import sys
-import argparse
 import subprocess as sp
 from time import sleep
 
 # 3rd party modules
+import click
 import inquirer
 from colorama import Fore, Style
 
 # Local modules
 from constants import Constants
+
 
 def prompt_yes_no(top_line="", bottom_line="",):
 	"""Print question and return True or False depending on user selection from list.
@@ -45,14 +46,14 @@ def prompt_yes_no(top_line="", bottom_line="",):
 def print_section_header(title, COLOR):
 	"""Prints variable sized section header"""
 	block = "#" * (len(title) + 2)
-	print("\n" + COLOR + Style.BRIGHT + block)
+	print(COLOR + Style.BRIGHT + block)
 	print("#", title)
 	print(block + "\n" + Style.RESET_ALL)
 
 
 def print_confirmation(action):
 	"""Prints confirmation of action in bright yellow."""
-	print(Fore.YELLOW + Style.BRIGHT + action + Style.RESET_ALL)
+	print(Fore.YELLOW + Style.BRIGHT + action + Style.RESET_ALL + "\n")
 
 
 def print_abort(config_type):
@@ -94,6 +95,8 @@ def splash_intro():
 def firewall_config():
 	"""Firewall configuration options."""
 
+	print_section_header("FIREWALL", Fore.BLUE)
+
 	if prompt_yes_no(top_line = "-> Turn on firewall?",
 	                 bottom_line = "This helps protect your Mac from being attacked over the internet."):
 
@@ -134,6 +137,8 @@ def firewall_config():
 def captive_portal_config():
 	"""Captive Portal configuration options."""
 
+	print_section_header("CAPTIVE PORTAL", Fore.BLUE)
+
 	if prompt_yes_no(top_line = "-> Disable Captive Portal Assistant and force login through browser on untrusted networks?",
 	                 bottom_line = "Captive Portal could be triggered and direct you to a malicious site WITHOUT any user interaction."):
 		print_confirmation("Disabling Captive Portal Assistant...")
@@ -143,6 +148,8 @@ def captive_portal_config():
 # TODO: Fix all disable data collection commands. "shell=True" keyword fixed some of them but not all
 def user_metadata_config():
 	"""User metadata configuration options."""
+
+	print_section_header("USER METADATA", Fore.BLUE)
 
 	###
 	# Language Modeling Data
@@ -199,6 +206,8 @@ def user_metadata_config():
 def user_safety_config():
 	"""User Safety configuration options."""
 
+	print_section_header("USER SAFETY", Fore.BLUE)
+
 	if prompt_yes_no(top_line = "-> Lock Mac as soon as screen saver starts?",
 	                 bottom_line = "If your screen is black or on screensaver mode, you'll be prompted for a password to login every time."):
 		print_confirmation("Configuring account lock on screensaver...")
@@ -227,6 +236,8 @@ def user_safety_config():
 
 def final_configuration():
 
+	print_section_header("FINAL CONFIGURATION STEPS", Fore.BLUE)
+
 	if prompt_yes_no(top_line = "-> Restart your Mac right now?",
 	                 bottom_line = "This is necessary for some configuration changes to take effect."):
 		print_confirmation("Configuration complete after restart!\n")
@@ -247,29 +258,85 @@ def final_configuration():
 		print(Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary.")
 
 
-def main():
+def lockdown_procedure():
 
-	# argument parsing
-	parser = argparse.ArgumentParser(prog=Constants.PROJECT_NAME, description=Constants.DESCRIPTION)
-	parser.add_argument('-version', '-v', '-info', action='version', version='%(prog)s {} by {} -> (Github: {})'.format(Constants.VERSION, Constants.AUTHOR_FULL_NAME, Constants.AUTHOR_GITHUB))
-	args = parser.parse_args()
+	print_section_header("LOCKDOWN", Fore.BLUE)
+	print_confirmation("Configure all settings to the most secure without user interaction. Automatic restart on exit.")
 
-	splash_intro()
+	# Get sudo priv
+	sp.run("sudo -E -v", shell=True, stdout=sp.PIPE)
 
-	print_section_header("FIREWALL", Fore.BLUE)
-	firewall_config()
+	####
+	# FIREWALL
+	####
 
-	print_section_header("CAPTIVE PORTAL", Fore.BLUE)
-	captive_portal_config()
+	sp.run(['sudo', 'launchctl', 'load', '/System/Library/LaunchDaemons/com.apple.alf.agent.plist'], stdout=sp.PIPE)
+	sp.run(['sudo', 'launchctl', 'load', '/System/Library/LaunchAgents/com.apple.alf.useragent.plist'], stdout=sp.PIPE)
+	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setglobalstate', 'on'], stdout=sp.PIPE)
+	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setloggingmode', 'on'], stdout=sp.PIPE)
+	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setstealthmode', 'on'], stdout=sp.PIPE)
+	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsigned', 'off'], stdout=sp.PIPE)
+	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsignedapp', 'off'], stdout=sp.PIPE)
+	sp.run(['sudo', 'pkill', '-HUP', 'socketfilterfw'], stdout=sp.PIPE)
 
-	print_section_header("USER METADATA", Fore.BLUE)
-	user_metadata_config()
+	####
+	# CAPTIVE PORTAL
+	####
 
-	print_section_header("USER SAFETY", Fore.BLUE)
-	user_safety_config()
+	sp.run(['sudo', 'defaults', 'write', '/Library/Preferences/SystemConfiguration/com.apple.captive.control', 'Active', '-bool', 'false'], stdout=sp.PIPE)
 
-	print_section_header("FINAL CONFIGURATION STEPS", Fore.BLUE)
-	final_configuration()
+	####
+	# USER METADATA
+	####
+
+	sp.run(['rm', '-rfv', '"~/Library/LanguageModeling/*"', '"~/Library/Spelling/*"', '"~/Library/Suggestions/*"']) #, stdout=sp.PIPE)
+	sp.run(['rm', '-rfv', '"~/Library/Application Support/Quick Look/*"'], stdout=sp.PIPE)
+	sp.run([':>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2'], shell=True, stdout=sp.PIPE)
+
+	####
+	# USER SAFETY
+	####
+
+	sp.run(['defaults', 'write', 'com.apple.screensaver', 'askForPassword', '-int', '1'], stdout=sp.PIPE)
+	sp.run(['defaults', 'write', 'com.apple.screensaver', 'askForPasswordDelay', '-int', '0'], stdout=sp.PIPE)
+	sp.run(['defaults', 'write', 'NSGlobalDomain', 'AppleShowAllExtensions', '-bool', 'true'], stdout=sp.PIPE)
+	sp.run(['defaults', 'write', 'NSGlobalDomain', 'NSDocumentSaveNewDocumentsToCloud', '-bool', 'false'], stdout=sp.PIPE)
+	sp.run(['defaults', 'write', 'com.apple.finder', 'AppleShowAllFiles', '-boolean', 'true'], shell=True, stdout=sp.PIPE)
+	sp.run(['killAll', 'Finder'], stdout=sp.PIPE)
+
+	####
+	# RESTART
+	####
+
+	# TODO
+	print("0xCAFEBABE")
+
+	# sp.run(['sudo', 'shutdown', '-r', 'now'], shell=True, stdout=sp.PIPE)
+
+@click.command()
+@click.option('--lockdown', is_flag=True, default=False, help="Configure all settings to the most secure without user interaction. Automatic restart on exit.")
+@click.option('--v', is_flag=True, default=False, help='display version and author information and exit')
+def cli(lockdown, v):
+	"""Securely configure your Mac from the terminal."""
+
+	# Print version information
+	if v:
+		print('stronghold {} by {} -> (Github: {})'.format(Constants.VERSION, Constants.AUTHOR_FULL_NAME, Constants.AUTHOR_GITHUB))
+		sys.exit()
+
+	# Lockdown procedures
+	if lockdown:
+		lockdown_procedure()
+		sys.exit()
+
+	# interactive walkthrough
+	else:
+		splash_intro()
+		firewall_config()
+		captive_portal_config()
+		user_metadata_config()
+		user_safety_config()
+		final_configuration()
 
 if __name__ == '__main__':
-	main()
+	cli()
