@@ -253,15 +253,18 @@ def final_configuration():
 		sleep(1)
 		if sp.run(['sudo', 'shutdown', '-r', 'now'], shell=True, stdout=sp.PIPE) != 0:
 			print(Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary.")
+			sys.exit()
 
 	else:
 		print(Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary.")
+		sys.exit()
 
 
 def lockdown_procedure():
 
+	print("----------")
 	print_section_header("LOCKDOWN", Fore.BLUE)
-	print_confirmation("Configure all settings to the most secure without user interaction. Automatic restart on exit.")
+	print_confirmation("Set secure configuration without user interaction.")
 
 	# Get sudo priv
 	sp.run("sudo -E -v", shell=True, stdout=sp.PIPE)
@@ -308,13 +311,13 @@ def lockdown_procedure():
 	# RESTART
 	####
 
-	# TODO
-	print("0xCAFEBABE")
+	final_configuration()
 
-	# sp.run(['sudo', 'shutdown', '-r', 'now'], shell=True, stdout=sp.PIPE)
+# Click custom help
+CONTEXT_SETTINGS = dict(help_option_names=['-h', '-help', '--help'])
 
-@click.command()
-@click.option('-lockdown', is_flag=True, default=False, help="Configure all settings to the most secure without user interaction. Automatic restart on exit.")
+@click.command(context_settings=CONTEXT_SETTINGS)
+@click.option('-lockdown', is_flag=True, default=False, help="Set secure configuration without user interaction.")
 @click.option('-v', is_flag=True, default=False, help='display version and author information and exit')
 def cli(lockdown, v):
 	"""Securely configure your Mac from the terminal."""
@@ -324,10 +327,9 @@ def cli(lockdown, v):
 		print('stronghold {} by {} -> (Github: {})'.format(Constants.VERSION, Constants.AUTHOR_FULL_NAME, Constants.AUTHOR_GITHUB))
 		sys.exit()
 
-	# Lockdown procedures
+	# Lockdown
 	if lockdown:
 		lockdown_procedure()
-		sys.exit()
 
 	# interactive walkthrough
 	else:
@@ -337,6 +339,7 @@ def cli(lockdown, v):
 		user_metadata_config()
 		user_safety_config()
 		final_configuration()
+
 
 if __name__ == '__main__':
 	cli()
