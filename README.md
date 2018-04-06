@@ -1,8 +1,6 @@
 # stronghold
 
-<!-- TODO: Get high quality static images -->
-<!--
-[![build](https://img.shields.io/wercker/ci/wercker/docs.svg)]() -->
+<!-- [![build](https://img.shields.io/wercker/ci/wercker/docs.svg)]() -->
 <!-- ![Made With Python](img/made-with-python.png) -->
 <!-- ![PRs Welcome](img/PRs-welcome.png) -->
 <!-- Add Travis CI -->
@@ -48,10 +46,7 @@ Options:
     + `$ pip install stronghold`
     + `$ stronghold`
 
-2. Download `stronghold` as a zip
-    + Unzip
-    + `cd` into directory
-    + `$ python3 stronghold.py`
+2. Download `stronghold` binary from Releases tab.
 
 
 **Configuration Options**
