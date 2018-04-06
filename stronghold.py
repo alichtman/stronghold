@@ -28,7 +28,8 @@ def prompt_yes_no(top_line="", bottom_line="",):
 	                            ),
 		]
 
-	if top_line is not "":
+	# else top_line is not ""
+	else:
 		print(Fore.GREEN + Style.BRIGHT + " " + top_line)
 		questions = [ inquirer.List('choice',
 	                            message=Fore.GREEN + bottom_line + Fore.YELLOW,
@@ -38,11 +39,7 @@ def prompt_yes_no(top_line="", bottom_line="",):
 
 	answers = inquirer.prompt(questions)
 
-
-	if answers.get('choice').strip() == 'Yes':
-		return True
-	else:
-		return False
+	return answers.get('choice').strip() == 'Yes'
 
 
 def print_section_header(title, COLOR):
@@ -53,8 +50,15 @@ def print_section_header(title, COLOR):
 	print(block + "\n" + Style.RESET_ALL)
 
 
-def print_confirmation(title):
-	print(Fore.YELLOW + Style.BRIGHT + title + Style.RESET_ALL)
+def print_confirmation(action):
+	"""Prints confirmation of action in bright yellow."""
+	print(Fore.YELLOW + Style.BRIGHT + action + Style.RESET_ALL)
+
+
+def print_abort(config_type):
+	"""Prints abort message  in bright red."""
+	print(Fore.RED + Style.BRIGHT + "\nInvalid sudo password.", config_type, "configuration aborted." + Style.RESET_ALL)
+	sleep(1)
 
 
 def splash_intro():
@@ -84,7 +88,7 @@ def splash_intro():
 	if not prompt_yes_no(bottom_line = "I have read the above carefully and want to continue"):
 		sys.exit(0)
 
-# I prayed to the sudo gods many times that these commands would work.
+# I have prayed to the sudo gods many times.
 # Proceed at your own risk.
 
 def firewall_config():
@@ -94,21 +98,30 @@ def firewall_config():
 	                 bottom_line = "This helps protect your Mac from being attacked over the internet."):
 
 		print_confirmation("Enabling firewall...")
-		# Loading default config
+
+		# If sudo password incorrect, abort and return from firewall config.
+		if sp.run("sudo -E -v", shell=True, stdout=sp.PIPE).returncode != 0:
+			print_abort("Firewall")
+			return
+
+		# Load default firewall config.
 		sp.run(['sudo', 'launchctl', 'load', '/System/Library/LaunchDaemons/com.apple.alf.agent.plist'], stdout=sp.PIPE)
 		sp.run(['sudo', 'launchctl', 'load', '/System/Library/LaunchAgents/com.apple.alf.useragent.plist'], stdout=sp.PIPE)
 		sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setglobalstate', 'on'], stdout=sp.PIPE)
 
+		# Logging
 		if prompt_yes_no(top_line = "-> Turn on logging?",
 		                 bottom_line = "If there IS an infection, logs are useful for determining the source."):
 			print_confirmation("Enabling logging...")
 			sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setloggingmode', 'on'], stdout=sp.PIPE)
 
+		# Stealth Mode
 		if prompt_yes_no(top_line = "-> Turn on stealth mode?",
 		                 bottom_line = "Your Mac will not respond to ICMP ping requests or connection attempts from closed TCP and UDP networks."):
 			print_confirmation("Enabling stealth mode...")
 			sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setstealthmode', 'on'], stdout=sp.PIPE)
 
+		# Automatic software whitelisting
 		if prompt_yes_no(top_line = "-> Prevent automatic software whitelisting?", bottom_line = "Both Built-in and downloaded software will require user approval for whitelisting."):
 			print_confirmation("Preventing automatic whitelisting...")
 			sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsigned', 'off'], stdout=sp.PIPE)
@@ -151,9 +164,9 @@ def user_metadata_config():
 
 	if prompt_yes_no(top_line = "-> Clear QuickLook and Quarantine metadata?",
 	                 bottom_line = "This will erase your spotlight user data."):
-		print("Removing QuickLook metadata...")
+		print_confirmation("Removing QuickLook metadata...")
 		sp.run(['rm', '-rfv', '"~/Library/Application Support/Quick Look/*"'], stdout=sp.PIPE)
-		print("Removing Quarantine metadata...")
+		print_confirmation("Removing Quarantine metadata...")
 		sp.run([':>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2'], shell=True, stdout=sp.PIPE)
 
 	# if prompt_yes_no("\nDisable QuickLook data logging?"):
@@ -211,14 +224,24 @@ def user_safety_config():
 	print_confirmation("Resetting Finder to finalize changes...")
 	sp.run(['killAll', 'Finder'], stdout=sp.PIPE)
 
+
 def final_configuration():
 
 	if prompt_yes_no(top_line = "-> Restart your Mac right now?",
 	                 bottom_line = "This is necessary for some configuration changes to take effect."):
+		print_confirmation("Configuration complete after restart!\n")
 		print_confirmation("Restarting in 5 seconds...")
-		print_confirmation("Configuration complete after restart!")
-		sleep(5)
-		sp.run(['sudo', 'shutdown', '-r', 'now'], shell=True, stdout=sp.PIPE)
+		sleep(1)
+		print_confirmation("4...")
+		sleep(1)
+		print_confirmation("3...")
+		sleep(1)
+		print_confirmation("2...")
+		sleep(1)
+		print_confirmation("1...")
+		sleep(1)
+		if sp.run(['sudo', 'shutdown', '-r', 'now'], shell=True, stdout=sp.PIPE) != 0:
+			print(Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary.")
 
 	else:
 		print(Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary.")
