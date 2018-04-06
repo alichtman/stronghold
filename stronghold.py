@@ -314,11 +314,11 @@ def lockdown_procedure():
 	final_configuration()
 
 # Click custom help
-CONTEXT_SETTINGS = dict(help_option_names=['-h', '-help', '--help'])
+CONTEXT_SETTINGS = dict(help_option_names=['-h', '-help'])
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.option('-lockdown', is_flag=True, default=False, help="Set secure configuration without user interaction.")
-@click.option('-v', is_flag=True, default=False, help='display version and author information and exit')
+@click.option('-v', is_flag=True, default=False, help='Display version and author information and exit.')
 def cli(lockdown, v):
 	"""Securely configure your Mac from the terminal."""
 
