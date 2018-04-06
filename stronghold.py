@@ -314,8 +314,8 @@ def lockdown_procedure():
 	# sp.run(['sudo', 'shutdown', '-r', 'now'], shell=True, stdout=sp.PIPE)
 
 @click.command()
-@click.option('--lockdown', is_flag=True, default=False, help="Configure all settings to the most secure without user interaction. Automatic restart on exit.")
-@click.option('--v', is_flag=True, default=False, help='display version and author information and exit')
+@click.option('-lockdown', is_flag=True, default=False, help="Configure all settings to the most secure without user interaction. Automatic restart on exit.")
+@click.option('-v', is_flag=True, default=False, help='display version and author information and exit')
 def cli(lockdown, v):
 	"""Securely configure your Mac from the terminal."""
 
