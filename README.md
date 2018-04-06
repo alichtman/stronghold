@@ -1,19 +1,19 @@
 # stronghold
 
 <!-- TODO: Get high quality static images -->
-<!-- [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/alichtman/stronghold/blob/master/LICENSE)
+<!--
 [![build](https://img.shields.io/wercker/ci/wercker/docs.svg)]() -->
 <!-- ![Made With Python](img/made-with-python.png) -->
-<!-- ![python versions](img/python-versions.png) -->
-<!-- ![license](img/mit-license.png) -->
 <!-- ![PRs Welcome](img/PRs-welcome.png) -->
-
 <!-- Add Travis CI -->
 <!-- [![Build Status](https://travis-ci.org/bevacqua/awesome-badges.svg?branch=master)](https://travis-ci.org/bevacqua/awesome-badges) -->
 
-[![asciicast demo](https://asciinema.org/a/xQu2INqyjy4mK4k5aPRCMy0rJ.png)](https://asciinema.org/a/xQu2INqyjy4mK4k5aPRCMy0rJ?speed=1.75)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/alichtman/stronghold/blob/master/LICENSE)
+![status](https://img.shields.io/pypi/status/Django.svg)
 
 `stronghold` is the easiest way to securely configure your Mac.
+
+![GIF demo](img/demo.gif)
 
 Designed for MacOS Sierra and High Sierra.
 Previously `fortify`.
@@ -27,10 +27,19 @@ Previously `fortify`.
 * [python-macadmin-tools](https://github.com/timsutton/python-macadmin-tools)
 * [tools-osx](https://github.com/morgant/tools-osx)
 
-**Warnings**
+**Usage**
 ---
 
-+ Ensure you have up-to-date backups. This script modifies system settings and there is always a possibility that it will damage your system.
+```
+Usage: stronghold [-lockdown] [-v] [-h]
+
+  Securely configure your Mac from the terminal.
+
+Options:
+  -lockdown          Set secure configuration without user interaction.
+  -v                 Display version and author information and exit.
+  -help, -h  Show this message and exit.
+```
 
 **Installation Options**
 ---
