@@ -230,8 +230,7 @@ def user_safety_config():
 	if prompt_yes_no(top_line="-> Disable saving to the cloud by default?",
 	                 bottom_line="This prevents sensitive documents from being unintentionally stored to the cloud."):
 		print_confirmation("Disabling cloud saving by default...")
-		sp.run(['defaults', 'write', 'NSGlobalDomain', 'NSDocumentSaveNewDocumentsToCloud', '-bool', 'false'],
-		       stdout=sp.PIPE)
+		sp.run(['defaults', 'write', 'NSGlobalDomain', 'NSDocumentSaveNewDocumentsToCloud', '-bool', 'false'], stdout=sp.PIPE)
 
 	if prompt_yes_no(top_line="-> Show hidden files in Finder?",
 	                 bottom_line="This lets you see all files on the system without having to use the terminal."):
@@ -264,12 +263,12 @@ def final_configuration():
 			sys.exit()
 
 	else:
-		print(
-			Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary." + Style.RESET_ALL)
+		print(Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary." + Style.RESET_ALL)
 		sys.exit()
 
 
 def lockdown_procedure():
+	"""Set secure config without any user interaction."""
 	print("----------")
 	print_section_header("LOCKDOWN", Fore.BLUE)
 	print_confirmation("Set secure configuration without user interaction.")
@@ -303,7 +302,7 @@ def lockdown_procedure():
 	# USER METADATA
 	####
 
-	sp.run(['rm', '-rfv', '"~/Library/LanguageModeling/*"', '"~/Library/Spelling/*"', '"~/Library/Suggestions/*"'])  # , stdout=sp.PIPE)
+	sp.run(['rm', '-rfv', '"~/Library/LanguageModeling/*"', '"~/Library/Spelling/*"', '"~/Library/Suggestions/*"'])
 	sp.run(['rm', '-rfv', '"~/Library/Application Support/Quick Look/*"'], stdout=sp.PIPE)
 	sp.run([':>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2'], shell=True, stdout=sp.PIPE)
 
@@ -331,20 +330,25 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '-help'])
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.option('-lockdown', is_flag=True, default=False, help="Set secure configuration without user interaction.")
-@click.option('-v', is_flag=True, default=False, help='Display version and author information and exit.')
-def cli(lockdown, v):
-	"""Securely configure your Mac from the terminal."""
+@click.option('-info', is_flag=True, default=False, help='Display version and author information and exit.')
+def cli(lockdown, info):
+	"""Securely configure your Mac.
 
-	# Print version information
-	if v:
-		print('stronghold {} by {} -> (Github: {})'.format(Constants.VERSION, Constants.AUTHOR_FULL_NAME, Constants.AUTHOR_GITHUB))
+	Developed by Aaron Lichtman -> (Github: alichtman)"""
+
+	# Print author and version information and exit
+	if info:
+		print('stronghold v{0} by {1} -> Github: {2}\nSource Code: {3}'.format(Constants.VERSION,
+		                                                                       Constants.AUTHOR_FULL_NAME,
+		                                                                       Constants.AUTHOR_GITHUB,
+		                                                                       Constants.URL[0]))
 		sys.exit()
 
 	# Lockdown
 	if lockdown:
 		lockdown_procedure()
 
-	# interactive walkthrough
+	# interactive walk-through
 	else:
 		splash_intro()
 		firewall_config()
