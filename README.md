@@ -46,7 +46,7 @@ Options:
     + `$ pip install stronghold`
     + `$ stronghold`
 
-2. Download `stronghold` binary from Releases tab.
+2. Download the `stronghold` binary from Releases tab.
 
 
 **Configuration Options**
