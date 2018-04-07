@@ -29,14 +29,16 @@ Previously `fortify`.
 ---
 
 ```
-Usage: stronghold [-lockdown] [-v] [-h]
+Usage: stronghold.py [OPTIONS]
 
-  Securely configure your Mac from the terminal.
+  Securely configure your Mac.
+  Developed by Aaron Lichtman -> (Github: alichtman)
+  
 
 Options:
-  -lockdown          Set secure configuration without user interaction.
-  -v                 Display version and author information and exit.
-  -help, -h          Show this message and exit.
+  -lockdown  Set secure configuration without user interaction.
+  -info      Display version and author information and exit.
+  -help, -h  Show this message and exit.
 ```
 
 **Installation Options**
@@ -57,11 +59,14 @@ Options:
     + Enable Firewall? This helps protect your Mac from being attacked over the internet by viruses and worms.
         - Enable Logging? If there is an infection, logs are helpful for determining the source.
         - Enable Stealth Mode? If enabled, your Mac will not respond to network discovery attempts with ICMP ping requests, and will not answer connection attempts made from closed TCP and UDP networks.
-        - Prevent both built-in and downloaded software from being whitelisted automatically?
 
+2. System Protection
+
+    + Enable Gatekeeper? Protect against malware by enforcing code signing and verifying downloaded applications before letting them to run.
     + Disable Captive Portal Assistant and force login through browser? With default Mac settings on an untrusted network, an attacker could trigger Captive Portal and direct you to a site with malware WITHOUT user interaction.
+    + Prevent automatic software whitelisting?
 
-2. User Metadata Storage
+3. User Metadata Storage
 
     + Clear language modeling data? This includes user spelling and suggestion data.
     + Clear QuickLook metadata?
@@ -69,7 +74,7 @@ Options:
         - WARNING: This may kill Siri.
     + Clear Quarantine Data.
 
-3. General Safety
+4. General Safety
 
     + Lock Mac as soon as screen saver starts?
     + Display all file extensions? This prevents malware from disguising itself as another file type.
@@ -87,6 +92,6 @@ Options:
 **How to Contribute**
 ---
 
-1. Clone repo and create a new branch: `$ git checkout https://github.com/alichtman/stronghold -b [name_for_new_branch]`.
+1. Clone repo and create a new branch: `$ git checkout https://github.com/alichtman/stronghold -b name_for_new_branch`.
 2. Make changes and test
 3. Submit Pull Request with comprehensive description of changes
