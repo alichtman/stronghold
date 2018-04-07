@@ -56,20 +56,26 @@ Options:
 
 1. Firewall
 
-    + Enable Firewall? This helps protect your Mac from being attacked over the internet by viruses and worms.
-        - Enable Logging? If there is an infection, logs are helpful for determining the source.
-        - Enable Stealth Mode? If enabled, your Mac will not respond to network discovery attempts with ICMP ping requests, and will not answer connection attempts made from closed TCP and UDP networks.
+    + Enable Firewall?
+    	- This helps protect your Mac from being attacked over the internet by viruses and worms.
+    + Enable Logging?
+    	- If there is an infection, logs are helpful for determining the source.
+    + Enable Stealth Mode?
+    	- If enabled, your Mac will not respond to network discovery attempts with ICMP ping requests, and will not answer connection attempts made from closed TCP and UDP networks.
 
 2. System Protection
 
-    + Enable Gatekeeper? Protect against malware by enforcing code signing and verifying downloaded applications before letting them to run.
+    + Enable Gatekeeper?
+    	- Protect against malware by enforcing code signing and verifying downloaded applications before letting them to run.
     + Prevent automatic software whitelisting?
-    + Disable Captive Portal Assistant and force login through browser on untrusted networks? Captive Portal could be triggered and direct you to a malicious site WITHOUT any user interaction.
+    + Disable Captive Portal Assistant and force login through browser on untrusted networks?
+    	- On an untrusted network, Captive Portal could be triggered and direct you to a malicious site WITHOUT any user interaction.
 
 
 3. User Metadata Storage
 
-    + Clear language modeling data? This includes user spelling and suggestion data.
+    + Clear language modeling data?
+    	- This includes user spelling and suggestion data.
     + Disable language modeling data collection?
     + Clear QuickLook metadata?
     + Clear Downloads metadata?
@@ -79,9 +85,11 @@ Options:
 4. User Safety
 
     + Lock Mac as soon as screen saver starts?
-    + Display all file extensions? This prevents malware from disguising itself as another file type.
+    + Display all file extensions?
+    	- This prevents malware from disguising itself as another file type.
     + Disable saving documents to the cloud by default?
-    + Show hidden files in Finder? This lets you see all files on the system without having to use the terminal.
+    + Show hidden files in Finder?
+    	- This lets you see all files on the system without having to use the terminal.
 
 
 **Sources**
