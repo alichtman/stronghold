@@ -15,7 +15,7 @@ from colorama import Fore, Style
 from constants import Constants
 
 
-def prompt_yes_no(top_line="", bottom_line="",):
+def prompt_yes_no(top_line="", bottom_line=""):
 	"""Print question and return True or False depending on user selection from list.
 	bottom_line should be used for one liners. Otherwise, it's the second line you want printed.
 
@@ -23,20 +23,20 @@ def prompt_yes_no(top_line="", bottom_line="",):
 
 	# One liner. Only bottom_line should be printed + stylized
 	if top_line is "":
-		questions = [ inquirer.List('choice',
-	                            message=Fore.GREEN + Style.BRIGHT + bottom_line + Fore.YELLOW,
-	                            choices=[' Yes', ' No'],
-	                            ),
-		]
+		questions = [inquirer.List('choice',
+		                           message=Fore.GREEN + Style.BRIGHT + bottom_line + Fore.YELLOW,
+		                           choices=[' Yes', ' No'],
+		                           ),
+		             ]
 
 	# else top_line is not ""
 	else:
 		print(Fore.GREEN + Style.BRIGHT + " " + top_line)
-		questions = [ inquirer.List('choice',
-	                            message=Fore.GREEN + bottom_line + Fore.YELLOW,
-	                            choices=[' Yes', ' No'],
-	                            ),
-		]
+		questions = [inquirer.List('choice',
+		                           message=Fore.GREEN + bottom_line + Fore.YELLOW,
+		                           choices=[' Yes', ' No'],
+		                           ),
+		             ]
 
 	answers = inquirer.prompt(questions)
 
@@ -63,19 +63,18 @@ def print_abort(config_type):
 
 
 def splash_intro():
-
 	print(Fore.GREEN + Style.BRIGHT +
-	"\n .d8888b.  888                                      888               888      888 \n" +
-	"d88P  Y88b 888                                      888               888      888 \n" +
-	"Y88b.      888                                      888               888      888 \n" +
-	" \"Y888b.   888888 888d888 .d88b.  88888b.   .d88b.  88888b.   .d88b.  888  .d88888  \n" +
-	"    \"Y88b. 888    888P\"  d88\"\"88b 888 \"88b d88P\"88b 888 \"88b d88\"\"88b 888 d88\" 888  \n" +
-	"      \"888 888    888    888  888 888  888 888  888 888  888 888  888 888 888  888  \n" +
-	"Y88b  d88P Y88b.  888    Y88..88P 888  888 Y88b 888 888  888 Y88..88P 888 Y88b 888  \n" +
-	" \"Y8888P\"   \"Y888 888     `Y88P\'  888  888  `Y88888 888  888  `Y88P\'  888  `Y88888  \n" +
-	"                                                888 \n" +
-	"                                           Y8b d88P \n" +
-	"                                            \"Y88P\n" + Style.RESET_ALL)
+	      "\n .d8888b.  888                                      888               888      888 \n" +
+	      "d88P  Y88b 888                                      888               888      888 \n" +
+	      "Y88b.      888                                      888               888      888 \n" +
+	      " \"Y888b.   888888 888d888 .d88b.  88888b.   .d88b.  88888b.   .d88b.  888  .d88888  \n" +
+	      "    \"Y88b. 888    888P\"  d88\"\"88b 888 \"88b d88P\"88b 888 \"88b d88\"\"88b 888 d88\" 888  \n" +
+	      "      \"888 888    888    888  888 888  888 888  888 888  888 888  888 888 888  888  \n" +
+	      "Y88b  d88P Y88b.  888    Y88..88P 888  888 Y88b 888 888  888 Y88..88P 888 Y88b 888  \n" +
+	      " \"Y8888P\"   \"Y888 888     `Y88P\'  888  888  `Y88888 888  888  `Y88P\'  888  `Y88888  \n" +
+	      "                                                888 \n" +
+	      "                                           Y8b d88P \n" +
+	      "                                            \"Y88P\n" + Style.RESET_ALL)
 
 	print(Fore.BLUE + Style.BRIGHT + "Stronghold is a security configuration tool for MacOS Sierra and High Sierra.")
 	print("You may be asked for a sudo password." + Style.RESET_ALL + "\n")
@@ -86,8 +85,9 @@ def splash_intro():
 	print("\t1. Ensure you have up-to-date system backups.")
 	print("\t2. Do not key-mash through this script.\n" + Style.RESET_ALL)
 
-	if not prompt_yes_no(bottom_line = "I have read the above carefully and want to continue"):
+	if not prompt_yes_no(bottom_line="I have read the above carefully and want to continue"):
 		sys.exit(0)
+
 
 # I have prayed to the sudo gods many times.
 # Proceed at your own risk.
@@ -97,8 +97,8 @@ def firewall_config():
 
 	print_section_header("FIREWALL", Fore.BLUE)
 
-	if prompt_yes_no(top_line = "-> Turn on firewall?",
-	                 bottom_line = "This helps protect your Mac from being attacked over the internet."):
+	if prompt_yes_no(top_line="-> Turn on firewall?",
+	                 bottom_line="This helps protect your Mac from being attacked over the internet."):
 
 		print_confirmation("Enabling firewall...")
 
@@ -113,34 +113,42 @@ def firewall_config():
 		sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setglobalstate', 'on'], stdout=sp.PIPE)
 
 		# Logging
-		if prompt_yes_no(top_line = "-> Turn on logging?",
-		                 bottom_line = "If there IS an infection, logs are useful for determining the source."):
+		if prompt_yes_no(top_line="-> Turn on logging?",
+		                 bottom_line="If there IS an infection, logs are useful for determining the source."):
 			print_confirmation("Enabling logging...")
 			sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setloggingmode', 'on'], stdout=sp.PIPE)
 
 		# Stealth Mode
-		if prompt_yes_no(top_line = "-> Turn on stealth mode?",
-		                 bottom_line = "Your Mac will not respond to ICMP ping requests or connection attempts from closed TCP and UDP networks."):
+		if prompt_yes_no(top_line="-> Turn on stealth mode?",
+		                 bottom_line="Your Mac will not respond to ICMP ping requests or connection attempts from closed TCP and UDP networks."):
 			print_confirmation("Enabling stealth mode...")
 			sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setstealthmode', 'on'], stdout=sp.PIPE)
-
-		# Automatic software whitelisting
-		if prompt_yes_no(top_line = "-> Prevent automatic software whitelisting?", bottom_line = "Both Built-in and downloaded software will require user approval for whitelisting."):
-			print_confirmation("Preventing automatic whitelisting...")
-			sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsigned', 'off'], stdout=sp.PIPE)
-			sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsignedapp', 'off'], stdout=sp.PIPE)
 
 		print_confirmation("Resetting firewall to finalize changes...")
 		sp.run(['sudo', 'pkill', '-HUP', 'socketfilterfw'], stdout=sp.PIPE)
 
 
-def captive_portal_config():
-	"""Captive Portal configuration options."""
+def system_protection_config():
+	"""System protection configuration options."""
 
-	print_section_header("CAPTIVE PORTAL", Fore.BLUE)
+	print_section_header("GENERAL SYSTEM PROTECTION", Fore.BLUE)
 
-	if prompt_yes_no(top_line = "-> Disable Captive Portal Assistant and force login through browser on untrusted networks?",
-	                 bottom_line = "Captive Portal could be triggered and direct you to a malicious site WITHOUT any user interaction."):
+	# Enable Gatekeeper
+	if prompt_yes_no(top_line="-> Enable Gatekeeper?",
+	                 bottom_line="Protect against malware by enforcing code signing and verifying downloaded applications before letting them to run."):
+		print_confirmation("Enabling Gatekeeper...")
+		sp.run('sudo spctl --master-enable', stdout=sp.PIPE)
+
+	# Disable automatic software whitelisting
+	if prompt_yes_no(top_line="-> Prevent automatic software whitelisting?",
+	                 bottom_line="Both Built-in and downloaded software will require user approval for whitelisting."):
+		print_confirmation("Preventing automatic whitelisting...")
+		sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsigned', 'off'], stdout=sp.PIPE)
+		sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsignedapp', 'off'], stdout=sp.PIPE)
+
+	# Captive Portal
+	if prompt_yes_no(top_line="-> Disable Captive Portal Assistant and force login through browser on untrusted networks?",
+	                 bottom_line="Captive Portal could be triggered and direct you to a malicious site WITHOUT any user interaction."):
 		print_confirmation("Disabling Captive Portal Assistant...")
 		sp.run(['sudo', 'defaults', 'write', '/Library/Preferences/SystemConfiguration/com.apple.captive.control', 'Active', '-bool', 'false'], stdout=sp.PIPE)
 
@@ -155,10 +163,10 @@ def user_metadata_config():
 	# Language Modeling Data
 	###
 
-	if prompt_yes_no(top_line = "-> Clear language modeling data?",
-	                 bottom_line = "This includes user spelling, typing and suggestion data."):
-			print_confirmation("Removing language modeling data...")
-			sp.run(['rm', '-rfv', '"~/Library/LanguageModeling/*"', '"~/Library/Spelling/*"', '"~/Library/Suggestions/*"']) #, stdout=sp.PIPE)
+	if prompt_yes_no(top_line="-> Clear language modeling data?",
+	                 bottom_line="This includes user spelling, typing and suggestion data."):
+		print_confirmation("Removing language modeling data...")
+		sp.run(['rm', '-rfv', '"~/Library/LanguageModeling/*"', '"~/Library/Spelling/*"', '"~/Library/Suggestions/*"'])  # , stdout=sp.PIPE)
 
 	# if prompt_yes_no("Disable language modeling data collection?"):
 	#       print_confirmation("Disabling language modeling data collection...")
@@ -169,8 +177,8 @@ def user_metadata_config():
 	# QuickLook and Quarantine Data
 	###
 
-	if prompt_yes_no(top_line = "-> Clear QuickLook and Quarantine metadata?",
-	                 bottom_line = "This will erase your spotlight user data."):
+	if prompt_yes_no(top_line="-> Clear QuickLook and Quarantine metadata?",
+	                 bottom_line="This will erase your spotlight user data."):
 		print_confirmation("Removing QuickLook metadata...")
 		sp.run(['rm', '-rfv', '"~/Library/Application Support/Quick Look/*"'], stdout=sp.PIPE)
 		print_confirmation("Removing Quarantine metadata...")
@@ -208,24 +216,25 @@ def user_safety_config():
 
 	print_section_header("USER SAFETY", Fore.BLUE)
 
-	if prompt_yes_no(top_line = "-> Lock Mac as soon as screen saver starts?",
-	                 bottom_line = "If your screen is black or on screensaver mode, you'll be prompted for a password to login every time."):
+	if prompt_yes_no(top_line="-> Lock Mac as soon as screen saver starts?",
+	                 bottom_line="If your screen is black or on screensaver mode, you'll be prompted for a password to login every time."):
 		print_confirmation("Configuring account lock on screensaver...")
 		sp.run(['defaults', 'write', 'com.apple.screensaver', 'askForPassword', '-int', '1'], stdout=sp.PIPE)
 		sp.run(['defaults', 'write', 'com.apple.screensaver', 'askForPasswordDelay', '-int', '0'], stdout=sp.PIPE)
 
-	if prompt_yes_no(top_line = "-> Display all file extensions?",
-	                 bottom_line = "This prevents malware from disguising itself as another file type."):
+	if prompt_yes_no(top_line="-> Display all file extensions?",
+	                 bottom_line="This prevents malware from disguising itself as another file type."):
 		print_confirmation("Configuring display of all file extensions...")
 		sp.run(['defaults', 'write', 'NSGlobalDomain', 'AppleShowAllExtensions', '-bool', 'true'], stdout=sp.PIPE)
 
-	if prompt_yes_no(top_line = "-> Disable saving to the cloud by default?",
-	                 bottom_line = "This prevents sensitive documents from being unintentionally stored to the cloud."):
+	if prompt_yes_no(top_line="-> Disable saving to the cloud by default?",
+	                 bottom_line="This prevents sensitive documents from being unintentionally stored to the cloud."):
 		print_confirmation("Disabling cloud saving by default...")
-		sp.run(['defaults', 'write', 'NSGlobalDomain', 'NSDocumentSaveNewDocumentsToCloud', '-bool', 'false'], stdout=sp.PIPE)
+		sp.run(['defaults', 'write', 'NSGlobalDomain', 'NSDocumentSaveNewDocumentsToCloud', '-bool', 'false'],
+		       stdout=sp.PIPE)
 
-	if prompt_yes_no(top_line = "-> Show hidden files in Finder?",
-	                 bottom_line = "This lets you see all files on the system without having to use the terminal."):
+	if prompt_yes_no(top_line="-> Show hidden files in Finder?",
+	                 bottom_line="This lets you see all files on the system without having to use the terminal."):
 		print_confirmation("Displaying hidden files in Finder...")
 		sp.run(['defaults', 'write', 'com.apple.finder', 'AppleShowAllFiles', '-boolean', 'true'], shell=True, stdout=sp.PIPE)
 
@@ -235,11 +244,10 @@ def user_safety_config():
 
 
 def final_configuration():
-
 	print_section_header("FINAL CONFIGURATION STEPS", Fore.BLUE)
 
-	if prompt_yes_no(top_line = "-> Restart your Mac right now?",
-	                 bottom_line = "This is necessary for some configuration changes to take effect."):
+	if prompt_yes_no(top_line="-> Restart your Mac right now?",
+	                 bottom_line="This is necessary for some configuration changes to take effect."):
 		print_confirmation("Configuration complete after restart!")
 		print(Fore.YELLOW + Style.BRIGHT + "Restarting in 5 seconds..." + Style.RESET_ALL)
 		sleep(1)
@@ -256,12 +264,12 @@ def final_configuration():
 			sys.exit()
 
 	else:
-		print(Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary." + Style.RESET_ALL)
+		print(
+			Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary." + Style.RESET_ALL)
 		sys.exit()
 
 
 def lockdown_procedure():
-
 	print("----------")
 	print_section_header("LOCKDOWN", Fore.BLUE)
 	print_confirmation("Set secure configuration without user interaction.")
@@ -283,16 +291,19 @@ def lockdown_procedure():
 	sp.run(['sudo', 'pkill', '-HUP', 'socketfilterfw'], stdout=sp.PIPE)
 
 	####
-	# CAPTIVE PORTAL
+	# SYSTEM PROTECTION
 	####
 
-	sp.run(['sudo', 'defaults', 'write', '/Library/Preferences/SystemConfiguration/com.apple.captive.control', 'Active', '-bool', 'false'], stdout=sp.PIPE)
+	sp.run('sudo spctl --master-enable', shell=True, stdout=sp.PIPE)
+	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsigned', 'off'], stdout=sp.PIPE)
+	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsignedapp', 'off'], stdout=sp.PIPE)
+	sp.run(['sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.captive.control Active -bool false'], stdout=sp.PIPE)
 
 	####
 	# USER METADATA
 	####
 
-	sp.run(['rm', '-rfv', '"~/Library/LanguageModeling/*"', '"~/Library/Spelling/*"', '"~/Library/Suggestions/*"']) #, stdout=sp.PIPE)
+	sp.run(['rm', '-rfv', '"~/Library/LanguageModeling/*"', '"~/Library/Spelling/*"', '"~/Library/Suggestions/*"'])  # , stdout=sp.PIPE)
 	sp.run(['rm', '-rfv', '"~/Library/Application Support/Quick Look/*"'], stdout=sp.PIPE)
 	sp.run([':>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2'], shell=True, stdout=sp.PIPE)
 
@@ -313,8 +324,10 @@ def lockdown_procedure():
 
 	final_configuration()
 
+
 # Click custom help
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '-help'])
+
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.option('-lockdown', is_flag=True, default=False, help="Set secure configuration without user interaction.")
@@ -335,7 +348,7 @@ def cli(lockdown, v):
 	else:
 		splash_intro()
 		firewall_config()
-		captive_portal_config()
+		system_protection_config()
 		user_metadata_config()
 		user_safety_config()
 		final_configuration()
