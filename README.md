@@ -33,7 +33,7 @@ Usage: stronghold.py [OPTIONS]
 
   Securely configure your Mac.
   Developed by Aaron Lichtman -> (Github: alichtman)
-  
+
 
 Options:
   -lockdown  Set secure configuration without user interaction.
@@ -54,7 +54,7 @@ Options:
 **Configuration Options**
 ---
 
-1. Connectivity
+1. Firewall
 
     + Enable Firewall? This helps protect your Mac from being attacked over the internet by viruses and worms.
         - Enable Logging? If there is an infection, logs are helpful for determining the source.
@@ -63,18 +63,20 @@ Options:
 2. System Protection
 
     + Enable Gatekeeper? Protect against malware by enforcing code signing and verifying downloaded applications before letting them to run.
-    + Disable Captive Portal Assistant and force login through browser? With default Mac settings on an untrusted network, an attacker could trigger Captive Portal and direct you to a site with malware WITHOUT user interaction.
     + Prevent automatic software whitelisting?
+    + Disable Captive Portal Assistant and force login through browser on untrusted networks? Captive Portal could be triggered and direct you to a malicious site WITHOUT any user interaction.
+
 
 3. User Metadata Storage
 
     + Clear language modeling data? This includes user spelling and suggestion data.
+    + Disable language modeling data collection?
     + Clear QuickLook metadata?
+    + Clear Downloads metadata?
+    + Disable metadata collection from Downloads?
     + Clear SiriAnalytics database?
-        - WARNING: This may kill Siri.
-    + Clear Quarantine Data.
 
-4. General Safety
+4. User Safety
 
     + Lock Mac as soon as screen saver starts?
     + Display all file extensions? This prevents malware from disguising itself as another file type.

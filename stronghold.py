@@ -154,62 +154,63 @@ def system_protection_config():
 		sp.run(['sudo', 'defaults', 'write', '/Library/Preferences/SystemConfiguration/com.apple.captive.control', 'Active', '-bool', 'false'], stdout=sp.PIPE)
 
 
-# TODO: Fix all disable data collection commands. "shell=True" keyword fixed some of them but not all
-def user_metadata_config():
+def metadata_storage_config():
 	"""User metadata configuration options."""
 
-	print_section_header("USER METADATA", Fore.BLUE)
+	print_section_header("METADATA STORAGE", Fore.BLUE)
 
 	###
 	# Language Modeling Data
 	###
 
-	if prompt_yes_no(top_line="-> Clear language modeling data?",
+	if prompt_yes_no(top_line="-> Clear language modeling metadata?",
 	                 bottom_line="This includes user spelling, typing and suggestion data."):
 		print_confirmation("Removing language modeling data...")
-		sp.run(['rm', '-rfv', '"~/Library/LanguageModeling/*"', '"~/Library/Spelling/*"', '"~/Library/Suggestions/*"'])  # , stdout=sp.PIPE)
+		sp.run('rm -rfv "~/Library/LanguageModeling/*" "~/Library/Spelling/*" "~/Library/Suggestions/*"', shell=True, stdout=sp.PIPE)
 
-	# if prompt_yes_no("Disable language modeling data collection?"):
-	#       print_confirmation("Disabling language modeling data collection...")
-	# 		sp.run(['chmod', '-R', '000', '~/Library/LanguageModeling', '~/Library/Spelling', '~/Library/Suggestions'], stdout=sp.PIPE)
-	# 		sp.run(['chflags', '-R', 'uchg', '~/Library/LanguageModeling', '~/Library/Spelling', '~/Library/Suggestions'], stdout=sp.PIPE)
+	if prompt_yes_no(bottom_line="-> Disable language modeling data collection?"):
+		print_confirmation("Disabling language modeling data collection...")
+		sp.run('sudo chmod -R 000 ~/Library/LanguageModeling ~/Library/Spelling ~/Library/Suggestions', shell=True, stdout=sp.PIPE)
+		sp.run('sudo chflags -R uchg ~/Library/LanguageModeling ~/Library/Spelling ~/Library/Suggestions', shell=True, stdout=sp.PIPE)
 
 	###
 	# QuickLook and Quarantine Data
 	###
 
-	if prompt_yes_no(top_line="-> Clear QuickLook and Quarantine metadata?",
-	                 bottom_line="This will erase your spotlight user data."):
+	if prompt_yes_no(top_line="-> Clear QuickLook metadata?",
+	                 bottom_line="This will erase spotlight user data."):
 		print_confirmation("Removing QuickLook metadata...")
-		sp.run(['rm', '-rfv', '"~/Library/Application Support/Quick Look/*"'], stdout=sp.PIPE)
-		print_confirmation("Removing Quarantine metadata...")
-		sp.run([':>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2'], shell=True, stdout=sp.PIPE)
+		sp.run('rm -rfv "~/Library/Application Support/Quick Look/*"', shell=True, stdout=sp.PIPE)
 
-	# if prompt_yes_no("\nDisable QuickLook data logging?"):
+	###
+	# Downloads Metadata
+	###
+
+	# TODO: BUG --> /bin/sh: /Users/alichtman/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2: Operation not permitted
+	if prompt_yes_no(bottom_line="-> Clear Downloads metadata?"):
+		print_confirmation("Removing Downloads metadata...")
+		sp.run(':>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2', shell=True, stdout=sp.PIPE)
+
+	if prompt_yes_no(bottom_line="-> Disable metadata collection from Downloads?"):
+		print_confirmation("Disabling Quarantine data collection from downloaded files...")
+		sp.run('sudo chflags schg ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2', shell=True, stdout=sp.PIPE)
+
+	# TODO: ERRORS
+		# chmod: ~/Library/Application Support/Quick Look: No such file or directory
+		# chflags: ~/Library/Application Support/Quick Look: No such file or directory
+
+	# if prompt_yes_no(bottom_line="Disable QuickLook data logging?"):
 	# 	print_confirmation("Disabling QuickLook data logging...")
-	# 	sp.run(['chmod', '-R', '000', '"~/Library/Application Support/Quick Look"'], shell=True, stdout=sp.PIPE)
-	# 	sp.run(['chflags', '-R', 'uchg', '"~/Library/Application Support/Quick Look"'], shell=True, stdout=sp.PIPE)
+	# 	sp.run('sudo chmod -R 000 "~/Library/Application Support/Quick Look"', shell=True, stdout=sp.PIPE)
+	# 	sp.run('sudo chflags -R uchg "~/Library/Application Support/Quick Look"', shell=True, stdout=sp.PIPE)
 
 	###
-	# Siri Data
+	# Siri Metadata
 	###
 
-	# TODO: Debug this / figure out what the right order is for these commands
-	# if prompt_yes_no("\nClear SiriAnalytics database? This will break Siri."):
-	# 	if prompt_yes_no("\tThis WILL break Siri. Are you sure you want to continue?"):
-	# 		if prompt_yes_no("\tLike really sure?"):
-	# 			print_confirmation("Clearing SiriAnalytics database...")
-	# 			sp.run(['rm', '-rfv', '~/Library/Assistant/SiriAnalytics.db'], stdout=sp.PIPE)
-
-	# if prompt_yes_no("Disable SiriAnalytics data collection?"):
-	#           print_confirmation("Disabling SiriAnalytics data collection...")
-	# 			sp.run(['chmod', '-R', '000', '~/Library/Assistant/SiriAnalytics.db'], shell=True, stdout=sp.PIPE)
-	# 			sp.run(['chflags', '-R', 'uchg', '~/Library/Assistant/SiriAnalytics.db'], shell=True, stdout=sp.PIPE)
-
-
-	# if prompt_yes_no("Disable data collection from downloaded files?"):
-	# 	print_confirmation("Disabling Quarantine data collection from downloaded files...")
-	# 	sp.call(['sudo', 'chflags', 'schg', '~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2'], stdout=sp.PIPE)
+	if prompt_yes_no(bottom_line="-> Clear SiriAnalytics database?"):
+		print_confirmation("Clearing SiriAnalytics database...")
+		sp.run('rm -rfv ~/Library/Assistant/SiriAnalytics.db', shell=True, stdout=sp.PIPE)
 
 
 def user_safety_config():
@@ -300,7 +301,7 @@ def lockdown_procedure():
 	sp.run(['sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.captive.control Active -bool false'], stdout=sp.PIPE)
 
 	####
-	# USER METADATA
+	# METADATA STORAGE
 	####
 
 	sp.run(['rm', '-rfv', '"~/Library/LanguageModeling/*"', '"~/Library/Spelling/*"', '"~/Library/Suggestions/*"'])
@@ -354,7 +355,7 @@ def cli(lockdown, info):
 		splash_intro()
 		firewall_config()
 		system_protection_config()
-		user_metadata_config()
+		metadata_storage_config()
 		user_safety_config()
 		final_configuration()
 
