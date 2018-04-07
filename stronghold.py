@@ -108,9 +108,9 @@ def firewall_config():
 			return
 
 		# Load default firewall config.
-		sp.run(['sudo', 'launchctl', 'load', '/System/Library/LaunchDaemons/com.apple.alf.agent.plist'], stdout=sp.PIPE)
-		sp.run(['sudo', 'launchctl', 'load', '/System/Library/LaunchAgents/com.apple.alf.useragent.plist'], stdout=sp.PIPE)
-		sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setglobalstate', 'on'], stdout=sp.PIPE)
+		sp.run('sudo launchctl load /System/Library/LaunchDaemons/com.apple.alf.agent.plist', shell=True, stdout=sp.PIPE)
+		sp.run('sudo launchctl load /System/Library/LaunchAgents/com.apple.alf.useragent.plist', shell=True, stdout=sp.PIPE)
+		sp.run('sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on', shell=True, stdout=sp.PIPE)
 
 		# Logging
 		if prompt_yes_no(top_line="-> Turn on logging?",
@@ -125,7 +125,7 @@ def firewall_config():
 			sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setstealthmode', 'on'], stdout=sp.PIPE)
 
 		print_confirmation("Resetting firewall to finalize changes...")
-		sp.run(['sudo', 'pkill', '-HUP', 'socketfilterfw'], stdout=sp.PIPE)
+		sp.run('sudo pkill -HUP socketfilterfw', shell=True, stdout=sp.PIPE)
 
 
 def system_protection_config():
@@ -137,7 +137,8 @@ def system_protection_config():
 	if prompt_yes_no(top_line="-> Enable Gatekeeper?",
 	                 bottom_line="Protect against malware by enforcing code signing and verifying downloaded applications before letting them to run."):
 		print_confirmation("Enabling Gatekeeper...")
-		sp.run('sudo spctl --master-enable', stdout=sp.PIPE)
+		sp.run('sudo spctl --master-enable', shell=True, stdout=sp.PIPE)
+		sp.run('sudo spctl --enable --label "Developer ID"', shell=True, stdout=sp.PIPE)
 
 	# Disable automatic software whitelisting
 	if prompt_yes_no(top_line="-> Prevent automatic software whitelisting?",
