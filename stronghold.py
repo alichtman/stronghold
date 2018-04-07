@@ -240,23 +240,23 @@ def final_configuration():
 
 	if prompt_yes_no(top_line = "-> Restart your Mac right now?",
 	                 bottom_line = "This is necessary for some configuration changes to take effect."):
-		print_confirmation("Configuration complete after restart!\n")
-		print_confirmation("Restarting in 5 seconds...")
+		print_confirmation("Configuration complete after restart!")
+		print(Fore.YELLOW + Style.BRIGHT + "Restarting in 5 seconds..." + Style.RESET_ALL)
 		sleep(1)
-		print_confirmation("4...")
+		print(Fore.YELLOW + Style.BRIGHT + "4..." + Style.RESET_ALL)
 		sleep(1)
-		print_confirmation("3...")
+		print(Fore.YELLOW + Style.BRIGHT + "3..." + Style.RESET_ALL)
 		sleep(1)
-		print_confirmation("2...")
+		print(Fore.YELLOW + Style.BRIGHT + "2..." + Style.RESET_ALL)
 		sleep(1)
-		print_confirmation("1...")
+		print(Fore.YELLOW + Style.BRIGHT + "1..." + Style.RESET_ALL)
 		sleep(1)
 		if sp.run(['sudo', 'shutdown', '-r', 'now'], shell=True, stdout=sp.PIPE) != 0:
-			print(Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary.")
+			print(Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary." + Style.RESET_ALL)
 			sys.exit()
 
 	else:
-		print(Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary.")
+		print(Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary." + Style.RESET_ALL)
 		sys.exit()
 
 
