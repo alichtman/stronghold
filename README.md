@@ -36,7 +36,7 @@ Usage: stronghold [-lockdown] [-v] [-h]
 Options:
   -lockdown          Set secure configuration without user interaction.
   -v                 Display version and author information and exit.
-  -help, -h  Show this message and exit.
+  -help, -h          Show this message and exit.
 ```
 
 **Installation Options**
