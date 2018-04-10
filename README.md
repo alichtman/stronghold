@@ -1,8 +1,8 @@
 # stronghold
 
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/alichtman/stronghold/blob/master/LICENSE)
-<!-- [![GitHub release](https://img.shields.io/github/release/qubyte/rubidium.svg)](https://github.com/alichtman/stronghold) -->
 ![status](https://img.shields.io/pypi/status/Django.svg)
+<!-- [![GitHub release](https://img.shields.io/github/release/qubyte/rubidium.svg)](https://github.com/alichtman/stronghold) -->
 
 `stronghold` is the easiest way to securely configure your Mac.
 
