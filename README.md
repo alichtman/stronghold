@@ -85,14 +85,6 @@ Options:
     + Show hidden files in Finder?
     	- This lets you see all files on the system without having to use the terminal.
 
-
-**Sources**
------
-
-+ https://github.com/drduh/macOS-Security-and-Privacy-Guide
-+ http://newosxbook.com/files/moxii3/AppendixA.pdf
-+ https://pleiades.ucsc.edu/hyades/PF_on_Mac_OS_X
-
 **How to Contribute**
 ---
 
@@ -105,3 +97,6 @@ Options:
 
 + [@shobrook](www.github.com/shobrook) for logo and UI design assistance
 + Base logo vector made by [Freepik](https://www.freepik.com/) from [Flaticon](www.flaticon.com)
++ [drduh's macOS-Security-and-Privacy-Guide](https://github.com/drduh/macOS-Security-and-Privacy-Guide) was incredibly helpful while I was building the firewall security options.
++ http://newosxbook.com/files/moxii3/AppendixA.pdf
++ https://pleiades.ucsc.edu/hyades/PF_on_Mac_OS_X
