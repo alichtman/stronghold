@@ -1,12 +1,7 @@
 # stronghold
 
-<!-- [![build](https://img.shields.io/wercker/ci/wercker/docs.svg)]() -->
-<!-- ![Made With Python](img/made-with-python.png) -->
-<!-- ![PRs Welcome](img/PRs-welcome.png) -->
-<!-- Add Travis CI -->
-<!-- [![Build Status](https://travis-ci.org/bevacqua/awesome-badges.svg?branch=master)](https://travis-ci.org/bevacqua/awesome-badges) -->
-
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/alichtman/stronghold/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/qubyte/rubidium.svg)](https://github.com/alichtman/stronghold)
 ![status](https://img.shields.io/pypi/status/Django.svg)
 
 `stronghold` is the easiest way to securely configure your Mac.
@@ -20,6 +15,7 @@ Previously `fortify`.
 
 * [awesome-cli-apps](https://github.com/agarrharr/awesome-cli-apps)
 * [awesome-mac](https://github.com/jaywcjlove/awesome-mac)
+* [awesome-shell](https://github.com/alebcay/awesome-shell)
 * [open-source-mac-os-apps](https://github.com/serhii-londar/open-source-mac-os-apps)
 * [osx-and-ios-security-awesome](https://github.com/ashishb/osx-and-ios-security-awesome)
 * [python-macadmin-tools](https://github.com/timsutton/python-macadmin-tools)
