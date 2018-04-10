@@ -101,6 +101,7 @@ Options:
 3. Submit Pull Request with comprehensive description of changes
 
 **Acknowledgements**
+---
 
 + [@shobrook](www.github.com/shobrook) for logo and UI design assistance
 + Base logo vector made by [Freepik](https://www.freepik.com/) from [Flaticon](www.flaticon.com)
