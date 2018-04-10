@@ -1,8 +1,4 @@
-# stronghold
-
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/alichtman/stronghold/blob/master/LICENSE)
-![status](https://img.shields.io/pypi/status/Django.svg)
-<!-- [![GitHub release](https://img.shields.io/github/release/qubyte/rubidium.svg)](https://github.com/alichtman/stronghold) -->
+![stronghold logo](img/stronghold-logo-left.png)
 
 `stronghold` is the easiest way to securely configure your Mac.
 
@@ -11,7 +7,10 @@
 Designed for MacOS Sierra and High Sierra.
 Previously `fortify`.
 
-**`stronghold` is featured on these lists!**
+**Featured On**
+---
+
+`stronghold` is featured on these lists!
 
 * [awesome-cli-apps](https://github.com/agarrharr/awesome-cli-apps)
 * [awesome-mac](https://github.com/jaywcjlove/awesome-mac)
@@ -67,7 +66,6 @@ Options:
     + Disable Captive Portal Assistant and force login through browser on untrusted networks?
     	- On an untrusted network, Captive Portal could be triggered and direct you to a malicious site WITHOUT any user interaction.
 
-
 3. User Metadata Storage
 
     + Clear language modeling data?
@@ -101,3 +99,8 @@ Options:
 1. Clone repo and create a new branch: `$ git checkout https://github.com/alichtman/stronghold -b name_for_new_branch`.
 2. Make changes and test
 3. Submit Pull Request with comprehensive description of changes
+
+**Acknowledgements**
+
++ [@shobrook](www.github.com/shobrook) for logo and UI design assistance
++ Base logo vector made by [Freepik](https://www.freepik.com/) from [Flaticon](www.flaticon.com)
