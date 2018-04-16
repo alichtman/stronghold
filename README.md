@@ -51,25 +51,26 @@ Options:
 
 1. Firewall
 
-    + Enable Firewall?
-    	- This helps protect your Mac from being attacked over the internet by viruses and worms.
-    + Enable Logging?
-    	- If there is an infection, logs are helpful for determining the source.
-    + Enable Stealth Mode?
-    	- If enabled, your Mac will not respond to network discovery attempts with ICMP ping requests, and will not answer connection attempts made from closed TCP and UDP networks.
+    + Turn on Firewall?
+        - This helps protect your Mac from being attacked over the internet.
+    + Turn on logging?
+        - If there IS an infection, logs are useful for determining the source.
+    + Turn on stealth mode?
+        - Your Mac will not respond to ICMP ping requests or connection attempts from closed TCP and UDP networks.
 
-2. System Protection
+2. General System Protection
 
     + Enable Gatekeeper?
-    	- Protect against malware by enforcing code signing and verifying downloaded applications before letting them to run.
+    	- Defend against malware by enforcing code signing and verifying downloaded applications before allowing them to run.
     + Prevent automatic software whitelisting?
+        - Both built-in and downloaded software will require user approval for whitelisting.
     + Disable Captive Portal Assistant and force login through browser on untrusted networks?
-    	- On an untrusted network, Captive Portal could be triggered and direct you to a malicious site WITHOUT any user interaction.
+        - Captive Portal Assistant could be triggered and direct you to a malicious site WITHOUT any user interaction.
 
 3. User Metadata Storage
 
-    + Clear language modeling data?
-    	- This includes user spelling and suggestion data.
+    + Clear language modeling metadata?
+        - This includes user spelling, typing and suggestion data.
     + Disable language modeling data collection?
     + Clear QuickLook metadata?
     + Clear Downloads metadata?
@@ -82,6 +83,7 @@ Options:
     + Display all file extensions?
     	- This prevents malware from disguising itself as another file type.
     + Disable saving documents to the cloud by default?
+        - This prevents sensitive documents from being unintentionally stored on the cloud.
     + Show hidden files in Finder?
     	- This lets you see all files on the system without having to use the terminal.
 
@@ -95,8 +97,6 @@ Options:
 **Acknowledgements**
 ---
 
-+ [@shobrook](www.github.com/shobrook) for logo and UI design assistance
-+ Base logo vector made by [Freepik](https://www.freepik.com/) from [Flaticon](www.flaticon.com)
-+ [drduh's macOS-Security-and-Privacy-Guide](https://github.com/drduh/macOS-Security-and-Privacy-Guide) was incredibly helpful while I was building the firewall security options.
-+ http://newosxbook.com/files/moxii3/AppendixA.pdf
-+ https://pleiades.ucsc.edu/hyades/PF_on_Mac_OS_X
++ [@shobrook](www.github.com/shobrook) for logo and UI design assistance.
++ Base logo vector made by [Freepik](https://www.freepik.com/) from [Flaticon](www.flaticon.com).
++ [drduh's macOS-Security-and-Privacy-Guide](https://github.com/drduh/macOS-Security-and-Privacy-Guide) and [Jonathan Levin's MacOS Security Guide](http://newosxbook.com/files/moxii3/AppendixA.pdf) were incredibly helpful while I was building `stronghold`.

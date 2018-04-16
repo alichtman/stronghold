@@ -135,14 +135,14 @@ def system_protection_config():
 
 	# Enable Gatekeeper
 	if prompt_yes_no(top_line="-> Enable Gatekeeper?",
-	                 bottom_line="Protect against malware by enforcing code signing and verifying downloaded applications before letting them to run."):
+	                 bottom_line="Defend against malware by enforcing code signing and verifying downloaded applications before letting them to run."):
 		print_confirmation("Enabling Gatekeeper...")
 		sp.run('sudo spctl --master-enable', shell=True, stdout=sp.PIPE)
 		sp.run('sudo spctl --enable --label "Developer ID"', shell=True, stdout=sp.PIPE)
 
 	# Disable automatic software whitelisting
 	if prompt_yes_no(top_line="-> Prevent automatic software whitelisting?",
-	                 bottom_line="Both Built-in and downloaded software will require user approval for whitelisting."):
+	                 bottom_line="Both built-in and downloaded software will require user approval for whitelisting."):
 		print_confirmation("Preventing automatic whitelisting...")
 		sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsigned', 'off'], stdout=sp.PIPE)
 		sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsignedapp', 'off'], stdout=sp.PIPE)
@@ -230,7 +230,7 @@ def user_safety_config():
 		sp.run(['defaults', 'write', 'NSGlobalDomain', 'AppleShowAllExtensions', '-bool', 'true'], stdout=sp.PIPE)
 
 	if prompt_yes_no(top_line="-> Disable saving to the cloud by default?",
-	                 bottom_line="This prevents sensitive documents from being unintentionally stored to the cloud."):
+	                 bottom_line="This prevents sensitive documents from being unintentionally stored on the cloud."):
 		print_confirmation("Disabling cloud saving by default...")
 		sp.run(['defaults', 'write', 'NSGlobalDomain', 'NSDocumentSaveNewDocumentsToCloud', '-bool', 'false'], stdout=sp.PIPE)
 
