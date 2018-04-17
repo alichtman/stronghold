@@ -1,5 +1,7 @@
 ![stronghold logo](img/stronghold-logo-left.png)
 
+[![Downloads](http://pepy.tech/badge/stronghold)](http://pepy.tech/count/stronghold)
+
 `stronghold` is the easiest way to securely configure your Mac.
 
 ![GIF demo](img/demo.gif)

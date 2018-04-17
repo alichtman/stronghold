@@ -57,7 +57,7 @@ setup(
     # For a list of valid classifiers, see
     # https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[  # Optional
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 5 - Production/Stable',
 
         'Intended Audience :: Developers',
         'Intended Audience :: End Users/Desktop',
