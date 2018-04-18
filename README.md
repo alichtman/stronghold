@@ -45,7 +45,10 @@ Options:
     + `$ pip install stronghold`
     + `$ stronghold`
 
-2. Download the `stronghold` binary from Releases tab.
+2. Download and run the `stronghold-script.sh` shell script.
+    + `$ sudo ./stronghold-script.sh`
+
+3. Download the `stronghold` binary from Releases tab.
 
 
 **Configuration Options**
