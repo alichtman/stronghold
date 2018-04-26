@@ -17,6 +17,7 @@ Previously `fortify`.
 * [awesome-cli-apps](https://github.com/agarrharr/awesome-cli-apps)
 * [awesome-mac](https://github.com/jaywcjlove/awesome-mac)
 * [awesome-shell](https://github.com/alebcay/awesome-shell)
+* [mac-setup](https://github.com/sb2nov/mac-setup)
 * [open-source-mac-os-apps](https://github.com/serhii-londar/open-source-mac-os-apps)
 * [osx-and-ios-security-awesome](https://github.com/ashishb/osx-and-ios-security-awesome)
 * [python-macadmin-tools](https://github.com/timsutton/python-macadmin-tools)
