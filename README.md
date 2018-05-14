@@ -14,14 +14,15 @@ Previously `fortify`.
 
 `stronghold` is featured on these lists!
 
-* [awesome-cli-apps](https://github.com/agarrharr/awesome-cli-apps)
-* [awesome-mac](https://github.com/jaywcjlove/awesome-mac)
-* [awesome-shell](https://github.com/alebcay/awesome-shell)
-* [mac-setup](https://github.com/sb2nov/mac-setup)
-* [open-source-mac-os-apps](https://github.com/serhii-londar/open-source-mac-os-apps)
-* [osx-and-ios-security-awesome](https://github.com/ashishb/osx-and-ios-security-awesome)
-* [python-macadmin-tools](https://github.com/timsutton/python-macadmin-tools)
-* [tools-osx](https://github.com/morgant/tools-osx)
+* [agarrharr/awesome-cli-apps](https://github.com/agarrharr/awesome-cli-apps)
+* [jaywcjlove/awesome-mac](https://github.com/jaywcjlove/awesome-mac)
+* [alebcay/awesome-shell](https://github.com/alebcay/awesome-shell)
+* [drduh/macOS-Security-and-Privacy-Guide](https://github.com/drduh/macOS-Security-and-Privacy-Guide#related-software)
+* [sb2nov/mac-setup](https://github.com/sb2nov/mac-setup)
+* [serhii-londar/open-source-mac-os-apps](https://github.com/serhii-londar/open-source-mac-os-apps)
+* [ashishb/osx-and-ios-security-awesome](https://github.com/ashishb/osx-and-ios-security-awesome)
+* [timsutton/python-macadmin-tools](https://github.com/timsutton/python-macadmin-tools)
+* [morgant/tools-osx](https://github.com/morgant/tools-osx)
 
 **Usage**
 ---
@@ -105,4 +106,4 @@ Options:
 
 + [@shobrook](www.github.com/shobrook) for logo and UI design assistance.
 + Base logo vector made by [Freepik](https://www.freepik.com/) from [Flaticon](www.flaticon.com).
-+ [drduh's macOS-Security-and-Privacy-Guide](https://github.com/drduh/macOS-Security-and-Privacy-Guide) and [Jonathan Levin's MacOS Security Guide](http://newosxbook.com/files/moxii3/AppendixA.pdf) were incredibly helpful while I was building `stronghold`.
++ [drduh's macOS-Security-and-Privacy-Guide](https://github.com/drduh/macOS-Security-and-Privacy-Guide) and [Jonathan Levin's MacOS Security Guide](http://newosxbook.com/files/moxii3/AppendixA.pdf) were incredibly helpful while I was building `stronghold`. `stronghold` is featured in the `Related software` section.
