@@ -12,8 +12,6 @@ Previously `fortify`.
 **Featured On**
 ---
 
-`stronghold` is featured on these lists!
-
 * [agarrharr/awesome-cli-apps](https://github.com/agarrharr/awesome-cli-apps)
 * [jaywcjlove/awesome-mac](https://github.com/jaywcjlove/awesome-mac)
 * [alebcay/awesome-shell](https://github.com/alebcay/awesome-shell)
