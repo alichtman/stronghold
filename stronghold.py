@@ -247,26 +247,32 @@ def user_safety_config():
 def final_configuration():
 	print_section_header("FINAL CONFIGURATION STEPS", Fore.BLUE)
 
-	if prompt_yes_no(top_line="-> Restart your Mac right now?",
-	                 bottom_line="This is necessary for some configuration changes to take effect."):
-		print_confirmation("Configuration complete after restart!")
-		print(Fore.YELLOW + Style.BRIGHT + "Restarting in 5 seconds..." + Style.RESET_ALL)
-		sleep(1)
-		print(Fore.YELLOW + Style.BRIGHT + "4..." + Style.RESET_ALL)
-		sleep(1)
-		print(Fore.YELLOW + Style.BRIGHT + "3..." + Style.RESET_ALL)
-		sleep(1)
-		print(Fore.YELLOW + Style.BRIGHT + "2..." + Style.RESET_ALL)
-		sleep(1)
-		print(Fore.YELLOW + Style.BRIGHT + "1..." + Style.RESET_ALL)
-		sleep(1)
-		if sp.run(['sudo', 'shutdown', '-r', 'now'], shell=True, stdout=sp.PIPE) != 0:
-			print(Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary." + Style.RESET_ALL)
-			sys.exit()
+	print(Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary." + Style.RESET_ALL)
+	print(Fore.YELLOW + Style.BRIGHT + "If you have any suggestions for stronghold, open an issue at: https://github.com/alichtman/stronghold/issues/new" + Style.RESET_ALL)
+	sys.exit()
 
-	else:
-		print(Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary." + Style.RESET_ALL)
-		sys.exit()
+	# Removed due to bug with sudo reboot.
+
+	# if prompt_yes_no(top_line="-> Restart your Mac right now?",
+	#                  bottom_line="This is necessary for some configuration changes to take effect."):
+	# 	print_confirmation("Configuration complete after restart!")
+	# 	print(Fore.YELLOW + Style.BRIGHT + "Restarting in 5 seconds..." + Style.RESET_ALL)
+	# 	sleep(1)
+	# 	print(Fore.YELLOW + Style.BRIGHT + "4..." + Style.RESET_ALL)
+	# 	sleep(1)
+	# 	print(Fore.YELLOW + Style.BRIGHT + "3..." + Style.RESET_ALL)
+	# 	sleep(1)
+	# 	print(Fore.YELLOW + Style.BRIGHT + "2..." + Style.RESET_ALL)
+	# 	sleep(1)
+	# 	print(Fore.YELLOW + Style.BRIGHT + "1..." + Style.RESET_ALL)
+	# 	sleep(1)
+	# 	if sp.run(['sudo', 'shutdown', '-r', 'now'], shell=True, stdout=sp.PIPE) != 0:
+	# 		print(Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary." + Style.RESET_ALL)
+	# 		sys.exit()
+
+	# else:
+	# 	print(Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary." + Style.RESET_ALL)
+	# 	sys.exit()
 
 
 def lockdown_procedure():
