@@ -21,6 +21,7 @@ Previously `fortify`.
 * [serhii-londar/open-source-mac-os-apps](https://github.com/serhii-londar/open-source-mac-os-apps)
 * [ashishb/osx-and-ios-security-awesome](https://github.com/ashishb/osx-and-ios-security-awesome)
 * [timsutton/python-macadmin-tools](https://github.com/timsutton/python-macadmin-tools)
+* [zbetcheckin/Security_list](https://github.com/zbetcheckin/Security_list)
 * [morgant/tools-osx](https://github.com/morgant/tools-osx)
 
 **Usage**
