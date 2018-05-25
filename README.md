@@ -104,7 +104,7 @@ Options:
 **Acknowledgements**
 ---
 
-+ [@shobrook](www.github.com/shobrook) for logo and UI design assistance.
++ [@shobrook](https://www.github.com/shobrook) for logo and UI design assistance.
 + Base logo vector made by [Freepik](https://www.freepik.com/) from [Flaticon](www.flaticon.com).
 + [drduh's macOS-Security-and-Privacy-Guide](https://github.com/drduh/macOS-Security-and-Privacy-Guide) and [Jonathan Levin's MacOS Security Guide](http://newosxbook.com/files/moxii3/AppendixA.pdf) were incredibly helpful while I was building `stronghold`.
 
