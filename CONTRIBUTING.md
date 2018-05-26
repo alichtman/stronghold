@@ -8,7 +8,7 @@ The following is a set of guidelines for contributing. These are mostly guidelin
 
 1. [Code of Conduct](#code-of-conduct)
 1. [Styleguides](#styleguides)
-  	+ [Content](#content)
+  	+ [Code](#code)
   	+ [Issues](#issues)
   	+ [Pull Requests](#pull-requests)
   	+ [Commit Messages](#commit-messages)
