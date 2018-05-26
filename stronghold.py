@@ -196,8 +196,8 @@ def metadata_storage_config():
 		sp.run('sudo chflags schg ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2', shell=True, stdout=sp.PIPE)
 
 	# TODO: ERRORS
-		# chmod: ~/Library/Application Support/Quick Look: No such file or directory
-		# chflags: ~/Library/Application Support/Quick Look: No such file or directory
+	# chmod: ~/Library/Application Support/Quick Look: No such file or directory
+	# chflags: ~/Library/Application Support/Quick Look: No such file or directory
 
 	# if prompt_yes_no(bottom_line="Disable QuickLook data logging?"):
 	# 	print_confirmation("Disabling QuickLook data logging...")
@@ -239,6 +239,12 @@ def user_safety_config():
 		print_confirmation("Displaying hidden files in Finder...")
 		sp.run(['defaults', 'write', 'com.apple.finder', 'AppleShowAllFiles', '-boolean', 'true'], shell=True, stdout=sp.PIPE)
 
+	if prompt_yes_no(top_line="-> Disable printer sharing?",
+	                 bottom_line="Offers redundancy in case the Firewall was not configured."):
+		print_confirmation("Disabling printer sharing...")
+		sp.run(['cupsctl', '--no-share-printers'], shell=True, stdout=sp.PIPE)
+
+
 	# Reset finder after messing with it.
 	print_confirmation("Resetting Finder to finalize changes...")
 	sp.run(['killAll', 'Finder'], stdout=sp.PIPE)
@@ -247,11 +253,15 @@ def user_safety_config():
 def final_configuration():
 	print_section_header("FINAL CONFIGURATION STEPS", Fore.BLUE)
 
-	print(Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary." + Style.RESET_ALL)
-	print(Fore.YELLOW + Style.BRIGHT + "If you have any suggestions for stronghold, open an issue at: https://github.com/alichtman/stronghold/issues/new" + Style.RESET_ALL)
+	print(Fore.RED + Style.BRIGHT + "WARNING: Secure Configuration not complete! At a minimum, a full restart is necessary." + Style.RESET_ALL)
+	print(Fore.YELLOW + Style.BRIGHT + "\nNEXT STEPS...\n" + Style.RESET_ALL)
+	print(Fore.YELLOW + Style.BRIGHT + "1. Fully disable Siri: https://apple.stackexchange.com/a/258981" + Style.RESET_ALL)
+	print(Fore.YELLOW + Style.BRIGHT + "2. Enable FileVault. (Check if it's enabled by running `$ fdesetup status`)" + Style.RESET_ALL)
+
+	print(Fore.YELLOW + Style.BRIGHT + "\nIf you have any suggestions for stronghold, open an issue at: https://github.com/alichtman/stronghold/issues/new" + Style.RESET_ALL)
 	sys.exit()
 
-	# Removed due to bug with sudo reboot.
+	# Removed due to sudo reboot bug.
 
 	# if prompt_yes_no(top_line="-> Restart your Mac right now?",
 	#                  bottom_line="This is necessary for some configuration changes to take effect."):
@@ -334,7 +344,6 @@ def lockdown_procedure():
 
 # Click custom help
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '-help'])
-
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.option('-lockdown', is_flag=True, default=False, help="Set secure configuration without user interaction.")

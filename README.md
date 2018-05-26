@@ -93,6 +93,8 @@ Options:
         - This prevents sensitive documents from being unintentionally stored on the cloud.
     + Show hidden files in Finder?
     	- This lets you see all files on the system without having to use the terminal.
+    + Disable printer sharing?
+        - Offers redundancy in case the Firewall was not configured.
 
 **How to Contribute**
 ---
