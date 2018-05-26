@@ -196,8 +196,8 @@ def metadata_storage_config():
 		sp.run('sudo chflags schg ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2', shell=True, stdout=sp.PIPE)
 
 	# TODO: ERRORS
-		# chmod: ~/Library/Application Support/Quick Look: No such file or directory
-		# chflags: ~/Library/Application Support/Quick Look: No such file or directory
+	# chmod: ~/Library/Application Support/Quick Look: No such file or directory
+	# chflags: ~/Library/Application Support/Quick Look: No such file or directory
 
 	# if prompt_yes_no(bottom_line="Disable QuickLook data logging?"):
 	# 	print_confirmation("Disabling QuickLook data logging...")
@@ -261,7 +261,7 @@ def final_configuration():
 	print(Fore.YELLOW + Style.BRIGHT + "\nIf you have any suggestions for stronghold, open an issue at: https://github.com/alichtman/stronghold/issues/new" + Style.RESET_ALL)
 	sys.exit()
 
-	# Removed due to bug with sudo reboot.
+	# Removed due to sudo reboot bug.
 
 	# if prompt_yes_no(top_line="-> Restart your Mac right now?",
 	#                  bottom_line="This is necessary for some configuration changes to take effect."):
@@ -344,7 +344,6 @@ def lockdown_procedure():
 
 # Click custom help
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '-help'])
-
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.option('-lockdown', is_flag=True, default=False, help="Set secure configuration without user interaction.")
