@@ -254,11 +254,11 @@ def final_configuration():
 	print_section_header("FINAL CONFIGURATION STEPS", Fore.BLUE)
 
 	print(Fore.RED + Style.BRIGHT + "WARNING: Secure Configuration not complete! At a minimum, a full restart is necessary." + Style.RESET_ALL)
-	print(Fore.YELLOW + Style.BRIGHT + "\nNEXT STEPS...\n" + Style.RESET_ALL)
-	print(Fore.YELLOW + Style.BRIGHT + "1. Fully disable Siri: https://apple.stackexchange.com/a/258981" + Style.RESET_ALL)
-	print(Fore.YELLOW + Style.BRIGHT + "2. Enable FileVault. (Check if it's enabled by running `$ fdesetup status`)" + Style.RESET_ALL)
-
-	print(Fore.YELLOW + Style.BRIGHT + "\nIf you have any suggestions for stronghold, open an issue at: https://github.com/alichtman/stronghold/issues/new" + Style.RESET_ALL)
+	print(Fore.YELLOW + Style.BRIGHT + "\nNEXT STEPS...\n")
+	print("1. Fully disable Siri: https://apple.stackexchange.com/a/258981")
+	print("2. Enable FileVault. (Check if it's enabled by running `$ fdesetup status`)")
+	print("3. Make sure everything in the Settings > Sharing menu is disabled if you're not using it.")
+	print("\nIf you have any suggestions for stronghold, open an issue at: https://github.com/alichtman/stronghold/issues/new" + Style.RESET_ALL)
 	sys.exit()
 
 	# Removed due to sudo reboot bug.
