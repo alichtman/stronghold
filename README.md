@@ -36,7 +36,7 @@ Usage: stronghold.py [OPTIONS]
 
 Options:
   -lockdown  Set secure configuration without user interaction.
-  -info      Display version and author information and exit.
+  -v         Display version and author information and exit.
   -help, -h  Show this message and exit.
 ```
 
