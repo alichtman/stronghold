@@ -86,9 +86,9 @@ setup(
     # For an analysis of "install_requires" vs pip's requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=[
-        'colorama',
-        'inquirer',
-        'click'
+        'colorama>=0.3.9',
+        'inquirer>=2.2.0',
+        'Click'
     ],
 
     # To provide executable scripts, use entry points in preference to the
