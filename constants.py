@@ -1,6 +1,6 @@
 class Constants:
 	PROJECT_NAME = 'stronghold'
-	VERSION = '1.2'
+	VERSION = '1.3'
 	AUTHOR_GITHUB = 'alichtman'
 	AUTHOR_FULL_NAME = 'Aaron Lichtman'
 	DESCRIPTION = "Securely configure your Mac from the terminal."

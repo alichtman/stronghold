@@ -76,6 +76,8 @@ def splash_intro():
 	      "                                           Y8b d88P \n" +
 	      "                                            \"Y88P\n" + Style.RESET_ALL)
 
+	print(Fore.RED + Style.BRIGHT + "Built by Aaron Lichtman. (Github: alichtman)\n" + Style.RESET_ALL)
+
 	print(Fore.BLUE + Style.BRIGHT + "Stronghold is a security configuration tool for MacOS Sierra and High Sierra.")
 	print("You may be asked for a sudo password." + Style.RESET_ALL + "\n")
 
@@ -83,7 +85,7 @@ def splash_intro():
 
 	print(Fore.RED + Style.BRIGHT + "\t0. Make the terminal window as large as possible.")
 	print("\t1. Ensure you have up-to-date system backups.")
-	print("\t2. Do not key-mash through this script.\n" + Style.RESET_ALL)
+	print("\t2. Read the prompts carefully.\n" + Style.RESET_ALL)
 
 	if not prompt_yes_no(bottom_line="I have read the above carefully and want to continue"):
 		sys.exit(0)
