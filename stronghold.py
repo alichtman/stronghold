@@ -258,6 +258,7 @@ def final_configuration():
 	print("1. Fully disable Siri: https://apple.stackexchange.com/a/258981")
 	print("2. Enable FileVault. (Check if it's enabled by running `$ fdesetup status`)")
 	print("3. Make sure everything in the Settings > Sharing menu is disabled if you're not using it.")
+	print("4. For the most secure configuration, check out Objective-See's Free OSX Security Tools: https://objective-see.com/products.html")
 	print("\nIf you have any suggestions for stronghold, open an issue at: https://github.com/alichtman/stronghold/issues/new" + Style.RESET_ALL)
 	sys.exit()
 
