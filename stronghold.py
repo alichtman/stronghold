@@ -350,18 +350,17 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '-help'])
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.option('-lockdown', is_flag=True, default=False, help="Set secure configuration without user interaction.")
-@click.option('-info', is_flag=True, default=False, help='Display version and author information and exit.')
-def cli(lockdown, info):
+@click.option('-v', is_flag=True, default=False, help='Display version and author information and exit.')
+def cli(lockdown, v):
 	"""Securely configure your Mac.
 
 	Developed by Aaron Lichtman -> (Github: alichtman)"""
 
 	# Print author and version information and exit
-	if info:
-		print('stronghold v{0} by {1} -> Github: {2}\nSource Code: {3}'.format(Constants.VERSION,
-		                                                                       Constants.AUTHOR_FULL_NAME,
-		                                                                       Constants.AUTHOR_GITHUB,
-		                                                                       Constants.URL[0]))
+	if v:
+		print('stronghold v{0} by {1} -> Github: {2}'.format(Constants.VERSION,
+		                                                     Constants.AUTHOR_FULL_NAME,
+		                                                     Constants.AUTHOR_GITHUB,))
 		sys.exit()
 
 	# Lockdown
