@@ -6,23 +6,7 @@
 
 ![GIF demo](img/demo.gif)
 
-Designed for MacOS Sierra and High Sierra.
-Previously `fortify`.
-
-**Featured On**
----
-
-* [agarrharr/awesome-cli-apps](https://github.com/agarrharr/awesome-cli-apps)
-* [jaywcjlove/awesome-mac](https://github.com/jaywcjlove/awesome-mac)
-* [smashism/awesome-macadmin-tools](https://github.com/smashism/awesome-macadmin-tools)
-* [alebcay/awesome-shell](https://github.com/alebcay/awesome-shell)
-* [drduh/macOS-Security-and-Privacy-Guide](https://github.com/drduh/macOS-Security-and-Privacy-Guide#related-software)
-* [sb2nov/mac-setup](https://github.com/sb2nov/mac-setup)
-* [serhii-londar/open-source-mac-os-apps](https://github.com/serhii-londar/open-source-mac-os-apps)
-* [ashishb/osx-and-ios-security-awesome](https://github.com/ashishb/osx-and-ios-security-awesome)
-* [timsutton/python-macadmin-tools](https://github.com/timsutton/python-macadmin-tools)
-* [zbetcheckin/Security_list](https://github.com/zbetcheckin/Security_list)
-* [morgant/tools-osx](https://github.com/morgant/tools-osx)
+Designed for macOS Sierra and High Sierra. *Not yet tested on macOS Mojave, but I'm working on updating it!*
 
 **Usage**
 ---
