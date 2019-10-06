@@ -298,7 +298,10 @@ def final_configuration():
 	# else:
 	# 	print(Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary." + Style.RESET_ALL)
 	# 	sys.exit()
-
+def run_command(command):
+	""" Runs a shell command using subprocess call"""
+	command_list = command.split()
+	return sp.run(command_list, stdout=sp.PIPE)
 
 def lockdown_procedure():
 	"""Set secure config without any user interaction."""
@@ -307,37 +310,37 @@ def lockdown_procedure():
 	print_confirmation("Set secure configuration without user interaction.")
 
 	# Get sudo priv
-	sp.run("sudo -E -v", shell=True, stdout=sp.PIPE)
+	run_command("sudo -E -v")
 
 	####
 	# FIREWALL
 	####
 
-	sp.run(['sudo', 'launchctl', 'load', '/System/Library/LaunchDaemons/com.apple.alf.agent.plist'], stdout=sp.PIPE)
-	sp.run(['sudo', 'launchctl', 'load', '/System/Library/LaunchAgents/com.apple.alf.useragent.plist'], stdout=sp.PIPE)
-	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setglobalstate', 'on'], stdout=sp.PIPE)
-	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setloggingmode', 'on'], stdout=sp.PIPE)
-	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setstealthmode', 'on'], stdout=sp.PIPE)
-	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsigned', 'off'], stdout=sp.PIPE)
-	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsignedapp', 'off'], stdout=sp.PIPE)
-	sp.run(['sudo', 'pkill', '-HUP', 'socketfilterfw'], stdout=sp.PIPE)
+	run_command("sudo launchctl load /System/Library/LaunchDaemons/com.apple.alf.agent.plist")
+	run_command("sudo launchctl load /System/Library/LaunchAgents/com.apple.alf.useragent.plist")
+	run_command("sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on")
+	run_command("sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on")
+	run_command("sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on")
+	run_command("sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsigned off")
+	run_command("sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsignedapp off")
+	run_command("sudo pkill -HUP socketfilterfw")
 
 	####
 	# SYSTEM PROTECTION
 	####
 
-	sp.run('sudo spctl --master-enable', shell=True, stdout=sp.PIPE)
-	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsigned', 'off'], stdout=sp.PIPE)
-	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsignedapp', 'off'], stdout=sp.PIPE)
-	sp.run(['sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.captive.control Active -bool false'], stdout=sp.PIPE)
+	run_command("sudo spctl --master-enable")
+	run_command("sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsigned off")
+	run_command("sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsignedapp off")
+	run_command("sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.captive.control Active -bool false")
 
 	####
 	# METADATA STORAGE
 	####
 
-	sp.run(['rm', '-rfv', '"~/Library/LanguageModeling/*"', '"~/Library/Spelling/*"', '"~/Library/Suggestions/*"'])
-	sp.run(['rm', '-rfv', '"~/Library/Application Support/Quick Look/*"'], stdout=sp.PIPE)
-	sp.run([':>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2'], shell=True, stdout=sp.PIPE)
+	run_command("rm -rfv '~/Library/LanguageModeling/*' '~/Library/Spelling/*' '~/Library/Suggestions/*'")
+	run_command("rn -rfv '~/Library/Application Support/Quick Look/*'")
+	run_command(":>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2")
 
 	####
 	# DAEMONS
@@ -350,12 +353,12 @@ def lockdown_procedure():
 	# USER SAFETY
 	####
 
-	sp.run(['defaults', 'write', 'com.apple.screensaver', 'askForPassword', '-int', '1'], stdout=sp.PIPE)
-	sp.run(['defaults', 'write', 'com.apple.screensaver', 'askForPasswordDelay', '-int', '0'], stdout=sp.PIPE)
-	sp.run(['defaults', 'write', 'NSGlobalDomain', 'AppleShowAllExtensions', '-bool', 'true'], stdout=sp.PIPE)
-	sp.run(['defaults', 'write', 'NSGlobalDomain', 'NSDocumentSaveNewDocumentsToCloud', '-bool', 'false'], stdout=sp.PIPE)
-	sp.run(['defaults', 'write', 'com.apple.finder', 'AppleShowAllFiles', '-boolean', 'true'], shell=True, stdout=sp.PIPE)
-	sp.run(['killAll', 'Finder'], stdout=sp.PIPE)
+	run_command("defaults write com.apple.screensaver askForPassword -int 1")
+	run_command("defaults write com.apple.screensaver askForPasswordDelay -int 0")
+	run_command("defaults write NSGlobalDomain AppleShowAllExtensions -bool true")
+	run_command("defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false")
+	run_command("defaults write com.apple.finder AppleShowAllFiles -boolean true")
+	run_command("killAll Finder")
 
 	####
 	# RESTART
