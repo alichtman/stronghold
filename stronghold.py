@@ -126,6 +126,18 @@ def firewall_config():
 			print_confirmation("Enabling stealth mode...")
 			sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setstealthmode', 'on'], stdout=sp.PIPE)
 
+		# Remote login
+		if not prompt_yes_no(top_line="-> Do you use SSH?",
+						 bottom_line="If no, remote login will be turned off."):
+			print_confirmation("Disabling ssh daemon...")
+			sp.run('sudo systemsetup -f -setremotelogin off', shell=True, stdout=sp.PIPE)
+
+		# Apache server
+		if not prompt_yes_no(top_line="-> Do you want Apache to autostart?",
+							 bottom_line="Apache is a web server. If you are unfamiliar with it, disable it."):
+			print_confirmation("Disabling httpd...")
+			sp.run('sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist', shell=True, stdout=sp.PIPE)
+
 		print_confirmation("Resetting firewall to finalize changes...")
 		sp.run('sudo pkill -HUP socketfilterfw', shell=True, stdout=sp.PIPE)
 
@@ -326,6 +338,13 @@ def lockdown_procedure():
 	sp.run(['rm', '-rfv', '"~/Library/LanguageModeling/*"', '"~/Library/Spelling/*"', '"~/Library/Suggestions/*"'])
 	sp.run(['rm', '-rfv', '"~/Library/Application Support/Quick Look/*"'], stdout=sp.PIPE)
 	sp.run([':>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2'], shell=True, stdout=sp.PIPE)
+
+	####
+	# DAEMONS
+	####
+
+	sp.run('sudo systemsetup -f -setremotelogin off', shell=True, stdout=sp.PIPE)
+	sp.run('sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist', shell=True, stdout=sp.PIPE)
 
 	####
 	# USER SAFETY
