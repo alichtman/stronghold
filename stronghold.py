@@ -261,7 +261,7 @@ def user_safety_config():
 	if prompt_yes_no(top_line="-> Show hidden files in Finder?",
 	                 bottom_line="This lets you see all files on the system without having to use the terminal."):
 		print_confirmation("Displaying hidden files in Finder...")
-		sp.run(['defaults', 'write', 'com.apple.finder', 'AppleShowAllFiles', '-boolean', 'true'], shell=True, stdout=sp.PIPE)
+		sp.run(['defaults', 'write', 'com.apple.finder', 'AppleShowAllFiles', '-boolean', 'true'], stdout=sp.PIPE)
 
 	if prompt_yes_no(top_line="-> Disable printer sharing?",
 	                 bottom_line="Offers redundancy in case the Firewall was not configured."):
@@ -364,7 +364,7 @@ def lockdown_procedure():
 	sp.run(['defaults', 'write', 'com.apple.screensaver', 'askForPasswordDelay', '-int', '0'], stdout=sp.PIPE)
 	sp.run(['defaults', 'write', 'NSGlobalDomain', 'AppleShowAllExtensions', '-bool', 'true'], stdout=sp.PIPE)
 	sp.run(['defaults', 'write', 'NSGlobalDomain', 'NSDocumentSaveNewDocumentsToCloud', '-bool', 'false'], stdout=sp.PIPE)
-	sp.run(['defaults', 'write', 'com.apple.finder', 'AppleShowAllFiles', '-boolean', 'true'], shell=True, stdout=sp.PIPE)
+	sp.run(['defaults', 'write', 'com.apple.finder', 'AppleShowAllFiles', '-boolean', 'true'], stdout=sp.PIPE)
 	sp.run(['killAll', 'Finder'], stdout=sp.PIPE)
 
 	####

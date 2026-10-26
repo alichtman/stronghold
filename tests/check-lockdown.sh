@@ -22,4 +22,5 @@ check "Gatekeeper on" '^assessments enabled' spctl --status
 check "Captive portal off" '^0$' defaults read /Library/Preferences/SystemConfiguration/com.apple.captive.control Active
 check "File extensions shown" '^1$' defaults read NSGlobalDomain AppleShowAllExtensions
 check "Cloud saving off" '^0$' defaults read NSGlobalDomain NSDocumentSaveNewDocumentsToCloud
+check "Hidden files shown" '^1$' defaults read com.apple.finder AppleShowAllFiles
 exit $status
