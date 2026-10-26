@@ -266,7 +266,7 @@ def user_safety_config():
 	if prompt_yes_no(top_line="-> Disable printer sharing?",
 	                 bottom_line="Offers redundancy in case the Firewall was not configured."):
 		print_confirmation("Disabling printer sharing...")
-		sp.run(['cupsctl', '--no-share-printers'], shell=True, stdout=sp.PIPE)
+		sp.run(['cupsctl', '--no-share-printers'], stdout=sp.PIPE)
 
 
 	# Reset finder after messing with it.
