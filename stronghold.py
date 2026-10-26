@@ -242,7 +242,7 @@ def metadata_storage_config():
 
 	if prompt_yes_no(bottom_line="-> Clear SiriAnalytics database?"):
 		print_confirmation("Clearing SiriAnalytics database...")
-		sp.run('rm -rfv ~/Library/Assistant/SiriAnalytics.db', shell=True, stdout=sp.PIPE)
+		sp.run('rm -rfv ~/Library/Assistant/SiriAnalytics.db*', shell=True, stdout=sp.PIPE)
 
 
 def user_safety_config():
