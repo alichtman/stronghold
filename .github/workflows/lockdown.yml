@@ -19,6 +19,7 @@ jobs:
           python-version: '3.12'
       - run: pip install . pexpect
       - run: for d in LanguageModeling Spelling Suggestions; do mkdir -p ~/Library/$d && touch ~/Library/$d/stronghold-test; done
+      - run: sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2 "INSERT INTO LSQuarantineEvent (LSQuarantineEventIdentifier) VALUES ('stronghold-test')"
       # No one can type the screen lock password here, so lockdown must say it was not applied.
       - run: |
           stronghold -lockdown < /dev/null | tee lockdown.txt; test "${PIPESTATUS[0]}" = 1
