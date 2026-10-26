@@ -108,6 +108,31 @@ def disable_captive_portal():
 	sp.run(['sudo', 'defaults', 'write', '/Library/Preferences/SystemConfiguration/com.apple.captive.control', 'Active', '-bool', 'false'], stdout=sp.PIPE)
 
 
+def clear_language_data():
+	sp.run('rm -rfv ~/Library/LanguageModeling/* ~/Library/Spelling/* ~/Library/Suggestions/*', shell=True, stdout=sp.PIPE)
+
+
+def block_language_data():
+	sp.run('sudo chmod -R 000 ~/Library/LanguageModeling ~/Library/Spelling ~/Library/Suggestions', shell=True, stdout=sp.PIPE)
+	sp.run('sudo chflags -R uchg ~/Library/LanguageModeling ~/Library/Spelling ~/Library/Suggestions', shell=True, stdout=sp.PIPE)
+
+
+def clear_quicklook_cache():
+	sp.run(['qlmanage', '-r', 'cache'], stdout=sp.PIPE)
+
+
+def clear_downloads_history():
+	sp.run("sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2 'DELETE FROM LSQuarantineEvent'", shell=True, stdout=sp.PIPE)
+
+
+def block_downloads_history():
+	sp.run('sudo chflags schg ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2', shell=True, stdout=sp.PIPE)
+
+
+def clear_siri_analytics():
+	sp.run('rm -rfv ~/Library/Assistant/SiriAnalytics.db*', shell=True, stdout=sp.PIPE)
+
+
 def splash_intro():
 	wordmark = (
 	      "\n .d8888b.  888                                      888               888      888 \n" +
@@ -231,12 +256,11 @@ def metadata_storage_config():
 	if prompt_yes_no(top_line="-> Clear language modeling metadata?",
 	                 bottom_line="This includes user spelling, typing and suggestion data."):
 		print_confirmation("Removing language modeling data...")
-		sp.run('rm -rfv ~/Library/LanguageModeling/* ~/Library/Spelling/* ~/Library/Suggestions/*', shell=True, stdout=sp.PIPE)
+		clear_language_data()
 
 	if prompt_yes_no(bottom_line="-> Disable language modeling data collection?"):
 		print_confirmation("Disabling language modeling data collection...")
-		sp.run('sudo chmod -R 000 ~/Library/LanguageModeling ~/Library/Spelling ~/Library/Suggestions', shell=True, stdout=sp.PIPE)
-		sp.run('sudo chflags -R uchg ~/Library/LanguageModeling ~/Library/Spelling ~/Library/Suggestions', shell=True, stdout=sp.PIPE)
+		block_language_data()
 
 	###
 	# QuickLook and Quarantine Data
@@ -245,7 +269,7 @@ def metadata_storage_config():
 	if prompt_yes_no(top_line="-> Clear QuickLook metadata?",
 	                 bottom_line="This resets the Quick Look thumbnail cache."):
 		print_confirmation("Removing QuickLook metadata...")
-		sp.run(['qlmanage', '-r', 'cache'], stdout=sp.PIPE)
+		clear_quicklook_cache()
 
 	###
 	# Downloads Metadata
@@ -254,11 +278,11 @@ def metadata_storage_config():
 	# TODO: BUG --> /bin/sh: /Users/alichtman/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2: Operation not permitted
 	if prompt_yes_no(bottom_line="-> Clear Downloads metadata?"):
 		print_confirmation("Removing Downloads metadata...")
-		sp.run("sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2 'DELETE FROM LSQuarantineEvent'", shell=True, stdout=sp.PIPE)
+		clear_downloads_history()
 
 	if prompt_yes_no(bottom_line="-> Disable metadata collection from Downloads?"):
 		print_confirmation("Disabling Quarantine data collection from downloaded files...")
-		sp.run('sudo chflags schg ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2', shell=True, stdout=sp.PIPE)
+		block_downloads_history()
 
 	# TODO: ERRORS
 	# chmod: ~/Library/Application Support/Quick Look: No such file or directory
@@ -275,7 +299,7 @@ def metadata_storage_config():
 
 	if prompt_yes_no(bottom_line="-> Clear SiriAnalytics database?"):
 		print_confirmation("Clearing SiriAnalytics database...")
-		sp.run('rm -rfv ~/Library/Assistant/SiriAnalytics.db*', shell=True, stdout=sp.PIPE)
+		clear_siri_analytics()
 
 
 def user_safety_config():
@@ -382,9 +406,9 @@ def lockdown_procedure():
 	# METADATA STORAGE
 	####
 
-	sp.run('rm -rfv ~/Library/LanguageModeling/* ~/Library/Spelling/* ~/Library/Suggestions/*', shell=True, stdout=sp.PIPE)
-	sp.run(['qlmanage', '-r', 'cache'], stdout=sp.PIPE)
-	sp.run("sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2 'DELETE FROM LSQuarantineEvent'", shell=True, stdout=sp.PIPE)
+	clear_language_data()
+	clear_quicklook_cache()
+	clear_downloads_history()
 
 	####
 	# DAEMONS
