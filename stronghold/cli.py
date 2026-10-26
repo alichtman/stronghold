@@ -471,6 +471,3 @@ def cli(lockdown, v):
 		user_safety_config()
 		final_configuration()
 
-
-if __name__ == '__main__':
-	cli()
