@@ -36,4 +36,5 @@ for question in QUESTIONS:
 	child.send('\r')
 wait_for(pexpect.EOF)
 child.close()
-sys.exit(child.exitstatus)
+# exitstatus is None when stronghold was killed by a signal.
+sys.exit(0 if child.exitstatus == 0 and child.signalstatus is None else 1)
