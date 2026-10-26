@@ -1,5 +1,5 @@
-name: Lockdown on macOS
-# Applies lockdown for real on disposable GitHub-hosted Macs.
+name: Apply settings on macOS
+# Applies Stronghold's settings for real on disposable GitHub-hosted Macs.
 on: [push, pull_request, workflow_dispatch]
 permissions:
   contents: read
@@ -9,6 +9,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-14, macos-15, macos-26]
+        mode: [lockdown, interactive]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 10
     steps:
@@ -16,7 +17,10 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
-      - run: pip install .
+      - run: pip install . pexpect
       - run: for d in LanguageModeling Spelling Suggestions; do mkdir -p ~/Library/$d && touch ~/Library/$d/stronghold-test; done
       - run: stronghold -lockdown < /dev/null  # No one can type the screen lock password here.
+        if: matrix.mode == 'lockdown'
+      - run: python tests/answer-questions.py
+        if: matrix.mode == 'interactive'
       - run: tests/check-lockdown.sh
