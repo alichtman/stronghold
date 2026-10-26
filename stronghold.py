@@ -339,7 +339,7 @@ def lockdown_procedure():
 	sp.run('sudo spctl --master-enable', shell=True, stdout=sp.PIPE)
 	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsigned', 'off'], stdout=sp.PIPE)
 	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsignedapp', 'off'], stdout=sp.PIPE)
-	sp.run(['sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.captive.control Active -bool false'], stdout=sp.PIPE)
+	sp.run(['sudo', 'defaults', 'write', '/Library/Preferences/SystemConfiguration/com.apple.captive.control', 'Active', '-bool', 'false'], stdout=sp.PIPE)
 
 	####
 	# METADATA STORAGE
