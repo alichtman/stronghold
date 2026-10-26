@@ -63,6 +63,13 @@ def print_abort(config_type):
 	sleep(1)
 
 
+def disable_service(label):
+	"""Stops a launchd system service and keeps it from starting again."""
+	sp.run(['sudo', 'launchctl', 'disable', 'system/' + label], stdout=sp.PIPE)
+	# bootout reports an error when the service was not running; that is fine.
+	sp.run(['sudo', 'launchctl', 'bootout', 'system/' + label], stdout=sp.PIPE, stderr=sp.PIPE)
+
+
 def splash_intro():
 	wordmark = (
 	      "\n .d8888b.  888                                      888               888      888 \n" +
@@ -140,7 +147,8 @@ def firewall_config():
 		if not prompt_yes_no(top_line="-> Do you use SSH?",
 						 bottom_line="If no, remote login will be turned off."):
 			print_confirmation("Disabling ssh daemon...")
-			sp.run('sudo systemsetup -f -setremotelogin off', shell=True, stdout=sp.PIPE)
+			# systemsetup -setremotelogin needs Full Disk Access on macOS 14 and later; launchctl does not.
+			disable_service('com.openssh.sshd')
 
 		# Apache server
 		if not prompt_yes_no(top_line="-> Do you want Apache to autostart?",
@@ -353,7 +361,7 @@ def lockdown_procedure():
 	# DAEMONS
 	####
 
-	sp.run('sudo systemsetup -f -setremotelogin off', shell=True, stdout=sp.PIPE)
+	disable_service('com.openssh.sshd')
 	sp.run('sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist', shell=True, stdout=sp.PIPE)
 
 	####
