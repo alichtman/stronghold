@@ -19,7 +19,10 @@ jobs:
           python-version: '3.12'
       - run: pip install . pexpect
       - run: for d in LanguageModeling Spelling Suggestions; do mkdir -p ~/Library/$d && touch ~/Library/$d/stronghold-test; done
-      - run: stronghold -lockdown < /dev/null  # No one can type the screen lock password here.
+      # No one can type the screen lock password here, so lockdown must say it was not applied.
+      - run: |
+          stronghold -lockdown < /dev/null | tee lockdown.txt; test "${PIPESTATUS[0]}" = 1
+          grep 'sysadminctl -screenLock immediate' lockdown.txt
         if: matrix.mode == 'lockdown'
       - run: cupsctl --share-printers  # So the walk-through has printer sharing to turn off.
         if: matrix.mode == 'interactive'

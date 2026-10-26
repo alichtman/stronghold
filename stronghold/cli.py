@@ -83,6 +83,10 @@ def macos_version():
 # Settings, shared by the interactive walk-through and lockdown
 ###
 
+# Settings that could not be applied, listed at the end.
+not_applied = []
+
+
 def enable_firewall():
 	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setglobalstate', 'on'], stdout=sp.PIPE)
 
@@ -154,6 +158,10 @@ def lock_screen_immediately():
 	# macOS no longer reads the screensaver askForPassword preferences. sysadminctl asks
 	# for the login password, so its output stays visible.
 	sp.run(['sysadminctl', '-screenLock', 'immediate', '-password', '-'])
+	# sysadminctl can exit 0 without changing anything, for example without the password.
+	status = sp.run(['sysadminctl', '-screenLock', 'status'], stdout=sp.PIPE, stderr=sp.STDOUT, text=True).stdout
+	if 'immediate' not in status:
+		not_applied.append("Lock screen immediately. Run: sysadminctl -screenLock immediate -password -")
 
 
 def show_file_extensions():
@@ -387,6 +395,9 @@ def final_configuration():
 	print("3. Make sure everything in the Settings > Sharing menu is disabled if you're not using it.")
 	print("4. For the most secure configuration, check out Objective-See's Free OSX Security Tools: https://objective-see.com/products.html")
 	print("\nIf you have any suggestions for stronghold, open an issue at: https://github.com/alichtman/stronghold/issues/new" + Style.RESET_ALL)
+	if not_applied:
+		print(Fore.RED + Style.BRIGHT + "\nNOT APPLIED:\n" + "\n".join(not_applied) + Style.RESET_ALL)
+		sys.exit(1)
 	sys.exit()
 
 
