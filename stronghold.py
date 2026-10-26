@@ -130,9 +130,6 @@ def firewall_config():
 			print_abort("Firewall")
 			return
 
-		# Load default firewall config.
-		sp.run('sudo launchctl load /System/Library/LaunchDaemons/com.apple.alf.agent.plist', shell=True, stdout=sp.PIPE)
-		sp.run('sudo launchctl load /System/Library/LaunchAgents/com.apple.alf.useragent.plist', shell=True, stdout=sp.PIPE)
 		sp.run('sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on', shell=True, stdout=sp.PIPE)
 
 		# Logging
@@ -336,8 +333,6 @@ def lockdown_procedure():
 	# FIREWALL
 	####
 
-	sp.run(['sudo', 'launchctl', 'load', '/System/Library/LaunchDaemons/com.apple.alf.agent.plist'], stdout=sp.PIPE)
-	sp.run(['sudo', 'launchctl', 'load', '/System/Library/LaunchAgents/com.apple.alf.useragent.plist'], stdout=sp.PIPE)
 	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setglobalstate', 'on'], stdout=sp.PIPE)
 	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setloggingmode', 'on'], stdout=sp.PIPE)
 	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setstealthmode', 'on'], stdout=sp.PIPE)
