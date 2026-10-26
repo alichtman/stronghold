@@ -154,7 +154,7 @@ def firewall_config():
 		if not prompt_yes_no(top_line="-> Do you want Apache to autostart?",
 							 bottom_line="Apache is a web server. If you are unfamiliar with it, disable it."):
 			print_confirmation("Disabling httpd...")
-			sp.run('sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist', shell=True, stdout=sp.PIPE)
+			disable_service('org.apache.httpd')
 
 		print_confirmation("Resetting firewall to finalize changes...")
 		sp.run('sudo pkill -HUP socketfilterfw', shell=True, stdout=sp.PIPE)
@@ -362,7 +362,7 @@ def lockdown_procedure():
 	####
 
 	disable_service('com.openssh.sshd')
-	sp.run('sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist', shell=True, stdout=sp.PIPE)
+	disable_service('org.apache.httpd')
 
 	####
 	# USER SAFETY
