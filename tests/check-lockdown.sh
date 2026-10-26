@@ -29,4 +29,10 @@ check "Apache autostart off" '"org.apache.httpd" => disabled' launchctl print-di
 # sudo, because Disable language modeling data collection makes the folders unreadable.
 check "Language data cleared" '^0$' sudo sh -c "ls $HOME/Library/*/stronghold-test 2>/dev/null | wc -l | tr -d ' '"
 check "Downloads history cleared" '^0$' sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2 'SELECT COUNT(*) FROM LSQuarantineEvent'
+# Settings only the interactive walk-through offers.
+if [ "$1" = interactive ]; then
+	check "Printer sharing off" '^_share_printers=0$' cupsctl
+	check "Language data collection blocked" 'uchg' ls -lOd "$HOME/Library/Spelling"
+	check "Downloads history collection blocked" 'schg' ls -lO "$HOME/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2"
+fi
 exit $status

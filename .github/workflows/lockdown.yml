@@ -21,6 +21,8 @@ jobs:
       - run: for d in LanguageModeling Spelling Suggestions; do mkdir -p ~/Library/$d && touch ~/Library/$d/stronghold-test; done
       - run: stronghold -lockdown < /dev/null  # No one can type the screen lock password here.
         if: matrix.mode == 'lockdown'
+      - run: cupsctl --share-printers  # So the walk-through has printer sharing to turn off.
+        if: matrix.mode == 'interactive'
       - run: python tests/answer-questions.py
         if: matrix.mode == 'interactive'
-      - run: tests/check-lockdown.sh
+      - run: tests/check-lockdown.sh ${{ matrix.mode }}
