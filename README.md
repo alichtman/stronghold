@@ -54,6 +54,8 @@ Options:
         - Both built-in and downloaded software will require user approval for whitelisting.
     + Disable Captive Portal Assistant and force login through browser on untrusted networks?
         - Captive Portal Assistant could be triggered and direct you to a malicious site WITHOUT any user interaction.
+    + Turn on automatic software updates?
+        - macOS, security and App Store updates install on their own. Your Mac may restart to finish.
 
 3. User Metadata Storage
 

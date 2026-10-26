@@ -108,6 +108,13 @@ def disable_captive_portal():
 	sp.run(['sudo', 'defaults', 'write', '/Library/Preferences/SystemConfiguration/com.apple.captive.control', 'Active', '-bool', 'false'], stdout=sp.PIPE)
 
 
+def enable_automatic_updates():
+	# softwareupdate --schedule on only turns on checking; these also download and install.
+	for key in ['AutomaticCheckEnabled', 'AutomaticDownload', 'AutomaticallyInstallMacOSUpdates', 'CriticalUpdateInstall', 'ConfigDataInstall']:
+		sp.run(['sudo', 'defaults', 'write', '/Library/Preferences/com.apple.SoftwareUpdate', key, '-bool', 'true'], stdout=sp.PIPE)
+	sp.run(['sudo', 'defaults', 'write', '/Library/Preferences/com.apple.commerce', 'AutoUpdate', '-bool', 'true'], stdout=sp.PIPE)
+
+
 def clear_language_data():
 	sp.run('rm -rfv ~/Library/LanguageModeling/* ~/Library/Spelling/* ~/Library/Suggestions/*', shell=True, stdout=sp.PIPE)
 
@@ -269,6 +276,12 @@ def system_protection_config():
 		print_confirmation("Disabling Captive Portal Assistant...")
 		disable_captive_portal()
 
+	# Automatic updates
+	if prompt_yes_no(top_line="-> Turn on automatic software updates?",
+	                 bottom_line="macOS, security and App Store updates install on their own. Your Mac may restart to finish."):
+		print_confirmation("Turning on automatic software updates...")
+		enable_automatic_updates()
+
 
 def metadata_storage_config():
 	"""User metadata configuration options."""
@@ -393,6 +406,7 @@ def lockdown_procedure():
 	enable_gatekeeper()
 	require_approval_for_signed_apps()
 	disable_captive_portal()
+	enable_automatic_updates()
 
 	####
 	# METADATA STORAGE

@@ -21,6 +21,8 @@ check "Stealth mode on" 'stealth mode (enabled|is on)' $fw --getstealthmode
 check "Signed apps need approval" '^2$' sh -c "$fw --getallowsigned | grep -c DISABLED"
 check "Gatekeeper on" '^assessments enabled' spctl --status
 check "Captive portal off" '^0$' defaults read /Library/Preferences/SystemConfiguration/com.apple.captive.control Active
+check "Automatic updates on" '^5$' sh -c "defaults read /Library/Preferences/com.apple.SoftwareUpdate | grep -cE '(AutomaticCheckEnabled|AutomaticDownload|AutomaticallyInstallMacOSUpdates|CriticalUpdateInstall|ConfigDataInstall) = 1;'"
+check "App Store updates on" '^1$' defaults read /Library/Preferences/com.apple.commerce AutoUpdate
 check "File extensions shown" '^1$' defaults read NSGlobalDomain AppleShowAllExtensions
 check "Cloud saving off" '^0$' defaults read NSGlobalDomain NSDocumentSaveNewDocumentsToCloud
 check "Hidden files shown" '^1$' defaults read com.apple.finder AppleShowAllFiles

@@ -8,7 +8,7 @@ import pexpect
 QUESTIONS = [
 	"I have read the above carefully", "attacked over the internet", "logs are useful",
 	"ICMP ping", "remote login will be turned off", "Apache is a web server",
-	"enforcing code signing", "approval for whitelisting", "malicious site",
+	"enforcing code signing", "approval for whitelisting", "malicious site", "install on their own",
 	"spelling, typing and suggestion", "Disable language modeling", "thumbnail cache",
 	"Clear Downloads metadata", "metadata collection from Downloads", "SiriAnalytics",
 	"screensaver mode", "disguising itself", "stored on the cloud", "use the terminal", "redundancy",
