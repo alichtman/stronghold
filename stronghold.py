@@ -210,9 +210,9 @@ def metadata_storage_config():
 	###
 
 	if prompt_yes_no(top_line="-> Clear QuickLook metadata?",
-	                 bottom_line="This will erase spotlight user data."):
+	                 bottom_line="This resets the Quick Look thumbnail cache."):
 		print_confirmation("Removing QuickLook metadata...")
-		sp.run('rm -rfv "~/Library/Application Support/Quick Look/*"', shell=True, stdout=sp.PIPE)
+		sp.run(['qlmanage', '-r', 'cache'], stdout=sp.PIPE)
 
 	###
 	# Downloads Metadata
@@ -355,7 +355,7 @@ def lockdown_procedure():
 	####
 
 	sp.run('rm -rfv ~/Library/LanguageModeling/* ~/Library/Spelling/* ~/Library/Suggestions/*', shell=True, stdout=sp.PIPE)
-	sp.run(['rm', '-rfv', '"~/Library/Application Support/Quick Look/*"'], stdout=sp.PIPE)
+	sp.run(['qlmanage', '-r', 'cache'], stdout=sp.PIPE)
 	sp.run([':>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2'], shell=True, stdout=sp.PIPE)
 
 	####
