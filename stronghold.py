@@ -126,7 +126,7 @@ def firewall_config():
 		print_confirmation("Enabling firewall...")
 
 		# If sudo password incorrect, abort and return from firewall config.
-		if sp.run("sudo -E -v", shell=True, stdout=sp.PIPE).returncode != 0:
+		if sp.run("sudo -v", shell=True, stdout=sp.PIPE).returncode != 0:
 			print_abort("Firewall")
 			return
 
@@ -327,7 +327,7 @@ def lockdown_procedure():
 	print_confirmation("Set secure configuration without user interaction.")
 
 	# Get sudo priv
-	sp.run("sudo -E -v", shell=True, stdout=sp.PIPE)
+	sp.run("sudo -v", shell=True, stdout=sp.PIPE)
 
 	####
 	# FIREWALL
