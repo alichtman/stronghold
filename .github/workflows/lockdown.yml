@@ -17,5 +17,5 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install .
-      - run: stronghold -lockdown
+      - run: stronghold -lockdown < /dev/null  # No one can type the screen lock password here.
       - run: tests/check-lockdown.sh

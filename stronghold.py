@@ -253,8 +253,9 @@ def user_safety_config():
 	if prompt_yes_no(top_line="-> Lock Mac as soon as screen saver starts?",
 	                 bottom_line="If your screen is black or on screensaver mode, you'll be prompted for a password to login every time."):
 		print_confirmation("Configuring account lock on screensaver...")
-		sp.run(['defaults', 'write', 'com.apple.screensaver', 'askForPassword', '-int', '1'], stdout=sp.PIPE)
-		sp.run(['defaults', 'write', 'com.apple.screensaver', 'askForPasswordDelay', '-int', '0'], stdout=sp.PIPE)
+		# macOS no longer reads the screensaver askForPassword preferences. sysadminctl asks
+		# for the login password, so its output stays visible.
+		sp.run(['sysadminctl', '-screenLock', 'immediate', '-password', '-'])
 
 	if prompt_yes_no(top_line="-> Display all file extensions?",
 	                 bottom_line="This prevents malware from disguising itself as another file type."):
@@ -368,8 +369,7 @@ def lockdown_procedure():
 	# USER SAFETY
 	####
 
-	sp.run(['defaults', 'write', 'com.apple.screensaver', 'askForPassword', '-int', '1'], stdout=sp.PIPE)
-	sp.run(['defaults', 'write', 'com.apple.screensaver', 'askForPasswordDelay', '-int', '0'], stdout=sp.PIPE)
+	sp.run(['sysadminctl', '-screenLock', 'immediate', '-password', '-'])
 	sp.run(['defaults', 'write', 'NSGlobalDomain', 'AppleShowAllExtensions', '-bool', 'true'], stdout=sp.PIPE)
 	sp.run(['defaults', 'write', 'NSGlobalDomain', 'NSDocumentSaveNewDocumentsToCloud', '-bool', 'false'], stdout=sp.PIPE)
 	sp.run(['defaults', 'write', 'com.apple.finder', 'AppleShowAllFiles', '-boolean', 'true'], stdout=sp.PIPE)
