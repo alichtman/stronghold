@@ -122,8 +122,10 @@ def disable_captive_portal():
 
 
 def enable_automatic_updates():
-	# softwareupdate --schedule on only turns on checking; these also download and install.
-	for key in ['AutomaticCheckEnabled', 'AutomaticDownload', 'AutomaticallyInstallMacOSUpdates', 'CriticalUpdateInstall', 'ConfigDataInstall']:
+	# softwareupdated owns the checking switch and can drop its key, so use its own command.
+	sp.run(['sudo', 'softwareupdate', '--schedule', 'on'], stdout=sp.PIPE)
+	# --schedule only turns on checking; these also download and install.
+	for key in ['AutomaticDownload', 'AutomaticallyInstallMacOSUpdates', 'CriticalUpdateInstall', 'ConfigDataInstall']:
 		sp.run(['sudo', 'defaults', 'write', '/Library/Preferences/com.apple.SoftwareUpdate', key, '-bool', 'true'], stdout=sp.PIPE)
 	sp.run(['sudo', 'defaults', 'write', '/Library/Preferences/com.apple.commerce', 'AutoUpdate', '-bool', 'true'], stdout=sp.PIPE)
 

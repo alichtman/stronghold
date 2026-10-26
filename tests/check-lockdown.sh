@@ -22,7 +22,8 @@ check "Signed apps need approval" '^2$' sh -c "$fw --getallowsigned | grep -c DI
 check "Gatekeeper on" '^assessments enabled' spctl --status
 check "Developer ID apps allowed" '^developer id enabled' spctl --status --verbose
 check "Captive portal off" '^0$' defaults read /Library/Preferences/SystemConfiguration/com.apple.captive.control Active
-check "Automatic updates on" '^5$' sh -c "defaults read /Library/Preferences/com.apple.SoftwareUpdate | grep -cE '(AutomaticCheckEnabled|AutomaticDownload|AutomaticallyInstallMacOSUpdates|CriticalUpdateInstall|ConfigDataInstall) = 1;'"
+check "Update checks on" 'turned on' softwareupdate --schedule
+check "Automatic updates on" '^4$' sh -c "defaults read /Library/Preferences/com.apple.SoftwareUpdate | grep -cE '(AutomaticDownload|AutomaticallyInstallMacOSUpdates|CriticalUpdateInstall|ConfigDataInstall) = 1;'"
 check "App Store updates on" '^1$' defaults read /Library/Preferences/com.apple.commerce AutoUpdate
 check "File extensions shown" '^1$' defaults read NSGlobalDomain AppleShowAllExtensions
 check "Cloud saving off" '^0$' defaults read NSGlobalDomain NSDocumentSaveNewDocumentsToCloud
