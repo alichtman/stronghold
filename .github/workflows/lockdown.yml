@@ -8,7 +8,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-14, macos-15, macos-26]
+        os: [macos-14, macos-15, macos-26, xcode-27]  # xcode-27 is GitHub's macOS 27 image.
         mode: [lockdown, interactive]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 10

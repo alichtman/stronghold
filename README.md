@@ -6,7 +6,7 @@
 
 ![GIF demo](img/demo.gif)
 
-Works on macOS 14 (Sonoma) and later. Every change is tested by applying `-lockdown` on macOS 14, 15 and 26.
+Works on macOS 14 (Sonoma) and later. Every change is tested by applying both modes on macOS 14, 15, 26 and 27.
 
 **Usage**
 ---
