@@ -74,6 +74,11 @@ def disable_service(label):
 	sp.run(['sudo', 'launchctl', 'bootout', 'system/' + label], stdout=sp.PIPE, stderr=sp.PIPE)
 
 
+def macos_version():
+	"""Returns the major macOS version, such as 15."""
+	return int(sp.run(['sw_vers', '-productVersion'], stdout=sp.PIPE, text=True).stdout.split('.')[0])
+
+
 ###
 # Settings, shared by the interactive walk-through and lockdown
 ###
@@ -95,8 +100,10 @@ def reload_firewall():
 
 
 def enable_gatekeeper():
-	sp.run('sudo spctl --master-enable', shell=True, stdout=sp.PIPE)
-	sp.run('sudo spctl --enable --label "Developer ID"', shell=True, stdout=sp.PIPE)
+	sp.run(['sudo', 'spctl', '--global-enable'], stdout=sp.PIPE)
+	# macOS 15 removed rule labels. There, turning Gatekeeper on also allows Developer ID apps.
+	if macos_version() < 15:
+		sp.run('sudo spctl --enable --label "Developer ID"', shell=True, stdout=sp.PIPE)
 
 
 def require_approval_for_signed_apps():

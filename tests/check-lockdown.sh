@@ -20,6 +20,7 @@ check "Stealth mode on" 'stealth mode (enabled|is on)' $fw --getstealthmode
 [ "$(sw_vers -productVersion | cut -d. -f1)" -ge 15 ] || check "Firewall logging on" 'log mode is on' $fw --getloggingmode
 check "Signed apps need approval" '^2$' sh -c "$fw --getallowsigned | grep -c DISABLED"
 check "Gatekeeper on" '^assessments enabled' spctl --status
+check "Developer ID apps allowed" '^developer id enabled' spctl --status --verbose
 check "Captive portal off" '^0$' defaults read /Library/Preferences/SystemConfiguration/com.apple.captive.control Active
 check "Automatic updates on" '^5$' sh -c "defaults read /Library/Preferences/com.apple.SoftwareUpdate | grep -cE '(AutomaticCheckEnabled|AutomaticDownload|AutomaticallyInstallMacOSUpdates|CriticalUpdateInstall|ConfigDataInstall) = 1;'"
 check "App Store updates on" '^1$' defaults read /Library/Preferences/com.apple.commerce AutoUpdate
