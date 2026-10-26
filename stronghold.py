@@ -41,6 +41,10 @@ def prompt_yes_no(top_line="", bottom_line=""):
 
 	answers = inquirer.prompt(questions)
 
+	# inquirer prints "Cancelled by user" and returns None on Ctrl-C.
+	if answers is None:
+		sys.exit(1)
+
 	return answers.get('choice').strip() == 'Yes'
 
 
