@@ -23,7 +23,7 @@ def prompt_yes_no(top_line="", bottom_line=""):
 	Deprecated comment: Thanks, @shobrook"""
 
 	# One liner. Only bottom_line should be printed + stylized
-	if top_line is "":
+	if top_line == "":
 		questions = [inquirer.List('choice',
 		                           message=Fore.GREEN + Style.BRIGHT + bottom_line + Fore.YELLOW,
 		                           choices=[' Yes', ' No'],
