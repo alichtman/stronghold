@@ -25,4 +25,5 @@ check "Cloud saving off" '^0$' defaults read NSGlobalDomain NSDocumentSaveNewDoc
 check "Hidden files shown" '^1$' defaults read com.apple.finder AppleShowAllFiles
 check "Remote Login off" '^Remote Login: Off$' sudo systemsetup -getremotelogin
 check "Apache autostart off" '"org.apache.httpd" => disabled' launchctl print-disabled system
+check "Language data cleared" '^0$' sh -c 'ls ~/Library/*/stronghold-test 2>/dev/null | wc -l | tr -d " "'
 exit $status

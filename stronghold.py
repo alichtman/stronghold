@@ -198,7 +198,7 @@ def metadata_storage_config():
 	if prompt_yes_no(top_line="-> Clear language modeling metadata?",
 	                 bottom_line="This includes user spelling, typing and suggestion data."):
 		print_confirmation("Removing language modeling data...")
-		sp.run('rm -rfv "~/Library/LanguageModeling/*" "~/Library/Spelling/*" "~/Library/Suggestions/*"', shell=True, stdout=sp.PIPE)
+		sp.run('rm -rfv ~/Library/LanguageModeling/* ~/Library/Spelling/* ~/Library/Suggestions/*', shell=True, stdout=sp.PIPE)
 
 	if prompt_yes_no(bottom_line="-> Disable language modeling data collection?"):
 		print_confirmation("Disabling language modeling data collection...")
@@ -354,7 +354,7 @@ def lockdown_procedure():
 	# METADATA STORAGE
 	####
 
-	sp.run(['rm', '-rfv', '"~/Library/LanguageModeling/*"', '"~/Library/Spelling/*"', '"~/Library/Suggestions/*"'])
+	sp.run('rm -rfv ~/Library/LanguageModeling/* ~/Library/Spelling/* ~/Library/Suggestions/*', shell=True, stdout=sp.PIPE)
 	sp.run(['rm', '-rfv', '"~/Library/Application Support/Quick Look/*"'], stdout=sp.PIPE)
 	sp.run([':>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2'], shell=True, stdout=sp.PIPE)
 
