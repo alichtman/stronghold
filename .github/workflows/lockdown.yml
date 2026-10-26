@@ -23,6 +23,8 @@ jobs:
         if: matrix.mode == 'lockdown'
       - run: cupsctl --share-printers  # So the walk-through has printer sharing to turn off.
         if: matrix.mode == 'interactive'
+      - run: sqlite3 ~/Library/Assistant/SiriAnalytics.db 'CREATE TABLE stronghold_test (x)' && touch ~/Library/Assistant/SiriAnalytics.db.backup
+        if: matrix.mode == 'interactive'
       - run: python tests/answer-questions.py
         if: matrix.mode == 'interactive'
       - run: tests/check-lockdown.sh ${{ matrix.mode }}

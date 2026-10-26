@@ -137,7 +137,8 @@ def block_downloads_history():
 
 
 def clear_siri_analytics():
-	sp.run('rm -rfv ~/Library/Assistant/SiriAnalytics.db*', shell=True, stdout=sp.PIPE)
+	# Only the database and its two journal files, not other files that start with its name.
+	sp.run('rm -fv ~/Library/Assistant/SiriAnalytics.db ~/Library/Assistant/SiriAnalytics.db-wal ~/Library/Assistant/SiriAnalytics.db-shm', shell=True, stdout=sp.PIPE)
 
 
 def lock_screen_immediately():

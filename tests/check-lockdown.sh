@@ -36,5 +36,7 @@ if [ "$1" = interactive ]; then
 	check "Printer sharing off" '^_share_printers=0$' cupsctl
 	check "Language data collection blocked" 'uchg' ls -lOd "$HOME/Library/Spelling"
 	check "Downloads history collection blocked" 'schg' ls -lO "$HOME/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2"
+	check "SiriAnalytics cleared" '^0$' sqlite3 ~/Library/Assistant/SiriAnalytics.db "SELECT COUNT(*) FROM sqlite_master WHERE name = 'stronghold_test'"
+	check "Other Siri files kept" 'SiriAnalytics.db.backup' ls ~/Library/Assistant
 fi
 exit $status
