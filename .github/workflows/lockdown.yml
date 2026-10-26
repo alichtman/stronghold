@@ -18,3 +18,4 @@ jobs:
           python-version: '3.12'
       - run: pip install .
       - run: stronghold -lockdown
+      - run: tests/check-lockdown.sh
