@@ -5,6 +5,7 @@
 import sys
 import subprocess as sp
 from time import sleep
+from shutil import get_terminal_size
 
 # 3rd party modules
 import click
@@ -63,7 +64,7 @@ def print_abort(config_type):
 
 
 def splash_intro():
-	print(Fore.GREEN + Style.BRIGHT +
+	wordmark = (
 	      "\n .d8888b.  888                                      888               888      888 \n" +
 	      "d88P  Y88b 888                                      888               888      888 \n" +
 	      "Y88b.      888                                      888               888      888 \n" +
@@ -74,7 +75,16 @@ def splash_intro():
 	      " \"Y8888P\"   \"Y888 888     `Y88P\'  888  888  `Y88888 888  888  `Y88P\'  888  `Y88888  \n" +
 	      "                                                888 \n" +
 	      "                                           Y8b d88P \n" +
-	      "                                            \"Y88P\n" + Style.RESET_ALL)
+	      "                                            \"Y88P\n")
+	if get_terminal_size().columns >= 112:
+		wordmark_lines = wordmark.strip('\n').splitlines()
+		for row, castle_line in enumerate(Constants.TERMINAL_CASTLE.splitlines()):
+			text = wordmark_lines[row - 4] if 4 <= row < 4 + len(wordmark_lines) else ''
+			print(castle_line + '    ' + Fore.GREEN + Style.BRIGHT + text + Style.RESET_ALL)
+		print()
+	else:
+		print(Constants.TERMINAL_CASTLE)
+		print(Fore.GREEN + Style.BRIGHT + wordmark + Style.RESET_ALL)
 
 	print(Fore.RED + Style.BRIGHT + "Built by Aaron Lichtman. (Github: alichtman)\n" + Style.RESET_ALL)
 
