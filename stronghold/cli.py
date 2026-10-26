@@ -88,7 +88,9 @@ def enable_firewall():
 
 
 def enable_firewall_logging():
-	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setloggingmode', 'on'], stdout=sp.PIPE)
+	# macOS 15 removed this switch, so there is nothing to turn on there.
+	if macos_version() < 15:
+		sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setloggingmode', 'on'], stdout=sp.PIPE)
 
 
 def enable_stealth_mode():
