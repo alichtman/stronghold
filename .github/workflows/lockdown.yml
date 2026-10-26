@@ -1,0 +1,20 @@
+name: Lockdown on macOS
+# Applies lockdown for real on disposable GitHub-hosted Macs.
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  lockdown:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-14, macos-15, macos-26]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: pip install .
+      - run: stronghold -lockdown
