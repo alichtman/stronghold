@@ -221,7 +221,7 @@ def metadata_storage_config():
 	# TODO: BUG --> /bin/sh: /Users/alichtman/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2: Operation not permitted
 	if prompt_yes_no(bottom_line="-> Clear Downloads metadata?"):
 		print_confirmation("Removing Downloads metadata...")
-		sp.run(':>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2', shell=True, stdout=sp.PIPE)
+		sp.run("sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2 'DELETE FROM LSQuarantineEvent'", shell=True, stdout=sp.PIPE)
 
 	if prompt_yes_no(bottom_line="-> Disable metadata collection from Downloads?"):
 		print_confirmation("Disabling Quarantine data collection from downloaded files...")
@@ -356,7 +356,7 @@ def lockdown_procedure():
 
 	sp.run('rm -rfv ~/Library/LanguageModeling/* ~/Library/Spelling/* ~/Library/Suggestions/*', shell=True, stdout=sp.PIPE)
 	sp.run(['qlmanage', '-r', 'cache'], stdout=sp.PIPE)
-	sp.run([':>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2'], shell=True, stdout=sp.PIPE)
+	sp.run("sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2 'DELETE FROM LSQuarantineEvent'", shell=True, stdout=sp.PIPE)
 
 	####
 	# DAEMONS
