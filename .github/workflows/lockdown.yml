@@ -8,7 +8,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-14, macos-15, macos-26, xcode-27]  # xcode-27 is GitHub's macOS 27 image.
+        # GitHub retires its macOS 14 machines on November 2, 2026. xcode-27 is its macOS 27 image.
+        os: [macos-15, macos-26, xcode-27]
         mode: [lockdown, interactive]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 10

@@ -6,7 +6,7 @@
 
 ![GIF demo](img/demo.gif)
 
-Works on macOS 14 (Sonoma) and later. Every change is tested by applying both modes on macOS 14, 15, 26 and 27.
+Works on macOS 14 (Sonoma) and later. Every change is tested by applying both modes on macOS 15, 26 and 27. GitHub is retiring its macOS 14 test machines.
 
 **Usage**
 ---
