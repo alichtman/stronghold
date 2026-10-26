@@ -1,6 +1,8 @@
 ![stronghold logo](img/stronghold-logo-left.png)
 
 [![Downloads](http://pepy.tech/badge/stronghold)](https://pepy.tech/projects/stronghold)
+[![Tests on macOS](https://github.com/zlichtman/stronghold/actions/workflows/lockdown.yml/badge.svg)](https://github.com/zlichtman/stronghold/actions/workflows/lockdown.yml)
+![macOS 14 and later](https://img.shields.io/badge/macOS-14%20and%20later-blue)
 
 `stronghold` is the easiest way to securely configure your Mac.
 
