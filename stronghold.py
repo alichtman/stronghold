@@ -94,6 +94,20 @@ def reload_firewall():
 	sp.run(['sudo', 'pkill', '-HUP', 'socketfilterfw'], stdout=sp.PIPE)
 
 
+def enable_gatekeeper():
+	sp.run('sudo spctl --master-enable', shell=True, stdout=sp.PIPE)
+	sp.run('sudo spctl --enable --label "Developer ID"', shell=True, stdout=sp.PIPE)
+
+
+def require_approval_for_signed_apps():
+	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsigned', 'off'], stdout=sp.PIPE)
+	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsignedapp', 'off'], stdout=sp.PIPE)
+
+
+def disable_captive_portal():
+	sp.run(['sudo', 'defaults', 'write', '/Library/Preferences/SystemConfiguration/com.apple.captive.control', 'Active', '-bool', 'false'], stdout=sp.PIPE)
+
+
 def splash_intro():
 	wordmark = (
 	      "\n .d8888b.  888                                      888               888      888 \n" +
@@ -190,21 +204,19 @@ def system_protection_config():
 	if prompt_yes_no(top_line="-> Enable Gatekeeper?",
 	                 bottom_line="Defend against malware by enforcing code signing and verifying downloaded applications before letting them to run."):
 		print_confirmation("Enabling Gatekeeper...")
-		sp.run('sudo spctl --master-enable', shell=True, stdout=sp.PIPE)
-		sp.run('sudo spctl --enable --label "Developer ID"', shell=True, stdout=sp.PIPE)
+		enable_gatekeeper()
 
 	# Disable automatic software whitelisting
 	if prompt_yes_no(top_line="-> Prevent automatic software whitelisting?",
 	                 bottom_line="Both built-in and downloaded software will require user approval for whitelisting."):
 		print_confirmation("Preventing automatic whitelisting...")
-		sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsigned', 'off'], stdout=sp.PIPE)
-		sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsignedapp', 'off'], stdout=sp.PIPE)
+		require_approval_for_signed_apps()
 
 	# Captive Portal
 	if prompt_yes_no(top_line="-> Disable Captive Portal Assistant and force login through browser on untrusted networks?",
 	                 bottom_line="Captive Portal could be triggered and direct you to a malicious site WITHOUT any user interaction."):
 		print_confirmation("Disabling Captive Portal Assistant...")
-		sp.run(['sudo', 'defaults', 'write', '/Library/Preferences/SystemConfiguration/com.apple.captive.control', 'Active', '-bool', 'false'], stdout=sp.PIPE)
+		disable_captive_portal()
 
 
 def metadata_storage_config():
@@ -356,18 +368,15 @@ def lockdown_procedure():
 	enable_firewall()
 	enable_firewall_logging()
 	enable_stealth_mode()
-	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsigned', 'off'], stdout=sp.PIPE)
-	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsignedapp', 'off'], stdout=sp.PIPE)
 	reload_firewall()
 
 	####
 	# SYSTEM PROTECTION
 	####
 
-	sp.run('sudo spctl --master-enable', shell=True, stdout=sp.PIPE)
-	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsigned', 'off'], stdout=sp.PIPE)
-	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsignedapp', 'off'], stdout=sp.PIPE)
-	sp.run(['sudo', 'defaults', 'write', '/Library/Preferences/SystemConfiguration/com.apple.captive.control', 'Active', '-bool', 'false'], stdout=sp.PIPE)
+	enable_gatekeeper()
+	require_approval_for_signed_apps()
+	disable_captive_portal()
 
 	####
 	# METADATA STORAGE
