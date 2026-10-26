@@ -13,7 +13,7 @@ import inquirer
 from colorama import Fore, Style
 
 # Local modules
-from constants import Constants
+from .constants import Constants
 
 
 def prompt_yes_no(top_line="", bottom_line=""):
