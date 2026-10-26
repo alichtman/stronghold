@@ -74,6 +74,26 @@ def disable_service(label):
 	sp.run(['sudo', 'launchctl', 'bootout', 'system/' + label], stdout=sp.PIPE, stderr=sp.PIPE)
 
 
+###
+# Settings, shared by the interactive walk-through and lockdown
+###
+
+def enable_firewall():
+	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setglobalstate', 'on'], stdout=sp.PIPE)
+
+
+def enable_firewall_logging():
+	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setloggingmode', 'on'], stdout=sp.PIPE)
+
+
+def enable_stealth_mode():
+	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setstealthmode', 'on'], stdout=sp.PIPE)
+
+
+def reload_firewall():
+	sp.run(['sudo', 'pkill', '-HUP', 'socketfilterfw'], stdout=sp.PIPE)
+
+
 def splash_intro():
 	wordmark = (
 	      "\n .d8888b.  888                                      888               888      888 \n" +
@@ -130,19 +150,19 @@ def firewall_config():
 			print_abort("Firewall")
 			return
 
-		sp.run('sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on', shell=True, stdout=sp.PIPE)
+		enable_firewall()
 
 		# Logging
 		if prompt_yes_no(top_line="-> Turn on logging?",
 		                 bottom_line="If there IS an infection, logs are useful for determining the source."):
 			print_confirmation("Enabling logging...")
-			sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setloggingmode', 'on'], stdout=sp.PIPE)
+			enable_firewall_logging()
 
 		# Stealth Mode
 		if prompt_yes_no(top_line="-> Turn on stealth mode?",
 		                 bottom_line="Your Mac will not respond to ICMP ping requests or connection attempts from closed TCP and UDP networks."):
 			print_confirmation("Enabling stealth mode...")
-			sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setstealthmode', 'on'], stdout=sp.PIPE)
+			enable_stealth_mode()
 
 		# Remote login
 		if not prompt_yes_no(top_line="-> Do you use SSH?",
@@ -158,7 +178,7 @@ def firewall_config():
 			disable_service('org.apache.httpd')
 
 		print_confirmation("Resetting firewall to finalize changes...")
-		sp.run('sudo pkill -HUP socketfilterfw', shell=True, stdout=sp.PIPE)
+		reload_firewall()
 
 
 def system_protection_config():
@@ -333,12 +353,12 @@ def lockdown_procedure():
 	# FIREWALL
 	####
 
-	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setglobalstate', 'on'], stdout=sp.PIPE)
-	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setloggingmode', 'on'], stdout=sp.PIPE)
-	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setstealthmode', 'on'], stdout=sp.PIPE)
+	enable_firewall()
+	enable_firewall_logging()
+	enable_stealth_mode()
 	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsigned', 'off'], stdout=sp.PIPE)
 	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsignedapp', 'off'], stdout=sp.PIPE)
-	sp.run(['sudo', 'pkill', '-HUP', 'socketfilterfw'], stdout=sp.PIPE)
+	reload_firewall()
 
 	####
 	# SYSTEM PROTECTION
