@@ -17,6 +17,7 @@ check() {
 
 check "Firewall on" 'firewall is enabled' $fw --getglobalstate
 check "Stealth mode on" 'stealth mode (enabled|is on)' $fw --getstealthmode
+[ "$(sw_vers -productVersion | cut -d. -f1)" -ge 15 ] || check "Firewall logging on" 'log mode is on' $fw --getloggingmode
 check "Signed apps need approval" '^2$' sh -c "$fw --getallowsigned | grep -c DISABLED"
 check "Gatekeeper on" '^assessments enabled' spctl --status
 check "Captive portal off" '^0$' defaults read /Library/Preferences/SystemConfiguration/com.apple.captive.control Active
