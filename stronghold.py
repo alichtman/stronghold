@@ -301,7 +301,6 @@ def metadata_storage_config():
 	# Downloads Metadata
 	###
 
-	# TODO: BUG --> /bin/sh: /Users/alichtman/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2: Operation not permitted
 	if prompt_yes_no(bottom_line="-> Clear Downloads metadata?"):
 		print_confirmation("Removing Downloads metadata...")
 		clear_downloads_history()
@@ -309,15 +308,6 @@ def metadata_storage_config():
 	if prompt_yes_no(bottom_line="-> Disable metadata collection from Downloads?"):
 		print_confirmation("Disabling Quarantine data collection from downloaded files...")
 		block_downloads_history()
-
-	# TODO: ERRORS
-	# chmod: ~/Library/Application Support/Quick Look: No such file or directory
-	# chflags: ~/Library/Application Support/Quick Look: No such file or directory
-
-	# if prompt_yes_no(bottom_line="Disable QuickLook data logging?"):
-	# 	print_confirmation("Disabling QuickLook data logging...")
-	# 	sp.run('sudo chmod -R 000 "~/Library/Application Support/Quick Look"', shell=True, stdout=sp.PIPE)
-	# 	sp.run('sudo chflags -R uchg "~/Library/Application Support/Quick Look"', shell=True, stdout=sp.PIPE)
 
 	###
 	# Siri Metadata
@@ -376,28 +366,6 @@ def final_configuration():
 	print("\nIf you have any suggestions for stronghold, open an issue at: https://github.com/alichtman/stronghold/issues/new" + Style.RESET_ALL)
 	sys.exit()
 
-	# Removed due to sudo reboot bug.
-
-	# if prompt_yes_no(top_line="-> Restart your Mac right now?",
-	#                  bottom_line="This is necessary for some configuration changes to take effect."):
-	# 	print_confirmation("Configuration complete after restart!")
-	# 	print(Fore.YELLOW + Style.BRIGHT + "Restarting in 5 seconds..." + Style.RESET_ALL)
-	# 	sleep(1)
-	# 	print(Fore.YELLOW + Style.BRIGHT + "4..." + Style.RESET_ALL)
-	# 	sleep(1)
-	# 	print(Fore.YELLOW + Style.BRIGHT + "3..." + Style.RESET_ALL)
-	# 	sleep(1)
-	# 	print(Fore.YELLOW + Style.BRIGHT + "2..." + Style.RESET_ALL)
-	# 	sleep(1)
-	# 	print(Fore.YELLOW + Style.BRIGHT + "1..." + Style.RESET_ALL)
-	# 	sleep(1)
-	# 	if sp.run(['sudo', 'shutdown', '-r', 'now'], shell=True, stdout=sp.PIPE) != 0:
-	# 		print(Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary." + Style.RESET_ALL)
-	# 		sys.exit()
-
-	# else:
-	# 	print(Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary." + Style.RESET_ALL)
-	# 	sys.exit()
 
 
 def lockdown_procedure():
