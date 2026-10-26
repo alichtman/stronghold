@@ -133,6 +133,32 @@ def clear_siri_analytics():
 	sp.run('rm -rfv ~/Library/Assistant/SiriAnalytics.db*', shell=True, stdout=sp.PIPE)
 
 
+def lock_screen_immediately():
+	# macOS no longer reads the screensaver askForPassword preferences. sysadminctl asks
+	# for the login password, so its output stays visible.
+	sp.run(['sysadminctl', '-screenLock', 'immediate', '-password', '-'])
+
+
+def show_file_extensions():
+	sp.run(['defaults', 'write', 'NSGlobalDomain', 'AppleShowAllExtensions', '-bool', 'true'], stdout=sp.PIPE)
+
+
+def disable_cloud_saving():
+	sp.run(['defaults', 'write', 'NSGlobalDomain', 'NSDocumentSaveNewDocumentsToCloud', '-bool', 'false'], stdout=sp.PIPE)
+
+
+def show_hidden_files():
+	sp.run(['defaults', 'write', 'com.apple.finder', 'AppleShowAllFiles', '-boolean', 'true'], stdout=sp.PIPE)
+
+
+def disable_printer_sharing():
+	sp.run(['cupsctl', '--no-share-printers'], stdout=sp.PIPE)
+
+
+def restart_finder():
+	sp.run(['killAll', 'Finder'], stdout=sp.PIPE)
+
+
 def splash_intro():
 	wordmark = (
 	      "\n .d8888b.  888                                      888               888      888 \n" +
@@ -310,34 +336,32 @@ def user_safety_config():
 	if prompt_yes_no(top_line="-> Lock Mac as soon as screen saver starts?",
 	                 bottom_line="If your screen is black or on screensaver mode, you'll be prompted for a password to login every time."):
 		print_confirmation("Configuring account lock on screensaver...")
-		# macOS no longer reads the screensaver askForPassword preferences. sysadminctl asks
-		# for the login password, so its output stays visible.
-		sp.run(['sysadminctl', '-screenLock', 'immediate', '-password', '-'])
+		lock_screen_immediately()
 
 	if prompt_yes_no(top_line="-> Display all file extensions?",
 	                 bottom_line="This prevents malware from disguising itself as another file type."):
 		print_confirmation("Configuring display of all file extensions...")
-		sp.run(['defaults', 'write', 'NSGlobalDomain', 'AppleShowAllExtensions', '-bool', 'true'], stdout=sp.PIPE)
+		show_file_extensions()
 
 	if prompt_yes_no(top_line="-> Disable saving to the cloud by default?",
 	                 bottom_line="This prevents sensitive documents from being unintentionally stored on the cloud."):
 		print_confirmation("Disabling cloud saving by default...")
-		sp.run(['defaults', 'write', 'NSGlobalDomain', 'NSDocumentSaveNewDocumentsToCloud', '-bool', 'false'], stdout=sp.PIPE)
+		disable_cloud_saving()
 
 	if prompt_yes_no(top_line="-> Show hidden files in Finder?",
 	                 bottom_line="This lets you see all files on the system without having to use the terminal."):
 		print_confirmation("Displaying hidden files in Finder...")
-		sp.run(['defaults', 'write', 'com.apple.finder', 'AppleShowAllFiles', '-boolean', 'true'], stdout=sp.PIPE)
+		show_hidden_files()
 
 	if prompt_yes_no(top_line="-> Disable printer sharing?",
 	                 bottom_line="Offers redundancy in case the Firewall was not configured."):
 		print_confirmation("Disabling printer sharing...")
-		sp.run(['cupsctl', '--no-share-printers'], stdout=sp.PIPE)
+		disable_printer_sharing()
 
 
 	# Reset finder after messing with it.
 	print_confirmation("Resetting Finder to finalize changes...")
-	sp.run(['killAll', 'Finder'], stdout=sp.PIPE)
+	restart_finder()
 
 
 def final_configuration():
@@ -421,11 +445,11 @@ def lockdown_procedure():
 	# USER SAFETY
 	####
 
-	sp.run(['sysadminctl', '-screenLock', 'immediate', '-password', '-'])
-	sp.run(['defaults', 'write', 'NSGlobalDomain', 'AppleShowAllExtensions', '-bool', 'true'], stdout=sp.PIPE)
-	sp.run(['defaults', 'write', 'NSGlobalDomain', 'NSDocumentSaveNewDocumentsToCloud', '-bool', 'false'], stdout=sp.PIPE)
-	sp.run(['defaults', 'write', 'com.apple.finder', 'AppleShowAllFiles', '-boolean', 'true'], stdout=sp.PIPE)
-	sp.run(['killAll', 'Finder'], stdout=sp.PIPE)
+	lock_screen_immediately()
+	show_file_extensions()
+	disable_cloud_saving()
+	show_hidden_files()
+	restart_finder()
 
 	####
 	# RESTART
