@@ -6,7 +6,7 @@
 
 ![GIF demo](img/demo.gif)
 
-Designed for macOS Sierra and High Sierra. *Not yet tested on macOS Mojave, but I'm working on updating it!*
+Works on macOS 14 (Sonoma) and later. Every change is tested by applying `-lockdown` on macOS 14, 15 and 26.
 
 **Usage**
 ---

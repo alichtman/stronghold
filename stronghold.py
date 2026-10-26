@@ -99,7 +99,7 @@ def splash_intro():
 
 	print(Fore.RED + Style.BRIGHT + "Built by Aaron Lichtman. (Github: alichtman)\n" + Style.RESET_ALL)
 
-	print(Fore.BLUE + Style.BRIGHT + "Stronghold is a security configuration tool for MacOS Sierra and High Sierra.")
+	print(Fore.BLUE + Style.BRIGHT + "Stronghold is a security configuration tool for macOS 14 and later.")
 	print("You may be asked for a sudo password." + Style.RESET_ALL + "\n")
 
 	print_section_header("BEFORE STARTING", Fore.RED)
