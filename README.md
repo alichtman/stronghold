@@ -1,12 +1,14 @@
 ![stronghold logo](img/stronghold-logo-left.png)
 
-[![Downloads](http://pepy.tech/badge/stronghold)](http://pepy.tech/count/stronghold)
+[![Downloads](http://pepy.tech/badge/stronghold)](https://pepy.tech/projects/stronghold)
+[![Tests on macOS](https://github.com/alichtman/stronghold/actions/workflows/lockdown.yml/badge.svg)](https://github.com/alichtman/stronghold/actions/workflows/lockdown.yml)
+![macOS 14 and later](https://img.shields.io/badge/macOS-14%20and%20later-blue)
 
 `stronghold` is the easiest way to securely configure your Mac.
 
 ![GIF demo](img/demo.gif)
 
-Designed for macOS Sierra and High Sierra. *Not yet tested on macOS Mojave, but I'm working on updating it!*
+Works on macOS 14 (Sonoma) and later. Every change is tested by applying both modes on macOS 15, 26 and 27. GitHub is retiring its macOS 14 test machines.
 
 **Usage**
 ---
@@ -54,6 +56,8 @@ Options:
         - Both built-in and downloaded software will require user approval for whitelisting.
     + Disable Captive Portal Assistant and force login through browser on untrusted networks?
         - Captive Portal Assistant could be triggered and direct you to a malicious site WITHOUT any user interaction.
+    + Turn on automatic software updates?
+        - macOS, security and App Store updates install on their own. Your Mac may restart to finish.
 
 3. User Metadata Storage
 
