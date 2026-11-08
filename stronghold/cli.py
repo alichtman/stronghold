@@ -5,6 +5,7 @@
 import sys
 import subprocess as sp
 from time import sleep
+from shutil import get_terminal_size
 
 # 3rd party modules
 import click
@@ -12,7 +13,7 @@ import inquirer
 from colorama import Fore, Style
 
 # Local modules
-from constants import Constants
+from .constants import Constants
 
 
 def prompt_yes_no(top_line="", bottom_line=""):
@@ -22,7 +23,7 @@ def prompt_yes_no(top_line="", bottom_line=""):
 	Deprecated comment: Thanks, @shobrook"""
 
 	# One liner. Only bottom_line should be printed + stylized
-	if top_line is "":
+	if top_line == "":
 		questions = [inquirer.List('choice',
 		                           message=Fore.GREEN + Style.BRIGHT + bottom_line + Fore.YELLOW,
 		                           choices=[' Yes', ' No'],
@@ -39,6 +40,10 @@ def prompt_yes_no(top_line="", bottom_line=""):
 		             ]
 
 	answers = inquirer.prompt(questions)
+
+	# inquirer prints "Cancelled by user" and returns None on Ctrl-C.
+	if answers is None:
+		sys.exit(1)
 
 	return answers.get('choice').strip() == 'Yes'
 
@@ -62,8 +67,127 @@ def print_abort(config_type):
 	sleep(1)
 
 
+def disable_service(label):
+	"""Stops a launchd system service and keeps it from starting again."""
+	sp.run(['sudo', 'launchctl', 'disable', 'system/' + label], stdout=sp.PIPE)
+	# bootout reports an error when the service was not running; that is fine.
+	sp.run(['sudo', 'launchctl', 'bootout', 'system/' + label], stdout=sp.PIPE, stderr=sp.PIPE)
+
+
+def macos_version():
+	"""Returns the major macOS version, such as 15."""
+	return int(sp.run(['sw_vers', '-productVersion'], stdout=sp.PIPE, text=True).stdout.split('.')[0])
+
+
+###
+# Settings, shared by the interactive walk-through and lockdown
+###
+
+# Settings that could not be applied, listed at the end.
+not_applied = []
+
+
+def enable_firewall():
+	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setglobalstate', 'on'], stdout=sp.PIPE)
+
+
+def enable_firewall_logging():
+	# macOS 15 removed this switch, so there is nothing to turn on there.
+	if macos_version() < 15:
+		sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setloggingmode', 'on'], stdout=sp.PIPE)
+
+
+def enable_stealth_mode():
+	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setstealthmode', 'on'], stdout=sp.PIPE)
+
+
+def reload_firewall():
+	sp.run(['sudo', 'pkill', '-HUP', 'socketfilterfw'], stdout=sp.PIPE)
+
+
+def enable_gatekeeper():
+	sp.run(['sudo', 'spctl', '--global-enable'], stdout=sp.PIPE)
+	# macOS 15 removed rule labels. There, turning Gatekeeper on also allows Developer ID apps.
+	if macos_version() < 15:
+		sp.run('sudo spctl --enable --label "Developer ID"', shell=True, stdout=sp.PIPE)
+
+
+def require_approval_for_signed_apps():
+	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsigned', 'off'], stdout=sp.PIPE)
+	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsignedapp', 'off'], stdout=sp.PIPE)
+
+
+def disable_captive_portal():
+	sp.run(['sudo', 'defaults', 'write', '/Library/Preferences/SystemConfiguration/com.apple.captive.control', 'Active', '-bool', 'false'], stdout=sp.PIPE)
+
+
+def enable_automatic_updates():
+	# softwareupdated owns the checking switch and can drop its key, so use its own command.
+	sp.run(['sudo', 'softwareupdate', '--schedule', 'on'], stdout=sp.PIPE)
+	# --schedule only turns on checking; these also download and install.
+	for key in ['AutomaticDownload', 'AutomaticallyInstallMacOSUpdates', 'CriticalUpdateInstall', 'ConfigDataInstall']:
+		sp.run(['sudo', 'defaults', 'write', '/Library/Preferences/com.apple.SoftwareUpdate', key, '-bool', 'true'], stdout=sp.PIPE)
+	sp.run(['sudo', 'defaults', 'write', '/Library/Preferences/com.apple.commerce', 'AutoUpdate', '-bool', 'true'], stdout=sp.PIPE)
+
+
+def clear_language_data():
+	sp.run('rm -rfv ~/Library/LanguageModeling/* ~/Library/Spelling/* ~/Library/Suggestions/*', shell=True, stdout=sp.PIPE)
+
+
+def block_language_data():
+	sp.run('sudo chmod -R 000 ~/Library/LanguageModeling ~/Library/Spelling ~/Library/Suggestions', shell=True, stdout=sp.PIPE)
+	sp.run('sudo chflags -R uchg ~/Library/LanguageModeling ~/Library/Spelling ~/Library/Suggestions', shell=True, stdout=sp.PIPE)
+
+
+def clear_quicklook_cache():
+	sp.run(['qlmanage', '-r', 'cache'], stdout=sp.PIPE)
+
+
+def clear_downloads_history():
+	sp.run("sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2 'DELETE FROM LSQuarantineEvent'", shell=True, stdout=sp.PIPE)
+
+
+def block_downloads_history():
+	sp.run('sudo chflags schg ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2', shell=True, stdout=sp.PIPE)
+
+
+def clear_siri_analytics():
+	# Only the database and its two journal files, not other files that start with its name.
+	sp.run('rm -fv ~/Library/Assistant/SiriAnalytics.db ~/Library/Assistant/SiriAnalytics.db-wal ~/Library/Assistant/SiriAnalytics.db-shm', shell=True, stdout=sp.PIPE)
+
+
+def lock_screen_immediately():
+	# macOS no longer reads the screensaver askForPassword preferences. sysadminctl asks
+	# for the login password, so its output stays visible.
+	sp.run(['sysadminctl', '-screenLock', 'immediate', '-password', '-'])
+	# sysadminctl can exit 0 without changing anything, for example without the password.
+	status = sp.run(['sysadminctl', '-screenLock', 'status'], stdout=sp.PIPE, stderr=sp.STDOUT, text=True).stdout
+	if 'immediate' not in status:
+		not_applied.append("Lock screen immediately. Run: sysadminctl -screenLock immediate -password -")
+
+
+def show_file_extensions():
+	sp.run(['defaults', 'write', 'NSGlobalDomain', 'AppleShowAllExtensions', '-bool', 'true'], stdout=sp.PIPE)
+
+
+def disable_cloud_saving():
+	sp.run(['defaults', 'write', 'NSGlobalDomain', 'NSDocumentSaveNewDocumentsToCloud', '-bool', 'false'], stdout=sp.PIPE)
+
+
+def show_hidden_files():
+	sp.run(['defaults', 'write', 'com.apple.finder', 'AppleShowAllFiles', '-boolean', 'true'], stdout=sp.PIPE)
+
+
+def disable_printer_sharing():
+	sp.run(['cupsctl', '--no-share-printers'], stdout=sp.PIPE)
+
+
+def restart_finder():
+	sp.run(['killAll', 'Finder'], stdout=sp.PIPE)
+
+
 def splash_intro():
-	print(Fore.GREEN + Style.BRIGHT +
+	wordmark = (
 	      "\n .d8888b.  888                                      888               888      888 \n" +
 	      "d88P  Y88b 888                                      888               888      888 \n" +
 	      "Y88b.      888                                      888               888      888 \n" +
@@ -74,11 +198,20 @@ def splash_intro():
 	      " \"Y8888P\"   \"Y888 888     `Y88P\'  888  888  `Y88888 888  888  `Y88P\'  888  `Y88888  \n" +
 	      "                                                888 \n" +
 	      "                                           Y8b d88P \n" +
-	      "                                            \"Y88P\n" + Style.RESET_ALL)
+	      "                                            \"Y88P\n")
+	if get_terminal_size().columns >= 112:
+		wordmark_lines = wordmark.strip('\n').splitlines()
+		for row, castle_line in enumerate(Constants.TERMINAL_CASTLE.splitlines()):
+			text = wordmark_lines[row - 4] if 4 <= row < 4 + len(wordmark_lines) else ''
+			print(castle_line + '    ' + Fore.GREEN + Style.BRIGHT + text + Style.RESET_ALL)
+		print()
+	else:
+		print(Constants.TERMINAL_CASTLE)
+		print(Fore.GREEN + Style.BRIGHT + wordmark + Style.RESET_ALL)
 
 	print(Fore.RED + Style.BRIGHT + "Built by Aaron Lichtman. (Github: alichtman)\n" + Style.RESET_ALL)
 
-	print(Fore.BLUE + Style.BRIGHT + "Stronghold is a security configuration tool for MacOS Sierra and High Sierra.")
+	print(Fore.BLUE + Style.BRIGHT + "Stronghold is a security configuration tool for macOS 14 and later.")
 	print("You may be asked for a sudo password." + Style.RESET_ALL + "\n")
 
 	print_section_header("BEFORE STARTING", Fore.RED)
@@ -105,41 +238,39 @@ def firewall_config():
 		print_confirmation("Enabling firewall...")
 
 		# If sudo password incorrect, abort and return from firewall config.
-		if sp.run("sudo -E -v", shell=True, stdout=sp.PIPE).returncode != 0:
+		if sp.run("sudo -v", shell=True, stdout=sp.PIPE).returncode != 0:
 			print_abort("Firewall")
 			return
 
-		# Load default firewall config.
-		sp.run('sudo launchctl load /System/Library/LaunchDaemons/com.apple.alf.agent.plist', shell=True, stdout=sp.PIPE)
-		sp.run('sudo launchctl load /System/Library/LaunchAgents/com.apple.alf.useragent.plist', shell=True, stdout=sp.PIPE)
-		sp.run('sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on', shell=True, stdout=sp.PIPE)
+		enable_firewall()
 
 		# Logging
 		if prompt_yes_no(top_line="-> Turn on logging?",
 		                 bottom_line="If there IS an infection, logs are useful for determining the source."):
 			print_confirmation("Enabling logging...")
-			sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setloggingmode', 'on'], stdout=sp.PIPE)
+			enable_firewall_logging()
 
 		# Stealth Mode
 		if prompt_yes_no(top_line="-> Turn on stealth mode?",
 		                 bottom_line="Your Mac will not respond to ICMP ping requests or connection attempts from closed TCP and UDP networks."):
 			print_confirmation("Enabling stealth mode...")
-			sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setstealthmode', 'on'], stdout=sp.PIPE)
+			enable_stealth_mode()
 
 		# Remote login
 		if not prompt_yes_no(top_line="-> Do you use SSH?",
 						 bottom_line="If no, remote login will be turned off."):
 			print_confirmation("Disabling ssh daemon...")
-			sp.run('sudo systemsetup -f -setremotelogin off', shell=True, stdout=sp.PIPE)
+			# systemsetup -setremotelogin needs Full Disk Access on macOS 14 and later; launchctl does not.
+			disable_service('com.openssh.sshd')
 
 		# Apache server
 		if not prompt_yes_no(top_line="-> Do you want Apache to autostart?",
 							 bottom_line="Apache is a web server. If you are unfamiliar with it, disable it."):
 			print_confirmation("Disabling httpd...")
-			sp.run('sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist', shell=True, stdout=sp.PIPE)
+			disable_service('org.apache.httpd')
 
 		print_confirmation("Resetting firewall to finalize changes...")
-		sp.run('sudo pkill -HUP socketfilterfw', shell=True, stdout=sp.PIPE)
+		reload_firewall()
 
 
 def system_protection_config():
@@ -151,21 +282,25 @@ def system_protection_config():
 	if prompt_yes_no(top_line="-> Enable Gatekeeper?",
 	                 bottom_line="Defend against malware by enforcing code signing and verifying downloaded applications before letting them to run."):
 		print_confirmation("Enabling Gatekeeper...")
-		sp.run('sudo spctl --master-enable', shell=True, stdout=sp.PIPE)
-		sp.run('sudo spctl --enable --label "Developer ID"', shell=True, stdout=sp.PIPE)
+		enable_gatekeeper()
 
 	# Disable automatic software whitelisting
 	if prompt_yes_no(top_line="-> Prevent automatic software whitelisting?",
 	                 bottom_line="Both built-in and downloaded software will require user approval for whitelisting."):
 		print_confirmation("Preventing automatic whitelisting...")
-		sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsigned', 'off'], stdout=sp.PIPE)
-		sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsignedapp', 'off'], stdout=sp.PIPE)
+		require_approval_for_signed_apps()
 
 	# Captive Portal
 	if prompt_yes_no(top_line="-> Disable Captive Portal Assistant and force login through browser on untrusted networks?",
 	                 bottom_line="Captive Portal could be triggered and direct you to a malicious site WITHOUT any user interaction."):
 		print_confirmation("Disabling Captive Portal Assistant...")
-		sp.run(['sudo', 'defaults', 'write', '/Library/Preferences/SystemConfiguration/com.apple.captive.control', 'Active', '-bool', 'false'], stdout=sp.PIPE)
+		disable_captive_portal()
+
+	# Automatic updates
+	if prompt_yes_no(top_line="-> Turn on automatic software updates?",
+	                 bottom_line="macOS, security and App Store updates install on their own. Your Mac may restart to finish."):
+		print_confirmation("Turning on automatic software updates...")
+		enable_automatic_updates()
 
 
 def metadata_storage_config():
@@ -180,43 +315,32 @@ def metadata_storage_config():
 	if prompt_yes_no(top_line="-> Clear language modeling metadata?",
 	                 bottom_line="This includes user spelling, typing and suggestion data."):
 		print_confirmation("Removing language modeling data...")
-		sp.run('rm -rfv "~/Library/LanguageModeling/*" "~/Library/Spelling/*" "~/Library/Suggestions/*"', shell=True, stdout=sp.PIPE)
+		clear_language_data()
 
 	if prompt_yes_no(bottom_line="-> Disable language modeling data collection?"):
 		print_confirmation("Disabling language modeling data collection...")
-		sp.run('sudo chmod -R 000 ~/Library/LanguageModeling ~/Library/Spelling ~/Library/Suggestions', shell=True, stdout=sp.PIPE)
-		sp.run('sudo chflags -R uchg ~/Library/LanguageModeling ~/Library/Spelling ~/Library/Suggestions', shell=True, stdout=sp.PIPE)
+		block_language_data()
 
 	###
 	# QuickLook and Quarantine Data
 	###
 
 	if prompt_yes_no(top_line="-> Clear QuickLook metadata?",
-	                 bottom_line="This will erase spotlight user data."):
+	                 bottom_line="This resets the Quick Look thumbnail cache."):
 		print_confirmation("Removing QuickLook metadata...")
-		sp.run('rm -rfv "~/Library/Application Support/Quick Look/*"', shell=True, stdout=sp.PIPE)
+		clear_quicklook_cache()
 
 	###
 	# Downloads Metadata
 	###
 
-	# TODO: BUG --> /bin/sh: /Users/alichtman/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2: Operation not permitted
 	if prompt_yes_no(bottom_line="-> Clear Downloads metadata?"):
 		print_confirmation("Removing Downloads metadata...")
-		sp.run(':>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2', shell=True, stdout=sp.PIPE)
+		clear_downloads_history()
 
 	if prompt_yes_no(bottom_line="-> Disable metadata collection from Downloads?"):
 		print_confirmation("Disabling Quarantine data collection from downloaded files...")
-		sp.run('sudo chflags schg ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2', shell=True, stdout=sp.PIPE)
-
-	# TODO: ERRORS
-	# chmod: ~/Library/Application Support/Quick Look: No such file or directory
-	# chflags: ~/Library/Application Support/Quick Look: No such file or directory
-
-	# if prompt_yes_no(bottom_line="Disable QuickLook data logging?"):
-	# 	print_confirmation("Disabling QuickLook data logging...")
-	# 	sp.run('sudo chmod -R 000 "~/Library/Application Support/Quick Look"', shell=True, stdout=sp.PIPE)
-	# 	sp.run('sudo chflags -R uchg "~/Library/Application Support/Quick Look"', shell=True, stdout=sp.PIPE)
+		block_downloads_history()
 
 	###
 	# Siri Metadata
@@ -224,7 +348,7 @@ def metadata_storage_config():
 
 	if prompt_yes_no(bottom_line="-> Clear SiriAnalytics database?"):
 		print_confirmation("Clearing SiriAnalytics database...")
-		sp.run('rm -rfv ~/Library/Assistant/SiriAnalytics.db', shell=True, stdout=sp.PIPE)
+		clear_siri_analytics()
 
 
 def user_safety_config():
@@ -235,33 +359,32 @@ def user_safety_config():
 	if prompt_yes_no(top_line="-> Lock Mac as soon as screen saver starts?",
 	                 bottom_line="If your screen is black or on screensaver mode, you'll be prompted for a password to login every time."):
 		print_confirmation("Configuring account lock on screensaver...")
-		sp.run(['defaults', 'write', 'com.apple.screensaver', 'askForPassword', '-int', '1'], stdout=sp.PIPE)
-		sp.run(['defaults', 'write', 'com.apple.screensaver', 'askForPasswordDelay', '-int', '0'], stdout=sp.PIPE)
+		lock_screen_immediately()
 
 	if prompt_yes_no(top_line="-> Display all file extensions?",
 	                 bottom_line="This prevents malware from disguising itself as another file type."):
 		print_confirmation("Configuring display of all file extensions...")
-		sp.run(['defaults', 'write', 'NSGlobalDomain', 'AppleShowAllExtensions', '-bool', 'true'], stdout=sp.PIPE)
+		show_file_extensions()
 
 	if prompt_yes_no(top_line="-> Disable saving to the cloud by default?",
 	                 bottom_line="This prevents sensitive documents from being unintentionally stored on the cloud."):
 		print_confirmation("Disabling cloud saving by default...")
-		sp.run(['defaults', 'write', 'NSGlobalDomain', 'NSDocumentSaveNewDocumentsToCloud', '-bool', 'false'], stdout=sp.PIPE)
+		disable_cloud_saving()
 
 	if prompt_yes_no(top_line="-> Show hidden files in Finder?",
 	                 bottom_line="This lets you see all files on the system without having to use the terminal."):
 		print_confirmation("Displaying hidden files in Finder...")
-		sp.run(['defaults', 'write', 'com.apple.finder', 'AppleShowAllFiles', '-boolean', 'true'], shell=True, stdout=sp.PIPE)
+		show_hidden_files()
 
 	if prompt_yes_no(top_line="-> Disable printer sharing?",
 	                 bottom_line="Offers redundancy in case the Firewall was not configured."):
 		print_confirmation("Disabling printer sharing...")
-		sp.run(['cupsctl', '--no-share-printers'], shell=True, stdout=sp.PIPE)
+		disable_printer_sharing()
 
 
 	# Reset finder after messing with it.
 	print_confirmation("Resetting Finder to finalize changes...")
-	sp.run(['killAll', 'Finder'], stdout=sp.PIPE)
+	restart_finder()
 
 
 def final_configuration():
@@ -274,30 +397,11 @@ def final_configuration():
 	print("3. Make sure everything in the Settings > Sharing menu is disabled if you're not using it.")
 	print("4. For the most secure configuration, check out Objective-See's Free OSX Security Tools: https://objective-see.com/products.html")
 	print("\nIf you have any suggestions for stronghold, open an issue at: https://github.com/alichtman/stronghold/issues/new" + Style.RESET_ALL)
+	if not_applied:
+		print(Fore.RED + Style.BRIGHT + "\nNOT APPLIED:\n" + "\n".join(not_applied) + Style.RESET_ALL)
+		sys.exit(1)
 	sys.exit()
 
-	# Removed due to sudo reboot bug.
-
-	# if prompt_yes_no(top_line="-> Restart your Mac right now?",
-	#                  bottom_line="This is necessary for some configuration changes to take effect."):
-	# 	print_confirmation("Configuration complete after restart!")
-	# 	print(Fore.YELLOW + Style.BRIGHT + "Restarting in 5 seconds..." + Style.RESET_ALL)
-	# 	sleep(1)
-	# 	print(Fore.YELLOW + Style.BRIGHT + "4..." + Style.RESET_ALL)
-	# 	sleep(1)
-	# 	print(Fore.YELLOW + Style.BRIGHT + "3..." + Style.RESET_ALL)
-	# 	sleep(1)
-	# 	print(Fore.YELLOW + Style.BRIGHT + "2..." + Style.RESET_ALL)
-	# 	sleep(1)
-	# 	print(Fore.YELLOW + Style.BRIGHT + "1..." + Style.RESET_ALL)
-	# 	sleep(1)
-	# 	if sp.run(['sudo', 'shutdown', '-r', 'now'], shell=True, stdout=sp.PIPE) != 0:
-	# 		print(Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary." + Style.RESET_ALL)
-	# 		sys.exit()
-
-	# else:
-	# 	print(Fore.RED + Style.BRIGHT + "WARNING: Configuration not complete! A full restart is necessary." + Style.RESET_ALL)
-	# 	sys.exit()
 
 
 def lockdown_procedure():
@@ -307,55 +411,50 @@ def lockdown_procedure():
 	print_confirmation("Set secure configuration without user interaction.")
 
 	# Get sudo priv
-	sp.run("sudo -E -v", shell=True, stdout=sp.PIPE)
+	sp.run("sudo -v", shell=True, stdout=sp.PIPE)
 
 	####
 	# FIREWALL
 	####
 
-	sp.run(['sudo', 'launchctl', 'load', '/System/Library/LaunchDaemons/com.apple.alf.agent.plist'], stdout=sp.PIPE)
-	sp.run(['sudo', 'launchctl', 'load', '/System/Library/LaunchAgents/com.apple.alf.useragent.plist'], stdout=sp.PIPE)
-	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setglobalstate', 'on'], stdout=sp.PIPE)
-	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setloggingmode', 'on'], stdout=sp.PIPE)
-	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setstealthmode', 'on'], stdout=sp.PIPE)
-	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsigned', 'off'], stdout=sp.PIPE)
-	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsignedapp', 'off'], stdout=sp.PIPE)
-	sp.run(['sudo', 'pkill', '-HUP', 'socketfilterfw'], stdout=sp.PIPE)
+	enable_firewall()
+	enable_firewall_logging()
+	enable_stealth_mode()
+	reload_firewall()
 
 	####
 	# SYSTEM PROTECTION
 	####
 
-	sp.run('sudo spctl --master-enable', shell=True, stdout=sp.PIPE)
-	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsigned', 'off'], stdout=sp.PIPE)
-	sp.run(['sudo', '/usr/libexec/ApplicationFirewall/socketfilterfw', '--setallowsignedapp', 'off'], stdout=sp.PIPE)
-	sp.run(['sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.captive.control Active -bool false'], stdout=sp.PIPE)
+	enable_gatekeeper()
+	require_approval_for_signed_apps()
+	disable_captive_portal()
+	enable_automatic_updates()
 
 	####
 	# METADATA STORAGE
 	####
 
-	sp.run(['rm', '-rfv', '"~/Library/LanguageModeling/*"', '"~/Library/Spelling/*"', '"~/Library/Suggestions/*"'])
-	sp.run(['rm', '-rfv', '"~/Library/Application Support/Quick Look/*"'], stdout=sp.PIPE)
-	sp.run([':>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2'], shell=True, stdout=sp.PIPE)
+	clear_language_data()
+	clear_quicklook_cache()
+	clear_downloads_history()
 
 	####
 	# DAEMONS
 	####
 
-	sp.run('sudo systemsetup -f -setremotelogin off', shell=True, stdout=sp.PIPE)
-	sp.run('sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist', shell=True, stdout=sp.PIPE)
+	disable_service('com.openssh.sshd')
+	disable_service('org.apache.httpd')
 
 	####
 	# USER SAFETY
 	####
 
-	sp.run(['defaults', 'write', 'com.apple.screensaver', 'askForPassword', '-int', '1'], stdout=sp.PIPE)
-	sp.run(['defaults', 'write', 'com.apple.screensaver', 'askForPasswordDelay', '-int', '0'], stdout=sp.PIPE)
-	sp.run(['defaults', 'write', 'NSGlobalDomain', 'AppleShowAllExtensions', '-bool', 'true'], stdout=sp.PIPE)
-	sp.run(['defaults', 'write', 'NSGlobalDomain', 'NSDocumentSaveNewDocumentsToCloud', '-bool', 'false'], stdout=sp.PIPE)
-	sp.run(['defaults', 'write', 'com.apple.finder', 'AppleShowAllFiles', '-boolean', 'true'], shell=True, stdout=sp.PIPE)
-	sp.run(['killAll', 'Finder'], stdout=sp.PIPE)
+	lock_screen_immediately()
+	show_file_extensions()
+	disable_cloud_saving()
+	show_hidden_files()
+	restart_finder()
 
 	####
 	# RESTART
@@ -395,6 +494,3 @@ def cli(lockdown, v):
 		user_safety_config()
 		final_configuration()
 
-
-if __name__ == '__main__':
-	cli()

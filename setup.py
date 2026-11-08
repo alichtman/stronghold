@@ -10,7 +10,7 @@ from setuptools import setup
 # To use a consistent encoding
 from codecs import open
 from os import path
-from constants import Constants
+from stronghold.constants import Constants
 import sys
 
 # Check if Python version is above 3 for manually running setup.py
@@ -72,12 +72,8 @@ setup(
     # String of words separated by whitespace, not a list.
     keywords='fortify stronghold system configuration security firewall hardening secure',  # Optional
 
-    # Just want to distribute a single Python file, so using `py_modules`
-    # argument, which will expect a file called `stronghold.py` to exist:
-    py_modules=[
-        "stronghold",
-        "constants"
-    ],
+    # The code lives in the stronghold/ package.
+    packages=["stronghold"],
 
     # This field lists other packages that your project depends on to run.
     # Any package you put here will be installed by pip when your project is
@@ -100,7 +96,7 @@ setup(
     # executes the function `main` from this package when invoked:
     entry_points='''
         [console_scripts]
-        stronghold=stronghold:cli
+        stronghold=stronghold.cli:cli
     ''',
 
     # List additional URLs that are relevant to your project as a dict.
